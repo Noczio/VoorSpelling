@@ -11,7 +11,7 @@ class Test_split_data(unittest.TestCase):
         file_name = "diabetes.csv"
         test_full_path = test_current_path +"\\"+folder_name+"\\"+file_name
         CSV_FILE = CVS_data_type_loader(test_full_path)
-        df = CSV_FILE.file_as_dataset()
+        df = CSV_FILE.get_file_as_dataframe()
 
         expected_y_len, expected_x_len = df.shape
         expected_x_len-=1 # shape returns org column value, x doesn't have prediction column, so it must be org_value-1
@@ -28,7 +28,7 @@ class Test_split_data(unittest.TestCase):
         file_name = "diabetes.csv"
         test_full_path = test_current_path +"\\"+folder_name+"\\"+file_name
         CSV_FILE = CVS_data_type_loader(test_full_path)
-        df = CSV_FILE.file_as_dataset()
+        df = CSV_FILE.get_file_as_dataframe()
 
         training_part_df = df.sample(frac = 0.8) 
         test_part_df = df.drop(training_part_df.index) 

@@ -1,5 +1,7 @@
 import pandas as pd
-from abc import ABC,abstractmethod 
+import pathlib
+from abc import ABC
+from parse_file import DF_parse_ensurer
 
 class ABC_data_loader(ABC):
     """[summary]
@@ -8,33 +10,71 @@ class ABC_data_loader(ABC):
         ABC ([type]): [description]
     """
     def __init__(self,full_path:str):
-        self.full_path =  full_path
+        """[summary]
+
+        Args:
+            full_path (str): [description]
+        """
+        self._full_path =  full_path
+        self._df_parser = DF_parse_ensurer() # uses Iparse_ensurer
+
     def __str__(self):
-        return self.full_path
-    def file_as_dataset(self,separator:str):
+        return self._full_path
+    def get_file_as_dataframe(self,separator:str):
         pass
     
 class CVS_data_type_loader(ABC_data_loader):
-    def file_as_dataset(self,separator=","):
+    """[summary]
+
+    Args:
+        ABC_data_loader ([type]): [description]
+    """
+    def get_file_as_dataframe(self,separator=","):
         """[summary]
 
         Args:
             separator (str, optional): [description]. Defaults to ",".
 
+        Raises:
+            TypeError: [description]
+            FileNotFoundError: [description]
+
         Returns:
             [type]: [description]
         """
-        return pd.read_csv(self.full_path,sep=separator)
-
+        file = pathlib.Path(self._full_path)
+        if file.exists():
+            df = pd.read_csv(self._full_path,sep=separator)
+            if (self._df_parser.is_data_correctly_parsed(df)):
+                return df
+            raise TypeError            
+        raise FileNotFoundError
+        
 class TSV_data_type_loader(ABC_data_loader):
-    def file_as_dataset(self,separator="\t"):
+    """[summary]
+
+    Args:
+        ABC_data_loader ([type]): [description]
+    """
+    def get_file_as_dataframe(self,separator="\t"):
         """[summary]
 
         Args:
             separator (str, optional): [description]. Defaults to "\t".
 
+        Raises:
+            TypeError: [description]
+            FileNotFoundError: [description]
+
         Returns:
             [type]: [description]
         """
-        return pd.read_csv(self.full_path,sep=separator)
+        file = pathlib.Path(self._full_path)
+        if file.exists ():
+            df = pd.read_csv(self._full_path,sep=separator)
+            if (self._df_parser.is_data_correctly_parsed(df)):
+                return df
+            raise TypeError
+        raise FileNotFoundError
+        
 
