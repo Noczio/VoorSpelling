@@ -1,7 +1,7 @@
 import pandas as pd
 from abc import ABC,abstractmethod 
 
-class Abs_data_load(ABC):
+class ABC_data_loader(ABC):
     """[summary]
 
     Args:
@@ -14,7 +14,7 @@ class Abs_data_load(ABC):
     def file_as_dataset(self,separator:str):
         pass
     
-class CVS_data_type(Abs_data_load):
+class CVS_data_type_loader(ABC_data_loader):
     def file_as_dataset(self,separator=","):
         """[summary]
 
@@ -26,7 +26,7 @@ class CVS_data_type(Abs_data_load):
         """
         return pd.read_csv(self.full_path,sep=separator)
 
-class TSV_data_type(Abs_data_load):
+class TSV_data_type_loader(ABC_data_loader):
     def file_as_dataset(self,separator="\t"):
         """[summary]
 

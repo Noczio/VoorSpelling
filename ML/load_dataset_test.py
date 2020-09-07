@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from load_data import CVS_data_type, TSV_data_type
+from load_dataset import CVS_data_type_loader, TSV_data_type_loader
 import unittest
 
 class Test_data_load(unittest.TestCase):
@@ -10,7 +10,7 @@ class Test_data_load(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = test_current_path +"\\"+folder_name+"\\"+file_name
-        CSV_FILE = CVS_data_type(test_full_path)
+        CSV_FILE = CVS_data_type_loader(test_full_path)
         df = CSV_FILE.file_as_dataset()
         df_column_len = len(df.columns)
         self.assertEqual(df_column_len,9)
@@ -20,7 +20,7 @@ class Test_data_load(unittest.TestCase):
         folder_name = "datasets"
         file_name = "molecules.csv"
         test_full_path = test_current_path +"\\"+folder_name+"\\"+file_name
-        TSV_FILE = TSV_data_type(test_full_path)
+        TSV_FILE = TSV_data_type_loader(test_full_path)
         df = TSV_FILE.file_as_dataset()
         df_column_len = len(df.columns)
         self.assertEqual(df_column_len,34)
@@ -30,7 +30,7 @@ class Test_data_load(unittest.TestCase):
         folder_name = "datasets"
         file_name = "molecules.csv"
         test_full_path = test_current_path +"\\"+folder_name+"\\"+file_name
-        TSV_FILE = CVS_data_type(test_full_path)
+        TSV_FILE = CVS_data_type_loader(test_full_path)
         df = TSV_FILE.file_as_dataset()
         df_column_len = len(df.columns)
         self.assertNotEqual(df_column_len, 34)
@@ -40,7 +40,7 @@ class Test_data_load(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = test_current_path +"\\"+folder_name+"\\"+file_name
-        CSV_FILE = TSV_data_type(test_full_path)
+        CSV_FILE = TSV_data_type_loader(test_full_path)
         df = CSV_FILE.file_as_dataset()
         df_column_len = len(df.columns)
         self.assertNotEqual(df_column_len, 9)
