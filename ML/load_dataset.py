@@ -1,10 +1,10 @@
 import pandas as pd
 import pathlib
 from abc import ABC
-from parse_file import DF_parse_ensurer
+from parse_file import DataFrameParseEnsurer
 
 
-class ABC_data_loader(ABC):
+class ABCDataLoader(ABC):
     """[summary]
 
     Args:
@@ -18,7 +18,7 @@ class ABC_data_loader(ABC):
             full_path (str): [description]
         """
         self._full_path = full_path
-        self._df_parser = DF_parse_ensurer()  # uses Iparse_ensurer
+        self._df_parser = DataFrameParseEnsurer()  # uses Iparse_ensurer
 
     def __str__(self):
         return self._full_path
@@ -27,7 +27,7 @@ class ABC_data_loader(ABC):
         pass
 
 
-class CVS_data_type_loader(ABC_data_loader):
+class CVSDataTypeLoader(ABCDataLoader):
     """[summary]
 
     Args:
@@ -56,7 +56,7 @@ class CVS_data_type_loader(ABC_data_loader):
         raise FileNotFoundError
 
 
-class TSV_data_type_loader(ABC_data_loader):
+class TSVDataTypeLoader(ABCDataLoader):
     """[summary]
 
     Args:
