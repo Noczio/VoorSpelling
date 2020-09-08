@@ -1,6 +1,7 @@
-from abc import ABC 
+from abc import ABC
 import pandas as pd
 from parse_file import DF_parse_ensurer
+
 
 class ABC_data_splitter(ABC):
     """[summary]
@@ -8,7 +9,8 @@ class ABC_data_splitter(ABC):
     Args:
         ABC ([type]): [description]
     """
-    def __init__(self,df_train=None,df_test=None):
+
+    def __init__(self, df_train=None, df_test=None):
         """[summary]
 
         Args:
@@ -17,9 +19,11 @@ class ABC_data_splitter(ABC):
         """
         self._df_train = df_train
         self._df_test = df_test
-        self._df_parser = DF_parse_ensurer() # uses Iparse_ensurer
+        self._df_parser = DF_parse_ensurer()  # uses Iparse_ensurer
+
     def split_data(self):
         pass
+
 
 class Multi_data_splitter(ABC_data_splitter):
     """[summary]
@@ -27,6 +31,7 @@ class Multi_data_splitter(ABC_data_splitter):
     Args:
         ABC_data_splitter ([type]): [description]
     """
+
     def split_data(self):
         """[summary]
 
@@ -37,12 +42,13 @@ class Multi_data_splitter(ABC_data_splitter):
             [type]: [description]
         """
         if(self._df_parser.is_data_correctly_parsed(self._df_train) and self._df_parser.is_data_correctly_parsed(self._df_test)):
-            y_train=self._df_train[self._df_train.columns[-1]]
-            x_train=self._df_train.drop([self._df_train.columns[-1]],axis=1)
-            y_test=self._df_test[self._df_test.columns[-1]]
-            x_test=self._df_test.drop([self._df_test.columns[-1]],axis=1)
-            return x_train,y_train,x_test,y_test
+            y_train = self._df_train[self._df_train.columns[-1]]
+            x_train = self._df_train.drop([self._df_train.columns[-1]], axis=1)
+            y_test = self._df_test[self._df_test.columns[-1]]
+            x_test = self._df_test.drop([self._df_test.columns[-1]], axis=1)
+            return x_train, y_train, x_test, y_test
         raise TypeError
+
 
 class Simple_data_splitter(ABC_data_splitter):
     """[summary]
@@ -50,6 +56,7 @@ class Simple_data_splitter(ABC_data_splitter):
     Args:
         ABC_data_splitter ([type]): [description]
     """
+
     def split_data(self):
         """[summary]
 
@@ -60,13 +67,7 @@ class Simple_data_splitter(ABC_data_splitter):
             [type]: [description]
         """
         if(self._df_parser.is_data_correctly_parsed(self._df_train)):
-            y_train=self._df_train[self._df_train.columns[-1]]
-            x_train=self._df_train.drop([self._df_train.columns[-1]],axis=1)
-            return x_train,y_train
+            y_train = self._df_train[self._df_train.columns[-1]]
+            x_train = self._df_train.drop([self._df_train.columns[-1]], axis=1)
+            return x_train, y_train
         raise TypeError
-
-
-
-          
-
-
