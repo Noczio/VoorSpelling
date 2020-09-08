@@ -1,9 +1,9 @@
 from abc import ABC
 import pandas as pd
-from parse_file import DF_parse_ensurer
+from parse_file import DataFrameParseEnsurer
 
 
-class ABC_data_splitter(ABC):
+class ABCDataSplitter(ABC):
     """[summary]
 
     Args:
@@ -19,13 +19,13 @@ class ABC_data_splitter(ABC):
         """
         self._df_train = df_train
         self._df_test = df_test
-        self._df_parser = DF_parse_ensurer()  # uses Iparse_ensurer
+        self._df_parser = DataFrameParseEnsurer()  # uses Iparse_ensurer
 
     def split_data(self):
         pass
 
 
-class Multi_data_splitter(ABC_data_splitter):
+class MultiDataSplitter(ABCDataSplitter):
     """[summary]
 
     Args:
@@ -50,7 +50,7 @@ class Multi_data_splitter(ABC_data_splitter):
         raise TypeError
 
 
-class Simple_data_splitter(ABC_data_splitter):
+class SimpleDataSplitter(ABCDataSplitter):
     """[summary]
 
     Args:

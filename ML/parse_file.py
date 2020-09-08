@@ -2,7 +2,7 @@ import pandas as pd
 from interface import implements, Interface
 
 
-class IParse_ensurer(Interface):
+class IParseEnsurer(Interface):
     """[summary]
 
     Args:
@@ -21,7 +21,7 @@ class IParse_ensurer(Interface):
         pass
 
 
-class DF_parse_ensurer(implements(IParse_ensurer)):
+class DataFrameParseEnsurer(implements(IParseEnsurer)):
     """[summary]
 
     Args:
