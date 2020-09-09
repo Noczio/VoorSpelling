@@ -5,6 +5,9 @@ __pycache__/
 # json file goes inside
 .vscode/
 
+# venv
+Voor-mlvenv/
+
 # Distribution / packaging
 .Python
 env/
