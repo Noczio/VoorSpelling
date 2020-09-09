@@ -6,7 +6,7 @@ __pycache__/
 .vscode/
 
 # venv
-Voor-mlvenv/
+Voor-venv/
 
 # Distribution / packaging
 .Python
