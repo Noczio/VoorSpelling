@@ -25,6 +25,6 @@ automl = AutoML(
         "shuffle": False,
         "stratify": True,
     })
-automl.fit(x_train, y_train)
-predictions = automl.predict(x_test)
-print(predictions)
+# automl.fit(x_train, y_train)
+# predictions = automl.predict(x_test)
+# print(predictions)
