@@ -18,7 +18,7 @@ class ABCDataLoader(ABC):
             full_path (str): [description]
         """
         self._full_path = full_path
-        self._df_parser = DataFrameParseEnsurer()  # uses Iparse_ensurer
+        self._df_parser = DataFrameParseEnsurer()  # using DataFrameParseEnsurer
 
     def __str__(self):
         return self._full_path
@@ -83,4 +83,3 @@ class TSVDataTypeLoader(ABCDataLoader):
                 return df
             raise TypeError
         raise FileNotFoundError
-
