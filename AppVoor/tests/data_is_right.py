@@ -4,6 +4,7 @@ from parse_file import DataParseEnsurer
 
 
 class MyTestCase(unittest.TestCase):
+
     def test_data_is_int(self):
         ensurer_bol = DataParseEnsurer.is_int(10)
         self.assertTrue(ensurer_bol)

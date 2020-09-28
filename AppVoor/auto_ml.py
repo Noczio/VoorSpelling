@@ -1,6 +1,7 @@
+import random
+
 from interface import implements, Interface
 from supervised import AutoML
-import random
 
 
 class IAutoMachineLearning(Interface):

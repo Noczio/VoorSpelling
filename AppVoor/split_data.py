@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
-from parse_file import DataParseEnsurer
+
 from sklearn.model_selection import train_test_split
+
+from parse_file import DataParseEnsurer
 
 
 class ABCDataSplitter(ABC):
+
     def __init__(self, df=None):
         self._df = df
 
@@ -17,6 +20,7 @@ class ABCDataSplitter(ABC):
 
 
 class DataSplitter(ABCDataSplitter):
+
     def split_data_into_x_and_y(self):
         if DataParseEnsurer.is_dataframe(self._df):
             y = self._df[self._df.columns[-1]]

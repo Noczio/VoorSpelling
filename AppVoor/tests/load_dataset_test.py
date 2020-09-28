@@ -5,6 +5,7 @@ from load_dataset import CSVDataTypeLoader, TSVDataTypeLoader
 
 
 class MyTestCase(unittest.TestCase):
+
     def test_data_loaded_csv(self):
         test_current_path = os.getcwd()
         folder_name = "datasets"
