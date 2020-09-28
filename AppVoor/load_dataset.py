@@ -3,13 +3,14 @@ from abc import ABC
 
 import pandas as pd
 
-from parse_file import DataParseEnsurer
+from is_data import is_dataframe
 
 
 class ABCDataLoader(ABC):
 
     def __init__(self, full_path: str):
         self._full_path = full_path
+        self._df = None
 
     def __str__(self):
         return self._full_path
@@ -23,9 +24,9 @@ class CSVDataTypeLoader(ABCDataLoader):
     def get_file_as_dataframe(self, separator=","):
         file = pathlib.Path(self._full_path)
         if file.exists():
-            df = pd.read_csv(self._full_path, sep=separator)
-            if DataParseEnsurer.is_dataframe(df):
-                return df
+            self._df = pd.read_csv(self._full_path, sep=separator)
+            if is_dataframe(self._df):
+                return self._df
             raise TypeError
         raise FileNotFoundError
 
@@ -35,8 +36,8 @@ class TSVDataTypeLoader(ABCDataLoader):
     def get_file_as_dataframe(self, separator="\t"):
         file = pathlib.Path(self._full_path)
         if file.exists():
-            df = pd.read_csv(self._full_path, sep=separator)
-            if DataParseEnsurer.is_dataframe(df):
-                return df
+            self._df = pd.read_csv(self._full_path, sep=separator)
+            if is_dataframe(self._df):
+                return self._df
             raise TypeError
         raise FileNotFoundError

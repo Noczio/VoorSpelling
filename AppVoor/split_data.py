@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from sklearn.model_selection import train_test_split
 
-from parse_file import DataParseEnsurer
+from is_data import is_dataframe
 
 
 class ABCDataSplitter(ABC):
@@ -22,7 +22,7 @@ class ABCDataSplitter(ABC):
 class DataSplitter(ABCDataSplitter):
 
     def split_data_into_x_and_y(self):
-        if DataParseEnsurer.is_dataframe(self._df):
+        if is_dataframe(self._df):
             y = self._df[self._df.columns[-1]]
             x = self._df.drop([self._df.columns[-1]], axis=1)
             return x, y

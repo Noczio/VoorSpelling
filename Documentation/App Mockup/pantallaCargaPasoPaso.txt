@@ -1,0 +1,330 @@
+/* ResultadoPantallaCarga */
+
+position: relative;
+width: 1440px;
+height: 1024px;
+
+background: #F4F9FF;
+box-shadow: 4px 4px 4px rgba(68, 28, 107, 0.25), 0px 4px 4px rgba(68, 28, 107, 0.5), 0px 4px 10px rgba(68, 28, 107, 0.3);
+
+
+/* Rectangle 3 */
+
+position: absolute;
+width: 1440px;
+height: 150px;
+left: 0px;
+top: 0px;
+
+background: #8F88E0;
+border: 2px solid rgba(0, 0, 0, 0.5);
+
+
+/* Rectangle 2 */
+
+position: absolute;
+width: 350px;
+height: 1024px;
+left: 0px;
+top: 0px;
+
+background: #CBCBEA;
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 1030px;
+height: 800px;
+right: 30px;
+bottom: 44px;
+
+background: #FAFCFF;
+border: 5px solid rgba(141, 99, 174, 0.2);
+box-sizing: border-box;
+
+
+/* rbtnDosData */
+
+position: absolute;
+width: 400px;
+height: 80px;
+left: 695px;
+top: 286px;
+
+
+
+/* Entrenando ... Tiempo de espera estimado = 25 min */
+
+position: absolute;
+width: 400px;
+height: 80px;
+left: 695px;
+top: 286px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* rbtnDosData */
+
+position: absolute;
+width: 663px;
+height: 75px;
+left: 564px;
+top: 475px;
+
+
+
+/* No desesperes si aun no recibes los resultados. */
+
+position: absolute;
+width: 663px;
+height: 75px;
+left: 564px;
+top: 475px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* [LOGO] */
+
+position: absolute;
+visibility: hidden;
+width: 196px;
+height: 115px;
+left: 77px;
+top: 35px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* VoorspellingLogo 2 */
+
+position: absolute;
+width: 230px;
+height: 199px;
+left: 60px;
+top: 25px;
+
+background: url(VoorspellingLogo.png);
+
+
+/* PASO FINAL - Resultados */
+
+position: absolute;
+width: 638px;
+height: 71px;
+left: 437px;
+top: 41px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 36px;
+line-height: 42px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* Barra de carga */
+
+position: absolute;
+width: 925px;
+height: 54px;
+left: 433px;
+top: 839px;
+
+
+
+/* Rectangle 9 */
+
+position: absolute;
+width: 925px;
+height: 54px;
+left: 433px;
+top: 839px;
+
+background: #FFFFFF;
+border: 1px solid #6555C6;
+box-sizing: border-box;
+
+
+/* Rectangle 10 */
+
+position: absolute;
+width: 55px;
+height: 40px;
+left: 440px;
+top: 846px;
+
+background: rgba(144, 135, 239, 0.9);
+
+
+/* Rectangle 12 */
+
+position: absolute;
+width: 55px;
+height: 40px;
+left: 561px;
+top: 846px;
+
+background: rgba(144, 135, 239, 0.9);
+
+
+/* Rectangle 11 */
+
+position: absolute;
+width: 55px;
+height: 40px;
+left: 501px;
+top: 846px;
+
+background: rgba(144, 135, 239, 0.9);
+
+
+/* Group 2 */
+
+position: absolute;
+width: 311px;
+height: 717px;
+left: 17px;
+top: 278px;
+
+
+
+/* Iván-David Rey-Rueda buc16372023@mail.udes.edu.co German Diaz-Figueredo buc17372054@mail.udes.edu.co */
+
+position: absolute;
+width: 306px;
+height: 126px;
+left: 22px;
+top: 497px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* Voorspelling, aplicación de escritorio para aprendizaje de máquina supervisado */
+
+position: absolute;
+width: 306px;
+height: 126px;
+left: 17px;
+top: 278px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* Universidad de Santander Ingeniería de Software 2020 */
+
+position: absolute;
+width: 306px;
+height: 126px;
+left: 22px;
+top: 727px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* Version 1.0 Licencia BSD 3 */
+
+position: absolute;
+width: 306px;
+height: 126px;
+left: 22px;
+top: 869px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* El tiempo estimado depende del tamaño del conjunto de datos (dataset), si hay un proceso de selección de caracteristicas, así como otros factores según las opciones que se hayan elegido */
+
+position: absolute;
+width: 725px;
+height: 126px;
+left: 533px;
+top: 623px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: justify;
+
+color: #696969;
+
