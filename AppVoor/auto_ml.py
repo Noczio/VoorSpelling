@@ -1,5 +1,6 @@
 from interface import implements, Interface
 from supervised import AutoML
+import random
 
 
 class IAutoMachineLearning(Interface):
@@ -13,12 +14,15 @@ class IAutoMachineLearning(Interface):
 
 class JarAutoML(implements(IAutoMachineLearning)):
 
-    def __init__(self, n_folds: int, shuffle_data=False):
+    def __init__(self, n_folds_validation: int, shuffle_data=False, max_rand=1234):
+        self._random_state = random.randint(0, max_rand)
         self._clf = AutoML(
+            mode="Compete",
             explain_level=0,
+            random_state=self._random_state,
             validation_strategy={
                 "validation_type": "kfold",
-                "k_folds": n_folds,
+                "k_folds": n_folds_validation,
                 "shuffle": shuffle_data
             })
 
