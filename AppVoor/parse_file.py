@@ -1,48 +1,49 @@
 import pandas as pd
-from interface import implements, Interface
 
 
-class IParseEnsurer(Interface):
-    """[summary]
+class DataParseEnsurer:
 
-    Args:
-        Interface ([type]): [description] 
-    """
-
-    def is_data_correctly_parsed(self, data) -> bool:
-        """[summary]
-
-        Args:
-            data ([type]): [description]
-
-        Returns:
-            bool: [description]
-        """
-        pass
-
-
-class DataFrameParseEnsurer(implements(IParseEnsurer)):
-    """[summary]
-
-    Args:
-        IParseEnsurer ([type]): [description]
-    """
-
-    def __init__(self):
-        self._min_data = 100  # this value should be changed if requirements say so
-
-    def is_data_correctly_parsed(self, data) -> bool:
-        """[summary]
-
-        Args:
-            data ([type]): [description]
-
-        Returns:
-            bool: [description]
-        """
+    @staticmethod
+    def is_dataframe(data, min_data=100) -> bool:
         if isinstance(data, pd.DataFrame):
             x_shape, y_shape = data.shape
-            if x_shape <= self._min_data or y_shape == 1:
+            if x_shape <= min_data or y_shape == 1:
                 return False
+            return True
+        return False
+
+    @staticmethod
+    def is_int(data) -> bool:
+        if isinstance(data, int):
+            return True
+        return False
+
+    @staticmethod
+    def is_float(data) -> bool:
+        if isinstance(data, float):
+            return True
+        return False
+
+    @staticmethod
+    def is_str(data) -> bool:
+        if isinstance(data, str):
+            return True
+        return False
+
+    @staticmethod
+    def is_list(data) -> bool:
+        if isinstance(data, list):
+            return True
+        return False
+
+    @staticmethod
+    def is_tuple(data) -> bool:
+        if isinstance(data, tuple):
+            return True
+        return False
+
+    @staticmethod
+    def is_dict(data) -> bool:
+        if isinstance(data, dict):
             return True
         return False
