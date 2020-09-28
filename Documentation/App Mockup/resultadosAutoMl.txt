@@ -1,0 +1,281 @@
+/* ResultadosAutoML */
+
+position: relative;
+width: 1440px;
+height: 1024px;
+
+background: #F4F9FF;
+box-shadow: 4px 4px 4px rgba(68, 28, 107, 0.25), 0px 4px 4px rgba(68, 28, 107, 0.5), 0px 4px 10px rgba(68, 28, 107, 0.3);
+
+
+/* Rectangle 3 */
+
+position: absolute;
+width: 1440px;
+height: 150px;
+left: 0px;
+top: 0px;
+
+background: #8F88E0;
+border: 2px solid rgba(0, 0, 0, 0.5);
+
+
+/* Rectangle 2 */
+
+position: absolute;
+width: 350px;
+height: 1024px;
+left: 0px;
+top: 0px;
+
+background: #CBCBEA;
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 1030px;
+height: 800px;
+right: 30px;
+bottom: 44px;
+
+background: #FAFCFF;
+border: 5px solid rgba(141, 99, 174, 0.2);
+box-sizing: border-box;
+
+
+/* [LOGO] */
+
+position: absolute;
+visibility: hidden;
+width: 196px;
+height: 115px;
+left: 77px;
+top: 35px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+
+/* VoorspellingLogo 2 */
+
+position: absolute;
+width: 230px;
+height: 199px;
+left: 60px;
+top: 25px;
+
+background: url(VoorspellingLogo.png);
+
+
+/* PASO FINAL - Resultados */
+
+position: absolute;
+width: 638px;
+height: 71px;
+left: 437px;
+top: 41px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 36px;
+line-height: 42px;
+display: flex;
+align-items: center;
+
+color: #FFFFFF;
+
+
+
+/* INICIO */
+
+position: absolute;
+width: 168px;
+height: 52px;
+left: 811px;
+top: 878px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: center;
+text-decoration-line: underline;
+
+color: #8F88E0;
+
+
+
+/* Rectangle 14 */
+
+position: absolute;
+visibility: hidden;
+width: 895px;
+height: 414px;
+left: 447px;
+top: 263px;
+
+background: #FAFCFF;
+border: 1px solid rgba(173, 145, 232, 0.5);
+box-sizing: border-box;
+box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 5px;
+
+
+/* rbtnDosData */
+
+position: absolute;
+width: 389px;
+height: 81px;
+left: 701px;
+top: 280px;
+
+
+
+/* ¡Los resultados ya están listos! */
+
+position: absolute;
+width: 389px;
+height: 81px;
+left: 701px;
+top: 280px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 28px;
+line-height: 33px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* Group 2 */
+
+position: absolute;
+width: 311px;
+height: 717px;
+left: 17px;
+top: 278px;
+
+
+
+/* Iván-David Rey-Rueda buc16372023@mail.udes.edu.co German Diaz-Figueredo buc17372054@mail.udes.edu.co */
+
+position: absolute;
+width: 306px;
+height: 126px;
+left: 22px;
+top: 497px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* Voorspelling, aplicación de escritorio para aprendizaje de máquina supervisado */
+
+position: absolute;
+width: 306px;
+height: 126px;
+left: 17px;
+top: 278px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* Universidad de Santander Ingeniería de Software 2020 */
+
+position: absolute;
+width: 306px;
+height: 126px;
+left: 22px;
+top: 727px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* Version 1.0 Licencia BSD 3 */
+
+position: absolute;
+width: 306px;
+height: 126px;
+left: 22px;
+top: 869px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #696969;
+
+
+
+/* Todos los archivos de los resultados se encuentran en la carpeta base de la aplicación. Todo lo que se encuentra en la carpeta estara en Inglés, a diferencia de nuestro proceso paso a paso generado por nosotros. Para más información, porfavor ir al repositorio en GitHub de mljar https://github.com/mljar/mljar-supervised */
+
+position: absolute;
+width: 625px;
+height: 222px;
+left: 582px;
+top: 509px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 24px;
+line-height: 28px;
+display: flex;
+align-items: center;
+text-align: justify;
+
+color: #696969;
+
