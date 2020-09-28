@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from load_dataset import CSVDataTypeLoader
+from load_data import CSVDataTypeLoader
 from split_data import DataSplitter
 
 
@@ -13,7 +13,7 @@ class MyTestCase(unittest.TestCase):
         file_name = "diabetes.csv"
         test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
         csv_file = CSVDataTypeLoader(test_full_path)
-        df = csv_file.get_file_as_dataframe()
+        df = csv_file.get_file_transformed()
 
         expected_y_len, expected_x_len = df.shape
         # shape returns org column value, x doesn't have prediction column, so it must be org_value-1

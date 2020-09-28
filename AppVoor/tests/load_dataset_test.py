@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from load_dataset import CSVDataTypeLoader, TSVDataTypeLoader
+from load_data import CSVDataTypeLoader, TSVDataTypeLoader
 
 
 class MyTestCase(unittest.TestCase):
@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
         file_name = "diabetes.csv"
         test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
         csv_file = CSVDataTypeLoader(test_full_path)
-        df = csv_file.get_file_as_dataframe()
+        df = csv_file.get_file_transformed()
         df_column_len = len(df.columns)
         self.assertEqual(df_column_len, 9)
 
@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         file_name = "molecules.csv"
         test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
         tsv_file = TSVDataTypeLoader(test_full_path)
-        df = tsv_file.get_file_as_dataframe()
+        df = tsv_file.get_file_transformed()
         df_column_len = len(df.columns)
         self.assertEqual(df_column_len, 34)
 
@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
         with self.assertRaises(TypeError):
             tsv_file = CSVDataTypeLoader(test_full_path)
-            _ = tsv_file.get_file_as_dataframe()
+            _ = tsv_file.get_file_transformed()
 
     def test_wrong_sep_for_csv_file(self):
         test_current_path = os.getcwd()
@@ -42,7 +42,7 @@ class MyTestCase(unittest.TestCase):
         test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
         with self.assertRaises(TypeError):
             csv_file = TSVDataTypeLoader(test_full_path)
-            df = csv_file.get_file_as_dataframe()
+            df = csv_file.get_file_transformed()
             _ = len(df.columns)
 
     def test_wrong_path_csv_file(self):
@@ -52,7 +52,7 @@ class MyTestCase(unittest.TestCase):
         test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
         with self.assertRaises(FileNotFoundError):
             csv_file = CSVDataTypeLoader(test_full_path)
-            _ = csv_file.get_file_as_dataframe()
+            _ = csv_file.get_file_transformed()
 
     def test_wrong_path_tsv_file(self):
         test_current_path = os.getcwd()
@@ -61,7 +61,7 @@ class MyTestCase(unittest.TestCase):
         test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
         with self.assertRaises(FileNotFoundError):
             tsv_file = TSVDataTypeLoader(test_full_path)
-            _ = tsv_file.get_file_as_dataframe()
+            _ = tsv_file.get_file_transformed()
 
 
 if __name__ == '__main__':

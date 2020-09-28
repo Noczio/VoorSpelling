@@ -2,7 +2,7 @@ import os
 import unittest
 
 from is_data import *
-from load_dataset import CSVDataTypeLoader
+from load_data import CSVDataTypeLoader
 
 
 class MyTestCase(unittest.TestCase):
@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         file_name = "diabetes.csv"
         test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
         csv_file = CSVDataTypeLoader(test_full_path)
-        this_is_a_df = csv_file.get_file_as_dataframe()
+        this_is_a_df = csv_file.get_file_transformed()
         parser_answer = is_dataframe(this_is_a_df)
         self.assertTrue(parser_answer)
 
