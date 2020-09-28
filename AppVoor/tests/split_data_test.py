@@ -1,4 +1,3 @@
-import os
 import unittest
 
 from load_data import CSVDataTypeLoader
@@ -8,10 +7,9 @@ from split_data import DataSplitter
 class MyTestCase(unittest.TestCase):
 
     def test_single_split(self):
-        test_current_path = os.getcwd()
         folder_name = "datasets"
         file_name = "diabetes.csv"
-        test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
+        test_full_path = ".\\..\\"+folder_name+"\\"+file_name
         csv_file = CSVDataTypeLoader(test_full_path)
         df = csv_file.get_file_transformed()
 
