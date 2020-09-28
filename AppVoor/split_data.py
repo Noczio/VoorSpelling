@@ -1,73 +1,25 @@
-from abc import ABC
-from parse_file import DataFrameParseEnsurer
+from abc import ABC, abstractmethod
+from parse_file import DataParseEnsurer
+from sklearn.model_selection import train_test_split
 
 
 class ABCDataSplitter(ABC):
-    """[summary]
+    def __init__(self, df=None):
+        self._df = df
 
-    Args:
-        ABC ([type]): [description]
-    """
-
-    def __init__(self, df_train=None, df_test=None):
-        """[summary]
-
-        Args:
-            df_train ([type], optional): [description]. Defaults to None.
-            df_test ([type], optional): [description]. Defaults to None.
-        """
-        self._df_train = df_train
-        self._df_test = df_test
-        self._df_parser = DataFrameParseEnsurer()  # uses Iparse_ensurer
-
-    def split_data(self):
+    @abstractmethod
+    def split_data_into_x_and_y(self):
         pass
 
-
-class MultiDataSplitter(ABCDataSplitter):
-    """[summary]
-
-    Args:
-        ABCDataSplitter ([type]): [description]
-    """
-
-    def split_data(self):
-        """[summary]
-
-        Raises:
-            TypeError: [description]
-
-        Returns:
-            [type]: [description]
-        """
-        if (self._df_parser.is_data_correctly_parsed(self._df_train) and self._df_parser.is_data_correctly_parsed(
-                self._df_test)):
-            y_train = self._df_train[self._df_train.columns[-1]]
-            x_train = self._df_train.drop([self._df_train.columns[-1]], axis=1)
-            y_test = self._df_test[self._df_test.columns[-1]]
-            x_test = self._df_test.drop([self._df_test.columns[-1]], axis=1)
-            return x_train, y_train, x_test, y_test
-        raise TypeError
+    def train_test_split_data(self, x, y, size: float):
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size)
+        return x_train, x_test, y_train, y_test
 
 
-class SimpleDataSplitter(ABCDataSplitter):
-    """[summary]
-
-    Args:
-        ABCDataSplitter ([type]): [description]
-    """
-
-    def split_data(self):
-        """[summary]
-
-        Raises:
-            TypeError: [description]
-
-        Returns:
-            [type]: [description]
-        """
-        if self._df_parser.is_data_correctly_parsed(self._df_train):
-            y_train = self._df_train[self._df_train.columns[-1]]
-            x_train = self._df_train.drop([self._df_train.columns[-1]], axis=1)
-            return x_train, y_train
+class DataSplitter(ABCDataSplitter):
+    def split_data_into_x_and_y(self):
+        if DataParseEnsurer.is_dataframe(self._df):
+            y = self._df[self._df.columns[-1]]
+            x = self._df.drop([self._df.columns[-1]], axis=1)
+            return x, y
         raise TypeError
