@@ -7,14 +7,14 @@ from jsonInfo.random_generator import get_random_number_range_int
 
 class ABCAutoMachineLearning(ABC):
 
-    def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int):
+    def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         # initialize ._random_state, _n_folds_validation and _shuffle_data
         self._random_state = get_random_number_range_int(0, max_rand, 1)
         self._n_folds_validation = n_folds_validation
         self._shuffle_data = shuffle_data
 
     @abstractmethod
-    def fit_model(self, x_train, y_train):
+    def fit_model(self, x_train, y_train) -> None:
         pass
 
     @abstractmethod
@@ -24,7 +24,7 @@ class ABCAutoMachineLearning(ABC):
 
 class JarAutoML(ABCAutoMachineLearning):
 
-    def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int):
+    def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         super().__init__(n_folds_validation, shuffle_data, max_rand)
         # if by any case the random state state is fewer than 0 then fix it to 0
         # var  = [false,true][test]
@@ -40,7 +40,7 @@ class JarAutoML(ABCAutoMachineLearning):
             })
 
     # abstract class method implementation
-    def fit_model(self, x_train, y_train):
+    def fit_model(self, x_train, y_train) -> None:
         # clf fit method
         self._clf.fit(x_train, y_train)
 

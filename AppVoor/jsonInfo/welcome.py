@@ -5,7 +5,7 @@ from load_data import JSONDataTypeLoader
 
 class WelcomeMessage(ABCJson):
 
-    def __init__(self, file_path=".\\welcomeMessage.json"):
+    def __init__(self, file_path=".\\welcomeMessage.json") -> None:
         # _data by default is None
         self._data = None
         # using JSONDataTypeLoader
@@ -27,14 +27,14 @@ class WelcomeMessage(ABCJson):
         raise IndexError
 
     # abstract class method implementation
-    def _load_file(self):
+    def _load_file(self) -> None:
         # data setter using JSONDataTypeLoader
         self._data = self._json_type.get_file_transformed()
 
 
 class WelcomeMessenger:
 
-    def __init__(self, message_path=".\\welcomeMessage.json"):
+    def __init__(self, message_path=".\\welcomeMessage.json") -> None:
         # initialize a WelcomeMessage
         self._json_message = WelcomeMessage(file_path=message_path)
         # start, end and step for random choice
@@ -45,10 +45,10 @@ class WelcomeMessenger:
         self._random_index = get_random_number_range_int(random_start, random_end, random_step)
 
     # method to treat class as str. Returns get_welcome_message
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.get_welcome_message())
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.__str__())
 
     def get_welcome_message(self) -> str:
