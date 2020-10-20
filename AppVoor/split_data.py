@@ -36,13 +36,13 @@ class NormalSplitter(implements(IDataSplitter)):
 
 class SplitterReturner:
 
-    def __init__(self, splitter: IDataSplitter) -> None:
-        self._splitter = splitter
+    def __init__(self, data_splitter: IDataSplitter) -> None:
+        self._data_splitter = data_splitter
 
     def train_test_split(self, x: pd.DataFrame, y: pd.DataFrame, size: float) -> tuple:
-        tuple_answer = self._splitter.train_test_split_data(x, y, size)
+        tuple_answer = self._data_splitter.train_test_split_data(x, y, size)
         return tuple_answer
 
     def split_x_y_from_df(self, df: pd.DataFrame) -> tuple:
-        tuple_answer = self._splitter.split_data_into_x_and_y(df)
+        tuple_answer = self._data_splitter.split_data_into_x_and_y(df)
         return tuple_answer
