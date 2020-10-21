@@ -3,7 +3,7 @@ import unittest
 import pandas as pd
 
 from is_data import IsData
-from load_data import CSVDataTypeLoader, DataReturner
+from load_data import CSVDataTypeLoader, DataReturner, JSONDataTypeLoader
 
 
 class MyTestCase(unittest.TestCase):
@@ -34,7 +34,7 @@ class MyTestCase(unittest.TestCase):
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         csv_file = CSVDataTypeLoader(test_full_path)
         data_returner = DataReturner(csv_file)
-        this_is_a_df = data_returner.get_dataframe()
+        this_is_a_df = data_returner.get_data()
         parser_answer = IsData.is_dataframe(this_is_a_df)
         self.assertTrue(parser_answer)
 
@@ -48,6 +48,14 @@ class MyTestCase(unittest.TestCase):
         df = pd.DataFrame.from_dict(dict_test)
         parser_answer = IsData.is_dataframe(df)
         self.assertFalse(parser_answer)
+
+    def test_json_is_list(self):
+
+        json_type = JSONDataTypeLoader(full_path=".\\..\\jsonInfo\\welcomeMessage.json")
+        data_returner = DataReturner(json_type)
+        file = data_returner.get_data()
+        parser_answer = IsData.is_list(file)
+        self.assertTrue(parser_answer)
 
 
 if __name__ == '__main__':

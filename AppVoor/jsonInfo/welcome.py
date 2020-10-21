@@ -27,7 +27,7 @@ class WelcomeMessage(ABCJson):
         # data setter using JSONDataTypeLoader
         json_type = JSONDataTypeLoader(self._file_path)
         data_returner = DataReturner(json_type)
-        self._data = data_returner.get_dataframe()
+        self._data = data_returner.get_data()
 
 
 class WelcomeMessenger:

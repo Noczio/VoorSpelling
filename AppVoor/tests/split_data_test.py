@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         csv_type = CSVDataTypeLoader(test_full_path)
         data_returner = DataReturner(csv_type)
-        df = data_returner.get_dataframe()
+        df = data_returner.get_data()
 
         expected_y_len, expected_x_len = df.shape
         # shape returns org column value, x doesn't have prediction column, so it must be org_value-1

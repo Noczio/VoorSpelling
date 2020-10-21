@@ -37,7 +37,7 @@ class SplitterReturner:
     def __init__(self, data_splitter: IDataSplitter) -> None:
         self._data_splitter = data_splitter
 
-    def train_test_split(self, x: pd.DataFrame, y: pd.DataFrame, size: float) -> tuple:
+    def train_and_test_split(self, x: pd.DataFrame, y: pd.DataFrame, size: float) -> tuple:
         tuple_answer = self._data_splitter.train_test_split_data(x, y, size)
         return tuple_answer
 

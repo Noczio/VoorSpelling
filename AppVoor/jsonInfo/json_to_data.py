@@ -11,9 +11,6 @@ class ABCJson(ABC):
     def __len__(self) -> int:
         return len(self._data)
 
-    def get_file_data(self) -> tuple:
-        return tuple(self._data)
-
     @abstractmethod
     def _load_file(self) -> None:
         pass

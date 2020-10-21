@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
         csv_type = CSVDataTypeLoader(test_full_path)
         data_returner = DataReturner(csv_type)
 
-        df = data_returner.get_dataframe()
+        df = data_returner.get_data()
         df_column_len = len(df.columns)
         self.assertEqual(df_column_len, 9)
 
@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         tsv_type = TSVDataTypeLoader(test_full_path)
         data_returner = DataReturner(tsv_type)
-        df = data_returner.get_dataframe()
+        df = data_returner.get_data()
         df_column_len = len(df.columns)
         self.assertEqual(df_column_len, 34)
 
@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             tsv_type = CSVDataTypeLoader(test_full_path)
             data_returner = DataReturner(tsv_type)
-            _ = data_returner.get_dataframe()
+            _ = data_returner.get_data()
 
     def test_wrong_sep_for_csv_file(self):
         folder_name = "datasets"
@@ -42,7 +42,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             csv_type = TSVDataTypeLoader(test_full_path)
             data_returner = DataReturner(csv_type)
-            _ = data_returner.get_dataframe()
+            _ = data_returner.get_data()
 
     def test_wrong_path_csv_file(self):
         folder_name = "datasets"
@@ -51,7 +51,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             csv_type = CSVDataTypeLoader(test_full_path)
             data_returner = DataReturner(csv_type)
-            _ = data_returner.get_dataframe()
+            _ = data_returner.get_data()
 
     def test_wrong_path_tsv_file(self):
         folder_name = "datasets"
@@ -60,7 +60,7 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             tsv_type = TSVDataTypeLoader(test_full_path)
             data_returner = DataReturner(tsv_type)
-            _ = data_returner.get_dataframe()
+            _ = data_returner.get_data()
 
 
 if __name__ == '__main__':

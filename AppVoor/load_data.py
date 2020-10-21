@@ -1,5 +1,6 @@
 import json
 from abc import ABC, abstractmethod
+from typing import Union, Any
 
 import pandas as pd
 
@@ -22,20 +23,22 @@ class ABCDataLoader(ABC):
         return len(self._data)
 
     @abstractmethod
-    def get_file_transformed(self) -> pd.DataFrame:
+    def get_file_transformed(self) -> Any:
         pass
 
 
 class JSONDataTypeLoader(ABCDataLoader):
 
     # abstract class method implementation
-    def get_file_transformed(self) -> pd.DataFrame:
+    def get_file_transformed(self) -> Union[list, dict]:
         # try to load file and set data, if error raise FileNotFoundError
         try:
             with open(self._full_path, 'r', encoding="utf-8") as f:
                 temp = json.load(f)
-                self._data = temp
-                return self._data
+                if IsData.is_list(temp) or IsData.is_dict(temp):
+                    self._data = temp
+                    return self._data
+                raise TypeError
         except():
             raise FileNotFoundError
 
@@ -80,6 +83,6 @@ class DataReturner:
     def __init__(self, data_loader: ABCDataLoader) -> None:
         self._data_loader = data_loader
 
-    def get_dataframe(self) -> pd.DataFrame:
+    def get_data(self) -> Any:
         df = self._data_loader.get_file_transformed()
         return df
