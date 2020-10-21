@@ -1,17 +1,13 @@
 from jsonInfo.json_to_data import ABCJson
-from jsonInfo.random_generator import get_random_number_range_int
-from load_data import JSONDataTypeLoader
+from jsonInfo.random_generator import Randomizer
+from load_data import JSONDataTypeLoader, DataReturner
 
 
 class WelcomeMessage(ABCJson):
 
     def __init__(self, file_path=".\\welcomeMessage.json") -> None:
-        # _data by default is None
-        self._data = None
-        # using JSONDataTypeLoader
-        self._json_type = JSONDataTypeLoader(file_path)
         # call super class init
-        super().__init__()
+        super().__init__(file_path)
         # by default load file when object is created. _data is now set
         self._load_file()
 
@@ -29,20 +25,22 @@ class WelcomeMessage(ABCJson):
     # abstract class method implementation
     def _load_file(self) -> None:
         # data setter using JSONDataTypeLoader
-        self._data = self._json_type.get_file_transformed()
+        json_type = JSONDataTypeLoader(self._file_path)
+        data_returner = DataReturner(json_type)
+        self._data = data_returner.get_dataframe()
 
 
 class WelcomeMessenger:
 
-    def __init__(self, message_path=".\\welcomeMessage.json") -> None:
+    def __init__(self, json_message: ABCJson) -> None:
         # initialize a WelcomeMessage
-        self._json_message = WelcomeMessage(file_path=message_path)
+        self._json_message = json_message
         # start, end and step for random choice
         random_start = 0
         random_end = len(self._json_message)
         random_step = 1
         # initialize random num using get_random_number_range_int
-        self._random_index = get_random_number_range_int(random_start, random_end, random_step)
+        self._random_index = Randomizer.get_random_number_range_int(random_start, random_end, random_step)
 
     # method to treat class as str. Returns get_welcome_message
     def __str__(self) -> str:

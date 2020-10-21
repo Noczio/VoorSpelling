@@ -9,7 +9,7 @@ class MyTestCase(unittest.TestCase):
     def test_single_split(self):
         folder_name = "datasets"
         file_name = "diabetes.csv"
-        test_full_path = ".\\..\\"+folder_name+"\\"+file_name
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         csv_type = CSVDataTypeLoader(test_full_path)
         data_returner = DataReturner(csv_type)
         df = data_returner.get_dataframe()

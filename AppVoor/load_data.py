@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from is_data import is_dataframe
+from is_data import IsData
 
 
 class ABCDataLoader(ABC):
@@ -50,7 +50,7 @@ class CSVDataTypeLoader(ABCDataLoader):
         try:
             with open(self._full_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
-                if is_dataframe(temp):
+                if IsData.is_dataframe(temp):
                     self._data = temp
                     return self._data
                 raise TypeError
@@ -68,7 +68,7 @@ class TSVDataTypeLoader(ABCDataLoader):
         try:
             with open(self._full_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
-                if is_dataframe(temp):
+                if IsData.is_dataframe(temp):
                     self._data = temp
                     return self._data
                 raise TypeError

@@ -1,10 +1,8 @@
+import pandas as pd
 from interface import Interface, implements
-
 from sklearn.model_selection import train_test_split
 
-from is_data import is_dataframe
-
-import pandas as pd
+from is_data import IsData
 
 
 class IDataSplitter(Interface):
@@ -26,7 +24,7 @@ class NormalSplitter(implements(IDataSplitter)):
 
     # abstract class method implementation
     def split_data_into_x_and_y(self, df: pd.DataFrame) -> tuple:
-        if is_dataframe(df):
+        if IsData.is_dataframe(df):
             y = df[df.columns[-1]]
             x = df.drop([df.columns[-1]], axis=1)
             tuple_answer = (x, y)
