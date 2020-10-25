@@ -1,3 +1,6 @@
+from typing import Any
+
+from is_data import DataEnsurer
 from jsonInfo.json_to_data import ABCJson
 from jsonInfo.random_generator import Randomizer
 from load_data import JSONDataTypeLoader, DataReturner
@@ -5,20 +8,22 @@ from load_data import JSONDataTypeLoader, DataReturner
 
 class WelcomeMessage(ABCJson):
 
-    def __init__(self, file_path=".\\welcomeMessage.json") -> None:
-        # call super class init
-        super().__init__(file_path)
+    def __init__(self, file_path: str = ".\\welcomeMessage.json", data_type: Any = list) -> None:
+        # call super class init with data as list type
+        super().__init__(file_path, data_type)
 
     # abstract class method implementation
     def __getitem__(self, key: int) -> tuple:
-        # make sure index is not out of boundaries
-        if (key < len(self.data)) and (key >= -len(self.data)):
-            # initialize local var author and quote
-            author = self.data[key]["Author"]
-            quote = self.data[key]["Quote"]
-            return author, quote
-        # index is out of boundaries. Raise IndexError
-        raise IndexError
+        if DataEnsurer.validate_py_data(key, int):
+            # make sure index is not out of boundaries
+            if (key < len(self.data)) and (key >= -len(self.data)):
+                # initialize local var author and quote
+                author = self.data[key]["Author"]
+                quote = self.data[key]["Quote"]
+                return author, quote
+            # index is out of boundaries. Raise IndexError
+            raise IndexError
+        raise TypeError
 
     # abstract class method implementation
     def _load_file(self) -> None:

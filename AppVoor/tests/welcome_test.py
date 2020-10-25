@@ -42,10 +42,7 @@ class MyTestCase(unittest.TestCase):
         # initialization of welcome_message with its path
         welcome_message = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
         _, quote = welcome_message[4]  # gets the quote by index using class method __getitem__
-        expected_quote = "Lo que todos tenemos que hacer es asegurarnos de que estamos usando la IA de una manera que " \
-                         "" \
-                         "" \
-                         "" \
+        expected_quote = "Lo que todos tenemos que hacer es asegurarnos de que estamos usando la IA de una manera que "\
                          "sea en beneficio de la humanidad, no en detrimento de la humanidad"
         # do the variables info match?
         self.assertEqual(quote, expected_quote)
@@ -57,6 +54,17 @@ class MyTestCase(unittest.TestCase):
         bol_answer = DataEnsurer.validate_py_data(this_is_a_tuple, tuple)
         # is the output a tuple?
         self.assertTrue(bol_answer)
+
+    def test_get_item_index_is_not_int(self):
+        with self.assertRaises(TypeError):
+            # initialization of welcome_message with its path
+            welcome_message = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
+            _ = welcome_message['s']  # key is not a valid type. It should be an integer
+
+    def test_welcome_message_wrong_type(self):
+        with self.assertRaises(TypeError):
+            # initialization of welcome_message with its path. data_type is wrong
+            _ = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json", data_type=str)
 
     def test_data_from_json_is_tuple_negative_index(self):
         # initialization of welcome_message with its path
@@ -71,6 +79,14 @@ class MyTestCase(unittest.TestCase):
         welcome_message = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
         with self.assertRaises(IndexError):
             _ = welcome_message[-6]  # __getitem__ method raises a error due to index out of bound
+
+    def test_data_type_is_list(self):
+        # initialization of welcome_message with its path
+        welcome_message = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
+        data = welcome_message.data  # get data value using its property
+        bol_answer = DataEnsurer.validate_py_data(data, list)
+        # is data a list?
+        self.assertTrue(bol_answer)
 
 
 if __name__ == '__main__':

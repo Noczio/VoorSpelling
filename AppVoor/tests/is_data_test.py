@@ -48,24 +48,23 @@ class MyTestCase(unittest.TestCase):
         data_returner = DataReturner(csv_file)
         # get the dataframe from the data_returner
         this_is_a_df = data_returner.get_data()
-        # use DataEnsurer and check if it is a dataframe
-        data_ensurer = DataEnsurer()
-        ensurer_bol = data_ensurer.validate_pd_data(this_is_a_df)
+        # use DataEnsurer and check if it is a dataframe with enough samples and features
+        ensurer_bol = DataEnsurer.validate_pd_data(this_is_a_df)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_not_df(self):
         not_a_df = {'name': 'notch', 'job': 'dev'}
-        data_ensurer = DataEnsurer()
         # is {'name': 'notch', 'job': 'dev'} a dataframe?
-        ensurer_bol = data_ensurer.validate_pd_data(not_a_df)
+        ensurer_bol = DataEnsurer.validate_pd_data(not_a_df)
+        # it should be false, since input is a dict
         self.assertFalse(ensurer_bol)
 
     def test_df_not_meeting_req_columns(self):
         dict_test = {'name': ['notch', 'fen', 'sky']}
         df = pd.DataFrame.from_dict(dict_test)
-        data_ensurer = DataEnsurer()
         # is {'name': ['notch', 'fen', 'sky']} a dataframe after pd.DataFrame.from_dict ?
-        ensurer_bol = data_ensurer.validate_pd_data(df)
+        ensurer_bol = DataEnsurer.validate_pd_data(df)
+        # it should be false, since it doesnt have enough samples and features
         self.assertFalse(ensurer_bol)
 
     def test_json_is_list(self):
@@ -73,9 +72,8 @@ class MyTestCase(unittest.TestCase):
         # initialize data_returner with JSONDataTypeLoader
         data_returner = DataReturner(json_type)
         file = data_returner.get_data()
-        data_ensurer = DataEnsurer()
         # is the file a deserialized json list?
-        ensurer_bol = data_ensurer.validate_py_data(file, list)
+        ensurer_bol = DataEnsurer.validate_py_data(file, list)
         self.assertTrue(ensurer_bol)
 
 

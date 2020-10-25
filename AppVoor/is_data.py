@@ -24,8 +24,10 @@ class PyData(IData):
 class PdData(IData):
 
     def data_is_valid(self, data: Any, expected: Any) -> bool:
+        # this method is supposed to be used to valid if a dataframe has enough samples and features to train
         min_data = 100
         if isinstance(data, expected):
+            # x_shape is number of rows (samples) and y_shape is number of columns (features)
             x_shape, y_shape = data.shape
             if x_shape <= min_data or y_shape == 1:
                 return False
