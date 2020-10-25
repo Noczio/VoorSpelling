@@ -45,6 +45,7 @@ class MyTestCase(unittest.TestCase):
         expected_quote = "Lo que todos tenemos que hacer es asegurarnos de que estamos usando la IA de una manera que " \
                          "" \
                          "" \
+                         "" \
                          "sea en beneficio de la humanidad, no en detrimento de la humanidad"
         # do the variables info match?
         self.assertEqual(quote, expected_quote)

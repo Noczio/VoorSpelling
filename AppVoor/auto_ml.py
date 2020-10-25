@@ -47,4 +47,3 @@ class JarAutoML(ABCAutoMachineLearning):
         # clf predict. Returns prediction as tuple
         prediction_tuple = tuple(self._clf.predict(x_test))
         return prediction_tuple
-

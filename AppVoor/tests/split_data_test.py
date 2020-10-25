@@ -1,9 +1,10 @@
 import unittest
 
+import pandas as pd
+
 from is_data import DataEnsurer
 from load_data import CSVDataTypeLoader, DataReturner
 from split_data import NormalSplitter, SplitterReturner
-import pandas as pd
 
 
 class MyTestCase(unittest.TestCase):

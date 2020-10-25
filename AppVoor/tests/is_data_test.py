@@ -69,7 +69,7 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(ensurer_bol)
 
     def test_json_is_list(self):
-        json_type = JSONDataTypeLoader(full_path=".\\..\\jsonInfo\\welcomeMessage.json")
+        json_type = JSONDataTypeLoader(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
         # initialize data_returner with JSONDataTypeLoader
         data_returner = DataReturner(json_type)
         file = data_returner.get_data()

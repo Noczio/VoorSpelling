@@ -1,5 +1,3 @@
-from typing import Any, Union
-
 from jsonInfo.json_to_data import ABCJson
 from jsonInfo.random_generator import Randomizer
 from load_data import JSONDataTypeLoader, DataReturner

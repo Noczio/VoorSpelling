@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, Any
+from typing import Union
 
 
 class ABCJson(ABC):
@@ -8,6 +8,7 @@ class ABCJson(ABC):
         # initialize data and file_path
         self._data: Union[list, dict] = []
         self._file_path: str = file_path
+        # load file into data variable when an object of this class is created
         self._load_file()
 
     @abstractmethod
