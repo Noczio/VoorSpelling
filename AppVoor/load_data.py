@@ -42,12 +42,11 @@ class JSONDataTypeLoader(ABCDataLoader[Union[list, dict]]):
 
     # abstract class method implementation
     def get_file_transformed(self) -> Union[list, dict]:
-        data_ensurer = DataEnsurer()
         # try to load file and set data, if error raise FileNotFoundError
         try:
             with open(self.full_path, 'r', encoding="utf-8") as f:
                 temp = json.load(f)
-                if data_ensurer.validate_py_data(temp, list) or data_ensurer.validate_py_data(temp, dict):
+                if DataEnsurer.validate_py_data(temp, list) or DataEnsurer.validate_py_data(temp, dict):
                     self.data = temp
                     return self.data
                 raise TypeError
@@ -61,13 +60,12 @@ class CSVDataTypeLoader(ABCDataLoader[DataFrame]):
     def get_file_transformed(self) -> DataFrame:
         # initialize separator  as ","
         separator = ","
-        data_ensurer = DataEnsurer()
         # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
         try:
 
             with open(self.full_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
-                if data_ensurer.validate_pd_data(temp):
+                if DataEnsurer.validate_pd_data(temp):
                     self.data = temp
                     return self.data
                 raise TypeError
@@ -81,12 +79,11 @@ class TSVDataTypeLoader(ABCDataLoader[DataFrame]):
     def get_file_transformed(self) -> DataFrame:
         # initialize separator  as "\t"
         separator = "\t"
-        data_ensurer = DataEnsurer()
         # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
         try:
             with open(self.full_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
-                if data_ensurer.validate_pd_data(temp):
+                if DataEnsurer.validate_pd_data(temp):
                     self.data = temp
                     return self.data
                 raise TypeError

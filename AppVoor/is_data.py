@@ -35,12 +35,12 @@ class PdData(IData):
 
 class DataEnsurer:
 
-    def __init__(self) -> None:
-        self._py_data_validator: IData = PyData()
-        self._pd_data_validator: IData = PdData()
+    @staticmethod
+    def validate_py_data(data: Any, type_expected: Any) -> bool:
+        py_data_validator: IData = PyData()
+        return py_data_validator.data_is_valid(data, type_expected)
 
-    def validate_py_data(self, data: Any, type_expected: Any) -> bool:
-        return self._py_data_validator.data_is_valid(data, type_expected)
-
-    def validate_pd_data(self, data: Any) -> bool:
-        return self._pd_data_validator.data_is_valid(data, pd.DataFrame)
+    @staticmethod
+    def validate_pd_data(data: Any) -> bool:
+        pd_data_validator: IData = PdData()
+        return pd_data_validator.data_is_valid(data, pd.DataFrame)

@@ -8,8 +8,7 @@ from jsonInfo.random_generator import Randomizer
 class ABCAutoMachineLearning(ABC):
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
-        # initialize _random_state, _n_folds_validation and _shuffle_data. _clf by default is None
-        self._clf = None
+        # initialize _random_state, _n_folds_validation and _shuffle_data.
         self._random_state: int = Randomizer.get_random_number_range_int(0, max_rand, 1)
         self._n_folds_validation: int = n_folds_validation
         self._shuffle_data: bool = shuffle_data

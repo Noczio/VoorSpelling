@@ -10,36 +10,45 @@ class MyTestCase(unittest.TestCase):
 
     def test_data_is_int(self):
         data_ensurer = DataEnsurer()
+        # is 10 an int?
         ensurer_bol = data_ensurer.validate_py_data(10, int)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_str(self):
         data_ensurer = DataEnsurer()
+        # is "test" a string?
         ensurer_bol = data_ensurer.validate_py_data("test", str)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_float(self):
         data_ensurer = DataEnsurer()
+        # is 0.25 a float?
         ensurer_bol = data_ensurer.validate_py_data(0.25, float)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_list(self):
         data_ensurer = DataEnsurer()
+        # is [10, "s", True] a list?
         ensurer_bol = data_ensurer.validate_py_data([10, "s", True], list)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_tuple(self):
         data_ensurer = DataEnsurer()
+        # is (10, "s", True) a list?
         ensurer_bol = data_ensurer.validate_py_data((10, "s", True), tuple)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_df(self):
+        # load diabetes.csv from disk
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         csv_file = CSVDataTypeLoader(test_full_path)
+        # initialize data_returner with CSVDataTypeLoader
         data_returner = DataReturner(csv_file)
+        # get the dataframe from the data_returner
         this_is_a_df = data_returner.get_data()
+        # use DataEnsurer and check if it is a dataframe
         data_ensurer = DataEnsurer()
         ensurer_bol = data_ensurer.validate_pd_data(this_is_a_df)
         self.assertTrue(ensurer_bol)
@@ -47,6 +56,7 @@ class MyTestCase(unittest.TestCase):
     def test_data_is_not_df(self):
         not_a_df = {'name': 'notch', 'job': 'dev'}
         data_ensurer = DataEnsurer()
+        # is {'name': 'notch', 'job': 'dev'} a dataframe?
         ensurer_bol = data_ensurer.validate_pd_data(not_a_df)
         self.assertFalse(ensurer_bol)
 
@@ -54,14 +64,17 @@ class MyTestCase(unittest.TestCase):
         dict_test = {'name': ['notch', 'fen', 'sky']}
         df = pd.DataFrame.from_dict(dict_test)
         data_ensurer = DataEnsurer()
+        # is {'name': ['notch', 'fen', 'sky']} a dataframe after pd.DataFrame.from_dict ?
         ensurer_bol = data_ensurer.validate_pd_data(df)
         self.assertFalse(ensurer_bol)
 
     def test_json_is_list(self):
         json_type = JSONDataTypeLoader(full_path=".\\..\\jsonInfo\\welcomeMessage.json")
+        # initialize data_returner with JSONDataTypeLoader
         data_returner = DataReturner(json_type)
         file = data_returner.get_data()
         data_ensurer = DataEnsurer()
+        # is the file a deserialized json list?
         ensurer_bol = data_ensurer.validate_py_data(file, list)
         self.assertTrue(ensurer_bol)
 
