@@ -25,7 +25,7 @@ class PdData(IData):
 
     def data_is_valid(self, data: Any, expected: Any) -> bool:
         min_data = 100
-        if isinstance(data, pd.DataFrame):
+        if isinstance(data, expected):
             x_shape, y_shape = data.shape
             if x_shape <= min_data or y_shape == 1:
                 return False

@@ -61,14 +61,6 @@ class MyTestCase(unittest.TestCase):
         for r in results:
             self.assertTrue(r)
 
-    def test_single_split_raise_error(self):
-        with self.assertRaises(TypeError):
-            this_is_not_a_df = [1, 2, 3]
-            # use of splitterReturner with a NormalSplitter implementation
-            splitter = SplitterReturner(NormalSplitter())
-            # this should raise a TypeError
-            _, _ = splitter.split_x_y_from_df(this_is_not_a_df)
-
     def test_train_test_split_data_all_data_is_dataframe(self):
         # load diabetes.csv from disk
         folder_name = "datasets"

@@ -1,5 +1,4 @@
 from abc import abstractmethod, ABC
-from typing import Tuple
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -33,18 +32,16 @@ class NormalSplitter(IDataSplitter):
 
     # interface method implementation
     def split_data_into_x_and_y(self, df: DataFrame) -> tuple:
-        if DataEnsurer.validate_pd_data(df):
-            # fix y as dataframe. By default it is a pd.Series
-            y = df[df.columns[-1]].to_frame()
-            x = df.drop([df.columns[-1]], axis=1)
-            return x, y
-        raise TypeError
+        # fix y as dataframe. By default it is a pd.Series
+        y = df[df.columns[-1]].to_frame()
+        x = df.drop([df.columns[-1]], axis=1)
+        return x, y
 
 
 class SplitterReturner:
 
     def __init__(self, data_splitter: IDataSplitter) -> None:
-        self._data_splitter = data_splitter
+        self._data_splitter: IDataSplitter = data_splitter
 
     def train_and_test_split(self, x: DataFrame, y: DataFrame, size: float) -> tuple:
         tuple_answer = self._data_splitter.train_test_split_data(x, y, size)

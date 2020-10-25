@@ -42,7 +42,7 @@ class WelcomeMessenger:
         # initialize random num using get_random_number_range_int
         self._random_index = Randomizer.get_random_number_range_int(random_start, random_end, random_step)
 
-    def _get_welcome_message(self) -> str:
+    def get_welcome_message(self) -> str:
         # get author and quote from the json_message using get_data_by_index
         author, quote = self._json_message.get_data_by_index(self._random_index)
         # message is supposed to be "bla bla bla. author name"
@@ -50,7 +50,7 @@ class WelcomeMessenger:
         return message
 
     def __str__(self) -> str:
-        return self._get_welcome_message()
+        return self.get_welcome_message()
 
     def __len__(self) -> int:
         return len(self.__str__())
