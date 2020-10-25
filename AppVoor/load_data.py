@@ -12,9 +12,9 @@ DataFrame = pd.DataFrame
 
 class ABCDataLoader(ABC, Generic[T]):
 
-    def __init__(self, full_path: str) -> None:
+    def __init__(self, file_path: str) -> None:
         # initialization when obj is created. By default _data is None
-        self._full_path: str = full_path
+        self._file_path: str = file_path
         self._data: T = None
 
     @property
@@ -26,12 +26,12 @@ class ABCDataLoader(ABC, Generic[T]):
         self._data = value
 
     @property
-    def full_path(self) -> str:
-        return self._full_path
+    def file_path(self) -> str:
+        return self._file_path
 
-    @full_path.setter
-    def full_path(self, value: str) -> None:
-        self._full_path = value
+    @file_path.setter
+    def file_path(self, value: str) -> None:
+        self._file_path = value
 
     @abstractmethod
     def get_file_transformed(self) -> T:
@@ -44,7 +44,7 @@ class JSONDataTypeLoader(ABCDataLoader[Union[list, dict]]):
     def get_file_transformed(self) -> Union[list, dict]:
         # try to load file and set data, if error raise FileNotFoundError
         try:
-            with open(self.full_path, 'r', encoding="utf-8") as f:
+            with open(self.file_path, 'r', encoding="utf-8") as f:
                 temp = json.load(f)
                 if DataEnsurer.validate_py_data(temp, list) or DataEnsurer.validate_py_data(temp, dict):
                     self.data = temp
@@ -63,7 +63,7 @@ class CSVDataTypeLoader(ABCDataLoader[DataFrame]):
         # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
         try:
 
-            with open(self.full_path, 'r', encoding="utf-8") as f:
+            with open(self.file_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
                 if DataEnsurer.validate_pd_data(temp):
                     self.data = temp
@@ -81,7 +81,7 @@ class TSVDataTypeLoader(ABCDataLoader[DataFrame]):
         separator = "\t"
         # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
         try:
-            with open(self.full_path, 'r', encoding="utf-8") as f:
+            with open(self.file_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
                 if DataEnsurer.validate_pd_data(temp):
                     self.data = temp

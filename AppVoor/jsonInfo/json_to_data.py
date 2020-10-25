@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union
+from typing import Union, Any
 
 
 class ABCJson(ABC):
@@ -8,13 +8,14 @@ class ABCJson(ABC):
         # initialize data and file_path
         self._data: Union[list, dict] = []
         self._file_path: str = file_path
+        self._load_file()
 
     @abstractmethod
     def _load_file(self) -> None:
         pass
 
     @abstractmethod
-    def get_data_by_index(self, index: int) -> tuple:
+    def __getitem__(self, key: Union[int, str]) -> tuple:
         pass
 
     @property
@@ -32,3 +33,6 @@ class ABCJson(ABC):
     @file_path.setter
     def file_path(self, value: str) -> None:
         self._file_path = value
+
+    def __len__(self):
+        return len(self.data)
