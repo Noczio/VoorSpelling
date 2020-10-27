@@ -1,6 +1,6 @@
 import unittest
 
-from load_data import CSVDataTypeLoader, TSVDataTypeLoader, DataReturner
+from load_data import CSVDataLoader, TSVDataLoader, DataLoaderReturner
 
 
 class MyTestCase(unittest.TestCase):
@@ -10,9 +10,9 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataTypeLoader(test_full_path)
+        csv_type = CSVDataLoader(test_full_path)
         # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataReturner(csv_type)
+        data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
         df_column_len = len(df.columns)
         # do the values match?
@@ -23,9 +23,9 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "molecules.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        tsv_type = TSVDataTypeLoader(test_full_path)
+        tsv_type = TSVDataLoader(test_full_path)
         # initialize data_returner with TSVDataTypeLoader
-        data_returner = DataReturner(tsv_type)
+        data_returner = DataLoaderReturner(tsv_type)
         df = data_returner.get_data()
         df_column_len = len(df.columns)
         # do the values match?
@@ -37,9 +37,9 @@ class MyTestCase(unittest.TestCase):
         file_name = "molecules.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         with self.assertRaises(TypeError):
-            tsv_type = CSVDataTypeLoader(test_full_path)
+            tsv_type = CSVDataLoader(test_full_path)
             # initialize data_returner with CSVDataTypeLoader
-            data_returner = DataReturner(tsv_type)
+            data_returner = DataLoaderReturner(tsv_type)
             # this should raise an TypeError
             _ = data_returner.get_data()
 
@@ -48,9 +48,9 @@ class MyTestCase(unittest.TestCase):
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         with self.assertRaises(TypeError):
-            csv_type = TSVDataTypeLoader(test_full_path)
+            csv_type = TSVDataLoader(test_full_path)
             # initialize data_returner with TSVDataTypeLoader
-            data_returner = DataReturner(csv_type)
+            data_returner = DataLoaderReturner(csv_type)
             # this should raise an TypeError
             _ = data_returner.get_data()
 
@@ -60,9 +60,9 @@ class MyTestCase(unittest.TestCase):
         file_name = "mol.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         with self.assertRaises(FileNotFoundError):
-            csv_type = CSVDataTypeLoader(test_full_path)
+            csv_type = CSVDataLoader(test_full_path)
             # initialize data_returner with CSVDataTypeLoader
-            data_returner = DataReturner(csv_type)
+            data_returner = DataLoaderReturner(csv_type)
             # this should raise an FileNotFoundError
             _ = data_returner.get_data()
 
@@ -72,9 +72,9 @@ class MyTestCase(unittest.TestCase):
         file_name = "mol.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         with self.assertRaises(FileNotFoundError):
-            tsv_type = TSVDataTypeLoader(test_full_path)
+            tsv_type = TSVDataLoader(test_full_path)
             # initialize data_returner with TSVDataTypeLoader
-            data_returner = DataReturner(tsv_type)
+            data_returner = DataLoaderReturner(tsv_type)
             # this should raise an FileNotFoundError
             _ = data_returner.get_data()
 

@@ -5,7 +5,7 @@ from supervised import AutoML
 from jsonInfo.random_generator import Randomizer
 
 
-class ABCAutoMachineLearning(ABC):
+class AutoMachineLearning(ABC):
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         # initialize _random_state, _n_folds_validation and _shuffle_data.
@@ -22,7 +22,7 @@ class ABCAutoMachineLearning(ABC):
         pass
 
 
-class JarAutoML(ABCAutoMachineLearning):
+class JarAutoML(AutoMachineLearning):
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         super().__init__(n_folds_validation, shuffle_data, max_rand)

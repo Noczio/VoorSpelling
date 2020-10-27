@@ -1,12 +1,12 @@
 from typing import Any
 
 from is_data import DataEnsurer
-from jsonInfo.json_to_data import ABCJson
+from jsonInfo.json_to_data import JSONMessage
 from jsonInfo.random_generator import Randomizer
-from load_data import JSONDataTypeLoader, DataReturner
+from load_data import JSONDataLoader, DataLoaderReturner
 
 
-class WelcomeMessage(ABCJson):
+class WelcomeMessage(JSONMessage):
 
     def __init__(self, file_path: str = ".\\welcomeMessage.json", data_type: Any = list) -> None:
         # call super class init with data as list type
@@ -28,14 +28,14 @@ class WelcomeMessage(ABCJson):
     # abstract class method implementation
     def _load_file(self) -> None:
         # data setter using JSONDataTypeLoader
-        json_type = JSONDataTypeLoader(self.file_path)
-        data_returner = DataReturner(json_type)
+        json_type = JSONDataLoader(self.file_path)
+        data_returner = DataLoaderReturner(json_type)
         self.data = data_returner.get_data()
 
 
 class WelcomeMessenger:
 
-    def __init__(self, json_message: ABCJson) -> None:
+    def __init__(self, json_message: JSONMessage) -> None:
         # initialize a WelcomeMessage
         self._json_message = json_message
         # start, end and step for random choice

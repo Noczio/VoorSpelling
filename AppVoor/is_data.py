@@ -6,22 +6,22 @@ import pandas as pd
 DataFrame = pd.DataFrame
 
 
-class IData(ABC):
+class ValidData(ABC):
 
     @abstractmethod
-    def data_is_valid(self, data: Any, expected: Any):
+    def data_is_valid(self, data: Any, expected: Any) -> bool:
         pass
 
 
-class PyData(IData):
+class PyData(ValidData):
 
-    def data_is_valid(self, data: Any, expected: Any):
+    def data_is_valid(self, data: Any, expected: Any) -> bool:
         if isinstance(data, expected):
             return True
         return False
 
 
-class PdData(IData):
+class PdData(ValidData):
 
     def data_is_valid(self, data: Any, expected: Any) -> bool:
         # this method is supposed to be used to valid if a dataframe has enough samples and features to train
@@ -39,10 +39,10 @@ class DataEnsurer:
 
     @staticmethod
     def validate_py_data(data: Any, type_expected: Any) -> bool:
-        py_data_validator: IData = PyData()
+        py_data_validator: ValidData = PyData()
         return py_data_validator.data_is_valid(data, type_expected)
 
     @staticmethod
     def validate_pd_data(data: Any) -> bool:
-        pd_data_validator: IData = PdData()
+        pd_data_validator: ValidData = PdData()
         return pd_data_validator.data_is_valid(data, pd.DataFrame)

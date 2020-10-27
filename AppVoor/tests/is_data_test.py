@@ -3,7 +3,7 @@ import unittest
 import pandas as pd
 
 from is_data import DataEnsurer
-from load_data import CSVDataTypeLoader, DataReturner, JSONDataTypeLoader
+from load_data import CSVDataLoader, DataLoaderReturner, JSONDataLoader
 
 
 class MyTestCase(unittest.TestCase):
@@ -43,9 +43,9 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_file = CSVDataTypeLoader(test_full_path)
+        csv_file = CSVDataLoader(test_full_path)
         # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataReturner(csv_file)
+        data_returner = DataLoaderReturner(csv_file)
         # get the dataframe from the data_returner
         this_is_a_df = data_returner.get_data()
         # use DataEnsurer and check if it is a dataframe with enough samples and features
@@ -68,9 +68,9 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(ensurer_bol)
 
     def test_json_is_list(self):
-        json_type = JSONDataTypeLoader(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
+        json_type = JSONDataLoader(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
         # initialize data_returner with JSONDataTypeLoader
-        data_returner = DataReturner(json_type)
+        data_returner = DataLoaderReturner(json_type)
         file = data_returner.get_data()
         # is the file a deserialized json list?
         ensurer_bol = DataEnsurer.validate_py_data(file, list)

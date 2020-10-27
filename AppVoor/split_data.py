@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 DataFrame = pd.DataFrame
 
 
-class IDataSplitter(ABC):
+class DataSplitter(ABC):
 
     @abstractmethod
     def train_test_split_data(self, x: DataFrame, y: DataFrame, size: float) -> tuple:
@@ -17,7 +17,7 @@ class IDataSplitter(ABC):
         pass
 
 
-class NormalSplitter(IDataSplitter):
+class NormalSplitter(DataSplitter):
 
     # interface method implementation
     def train_test_split_data(self, x: DataFrame, y: DataFrame, size: float) -> tuple:
@@ -38,8 +38,8 @@ class NormalSplitter(IDataSplitter):
 
 class SplitterReturner:
 
-    def __init__(self, data_splitter: IDataSplitter) -> None:
-        self._data_splitter: IDataSplitter = data_splitter
+    def __init__(self, data_splitter: DataSplitter) -> None:
+        self._data_splitter: DataSplitter = data_splitter
 
     def train_and_test_split(self, x: DataFrame, y: DataFrame, size: float) -> tuple:
         tuple_answer = self._data_splitter.train_test_split_data(x, y, size)

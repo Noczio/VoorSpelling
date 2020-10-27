@@ -10,7 +10,7 @@ T = TypeVar('T')
 DataFrame = pd.DataFrame
 
 
-class ABCDataLoader(ABC, Generic[T]):
+class DataLoader(ABC, Generic[T]):
 
     def __init__(self, file_path: str) -> None:
         # initialization when obj is created. By default _data is None
@@ -38,7 +38,7 @@ class ABCDataLoader(ABC, Generic[T]):
         pass
 
 
-class JSONDataTypeLoader(ABCDataLoader[Union[list, dict]]):
+class JSONDataLoader(DataLoader[Union[list, dict]]):
 
     # abstract class method implementation
     def get_file_transformed(self) -> Union[list, dict]:
@@ -54,7 +54,7 @@ class JSONDataTypeLoader(ABCDataLoader[Union[list, dict]]):
             raise FileNotFoundError
 
 
-class CSVDataTypeLoader(ABCDataLoader[DataFrame]):
+class CSVDataLoader(DataLoader[DataFrame]):
 
     # abstract class method implementation
     def get_file_transformed(self) -> DataFrame:
@@ -73,7 +73,7 @@ class CSVDataTypeLoader(ABCDataLoader[DataFrame]):
             raise FileNotFoundError
 
 
-class TSVDataTypeLoader(ABCDataLoader[DataFrame]):
+class TSVDataLoader(DataLoader[DataFrame]):
 
     # abstract class method implementation
     def get_file_transformed(self) -> DataFrame:
@@ -91,9 +91,9 @@ class TSVDataTypeLoader(ABCDataLoader[DataFrame]):
             raise FileNotFoundError
 
 
-class DataReturner:
+class DataLoaderReturner:
 
-    def __init__(self, data_loader: ABCDataLoader) -> None:
+    def __init__(self, data_loader: DataLoader) -> None:
         self._data_loader = data_loader
 
     def get_data(self) -> Any:

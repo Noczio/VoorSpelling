@@ -3,7 +3,7 @@ import unittest
 import pandas as pd
 
 from is_data import DataEnsurer
-from load_data import CSVDataTypeLoader, DataReturner
+from load_data import CSVDataLoader, DataLoaderReturner
 from split_data import NormalSplitter, SplitterReturner
 
 
@@ -14,9 +14,9 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataTypeLoader(test_full_path)
+        csv_type = CSVDataLoader(test_full_path)
         # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataReturner(csv_type)
+        data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
         expected_y_len, expected_x_len = df.shape  # true prediction and data len with shape method
         # shape returns original column value. x doesn't have prediction column, so it must be original value - 1
@@ -33,9 +33,9 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataTypeLoader(test_full_path)
+        csv_type = CSVDataLoader(test_full_path)
         # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataReturner(csv_type)
+        data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
         # use of splitterReturner with a NormalSplitter implementation
         splitter = SplitterReturner(NormalSplitter())
@@ -49,9 +49,9 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataTypeLoader(test_full_path)
+        csv_type = CSVDataLoader(test_full_path)
         # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataReturner(csv_type)
+        data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
         # use of splitterReturner with a NormalSplitter implementation
         splitter = SplitterReturner(NormalSplitter())
@@ -67,9 +67,9 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataTypeLoader(test_full_path)
+        csv_type = CSVDataLoader(test_full_path)
         # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataReturner(csv_type)
+        data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
         # use of splitterReturner with a NormalSplitter implementation
         splitter = SplitterReturner(NormalSplitter())

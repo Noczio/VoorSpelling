@@ -5,7 +5,7 @@ DesJson = Union[list, dict]
 T = TypeVar('T')
 
 
-class ABCJson(ABC):
+class JSONMessage(ABC):
 
     def __init__(self, file_path: str, data_type: Any) -> None:
         # initialize data and file_path
