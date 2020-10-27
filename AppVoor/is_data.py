@@ -1,46 +1,48 @@
+from abc import ABC, abstractmethod
+from typing import Any
+
 import pandas as pd
 
-
-def is_dict(data) -> bool:
-    if isinstance(data, dict):
-        return True
-    return False
+DataFrame = pd.DataFrame
 
 
-def is_tuple(data) -> bool:
-    if isinstance(data, tuple):
-        return True
-    return False
+class ValidData(ABC):
+
+    @abstractmethod
+    def data_is_valid(self, data: Any, expected: Any) -> bool:
+        pass
 
 
-def is_list(data) -> bool:
-    if isinstance(data, list):
-        return True
-    return False
+class PyData(ValidData):
+
+    def data_is_valid(self, data: Any, expected: Any) -> bool:
+        if isinstance(data, expected):
+            return True
+        return False
 
 
-def is_str(data) -> bool:
-    if isinstance(data, str):
-        return True
-    return False
+class PdData(ValidData):
+
+    def data_is_valid(self, data: Any, expected: Any) -> bool:
+        # this method is supposed to be used to valid if a dataframe has enough samples and features to train
+        min_data = 100
+        if isinstance(data, expected):
+            # x_shape is number of rows (samples) and y_shape is number of columns (features)
+            x_shape, y_shape = data.shape
+            if x_shape <= min_data or y_shape == 1:
+                return False
+            return True
+        return False
 
 
-def is_float(data) -> bool:
-    if isinstance(data, float):
-        return True
-    return False
+class DataEnsurer:
 
+    @staticmethod
+    def validate_py_data(data: Any, type_expected: Any) -> bool:
+        py_data_validator: ValidData = PyData()
+        return py_data_validator.data_is_valid(data, type_expected)
 
-def is_int(data) -> bool:
-    if isinstance(data, int):
-        return True
-    return False
-
-
-def is_dataframe(data, min_data=100) -> bool:
-    if isinstance(data, pd.DataFrame):
-        x_shape, y_shape = data.shape
-        if x_shape <= min_data or y_shape == 1:
-            return False
-        return True
-    return False
+    @staticmethod
+    def validate_pd_data(data: Any) -> bool:
+        pd_data_validator: ValidData = PdData()
+        return pd_data_validator.data_is_valid(data, pd.DataFrame)

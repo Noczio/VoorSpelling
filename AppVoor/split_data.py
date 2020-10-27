@@ -1,32 +1,50 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod, ABC
 
+import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from is_data import is_dataframe
+DataFrame = pd.DataFrame
 
 
-class ABCDataSplitter(ABC):
-
-    def __init__(self, df=None):
-        # by default _df is None
-        self._df = df
-
-    def train_test_split_data(self, x, y, size: float):
-        # return x_train, x_test, y_train, y_test using train_test_split
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size)
-        return x_train, x_test, y_train, y_test
+class DataSplitter(ABC):
 
     @abstractmethod
-    def split_data_into_x_and_y(self):
+    def train_test_split_data(self, x: DataFrame, y: DataFrame, size: float) -> tuple:
+        pass
+
+    @abstractmethod
+    def split_data_into_x_and_y(self, df: DataFrame) -> tuple:
         pass
 
 
-class DataSplitter(ABCDataSplitter):
+class NormalSplitter(DataSplitter):
 
-    # abstract class method implementation
-    def split_data_into_x_and_y(self):
-        if is_dataframe(self._df):
-            y = self._df[self._df.columns[-1]]
-            x = self._df.drop([self._df.columns[-1]], axis=1)
-            return x, y
-        raise TypeError
+    # interface method implementation
+    def train_test_split_data(self, x: DataFrame, y: DataFrame, size: float) -> tuple:
+        # return x_train, x_test, y_train, y_test using scikitlearn train_test_split
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size)
+        temp_answer = [x_train, x_test, y_train, y_test]
+        # fix outputs as pd.DataFrame if they are a pd.Series, then return them as a tuple
+        mapped_answer = [i.to_frame() for i in temp_answer if isinstance(i, pd.Series)]
+        return tuple(mapped_answer)
+
+    # interface method implementation
+    def split_data_into_x_and_y(self, df: DataFrame) -> tuple:
+        # fix y as pd.DataFrame. By default it is a pd.Series
+        y = df[df.columns[-1]].to_frame()
+        x = df.drop([df.columns[-1]], axis=1)
+        return x, y
+
+
+class SplitterReturner:
+
+    def __init__(self, data_splitter: DataSplitter) -> None:
+        self._data_splitter: DataSplitter = data_splitter
+
+    def train_and_test_split(self, x: DataFrame, y: DataFrame, size: float) -> tuple:
+        tuple_answer = self._data_splitter.train_test_split_data(x, y, size)
+        return tuple_answer
+
+    def split_x_y_from_df(self, df: DataFrame) -> tuple:
+        tuple_answer = self._data_splitter.split_data_into_x_and_y(df)
+        return tuple_answer

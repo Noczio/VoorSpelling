@@ -1,52 +1,80 @@
-import os
 import unittest
 
-from is_data import *
-from load_data import CSVDataTypeLoader
+import pandas as pd
+
+from is_data import DataEnsurer
+from load_data import CSVDataLoader, DataLoaderReturner, JSONDataLoader
 
 
 class MyTestCase(unittest.TestCase):
 
     def test_data_is_int(self):
-        ensurer_bol = is_int(10)
+        data_ensurer = DataEnsurer()
+        # is 10 an int?
+        ensurer_bol = data_ensurer.validate_py_data(10, int)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_str(self):
-        ensurer_bol = is_str("test")
+        data_ensurer = DataEnsurer()
+        # is "test" a string?
+        ensurer_bol = data_ensurer.validate_py_data("test", str)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_float(self):
-        ensurer_bol = is_float(0.25)
+        data_ensurer = DataEnsurer()
+        # is 0.25 a float?
+        ensurer_bol = data_ensurer.validate_py_data(0.25, float)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_list(self):
-        ensurer_bol = is_list([10, "s", True])
+        data_ensurer = DataEnsurer()
+        # is [10, "s", True] a list?
+        ensurer_bol = data_ensurer.validate_py_data([10, "s", True], list)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_tuple(self):
-        ensurer_bol = is_tuple((10, "s", True))
+        data_ensurer = DataEnsurer()
+        # is (10, "s", True) a list?
+        ensurer_bol = data_ensurer.validate_py_data((10, "s", True), tuple)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_df(self):
-        test_current_path = os.getcwd()
+        # load diabetes.csv from disk
         folder_name = "datasets"
         file_name = "diabetes.csv"
-        test_full_path = test_current_path + "\\.." + "\\" + folder_name + "\\" + file_name
-        csv_file = CSVDataTypeLoader(test_full_path)
-        this_is_a_df = csv_file.get_file_transformed()
-        parser_answer = is_dataframe(this_is_a_df)
-        self.assertTrue(parser_answer)
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        csv_file = CSVDataLoader(test_full_path)
+        # initialize data_returner with CSVDataTypeLoader
+        data_returner = DataLoaderReturner(csv_file)
+        # get the dataframe from the data_returner
+        this_is_a_df = data_returner.get_data()
+        # use DataEnsurer and check if it is a dataframe with enough samples and features
+        ensurer_bol = DataEnsurer.validate_pd_data(this_is_a_df)
+        self.assertTrue(ensurer_bol)
 
     def test_data_is_not_df(self):
         not_a_df = {'name': 'notch', 'job': 'dev'}
-        parser_answer = is_dataframe(not_a_df)
-        self.assertFalse(parser_answer)
+        # is {'name': 'notch', 'job': 'dev'} a dataframe?
+        ensurer_bol = DataEnsurer.validate_pd_data(not_a_df)
+        # it should be false, since input is a dict
+        self.assertFalse(ensurer_bol)
 
     def test_df_not_meeting_req_columns(self):
         dict_test = {'name': ['notch', 'fen', 'sky']}
         df = pd.DataFrame.from_dict(dict_test)
-        parser_answer = is_dataframe(df)
-        self.assertFalse(parser_answer)
+        # is {'name': ['notch', 'fen', 'sky']} a dataframe after pd.DataFrame.from_dict ?
+        ensurer_bol = DataEnsurer.validate_pd_data(df)
+        # it should be false, since it doesnt have enough samples and features
+        self.assertFalse(ensurer_bol)
+
+    def test_json_is_list(self):
+        json_type = JSONDataLoader(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
+        # initialize data_returner with JSONDataTypeLoader
+        data_returner = DataLoaderReturner(json_type)
+        file = data_returner.get_data()
+        # is the file a deserialized json list?
+        ensurer_bol = DataEnsurer.validate_py_data(file, list)
+        self.assertTrue(ensurer_bol)
 
 
 if __name__ == '__main__':

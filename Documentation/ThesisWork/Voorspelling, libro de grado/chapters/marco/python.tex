@@ -1,0 +1,54 @@
+\subsection{Python}
+\subsubsection{Definición}
+Según la documentación de Python \parencite{Pythondoc} este lenguaje es la combinación de velocidad y una sintaxis fácil de comprender, tiene múltiples librerías, puede ejecutarse en diferentes sistemas operativos y es extensible a otros lenguaje como C y C++. Python \parencite{Python3} es un lenguaje de programación de alto nivel interpretado multiparadigma, es decir, que no hay nada que impida a los desarrolladores programar utilizando otros paradigmas, tales como lo son las programación procedural y funcional.
+
+Por lo general, este lenguaje es utilizado en aplicaciones de consola, dado que no cuenta con la facilidad de otros lenguajes como PHP y JavaScript para tener acceso a lenguajes de hipertexto. En esos casos específicos donde Python es el lenguaje utilizado en el \textit{back-end}, se emplean \textit{frameworks} como Electron o librerías como EEl para comunicar las entradas del usuario a Python y luego regresar una salida que pueda ser comprendida en un ambiente con interfaz de usuario que utilice HTML y CSS para el \textit{front-end}. No obstante, cuando los requerimientos de una aplicación requieren de un ambiente nativo de escritorio y no es necesario utilizar tecnologías relacionadas a ambientes web, es entonces cuando otros \textit{framework} que utilizan Python tanto para el \textit{front-end} como para el \textit{back-end} son una opción más óptima, dado que no se necesitan de otros lenguajes que aumentan la complejidad del problema. 
+
+\subsubsection{Librerías}
+Conforme a lo mencionado en la documentación de Python \parencite{Pythondoc}, la librería estándar de este lenguaje contiene módulos originalmente construidos en C que aportan funcionalidades como el acceso a las rutas del sistema, que de otro modo no serían posible en este lenguaje. De igual forma, la librería estándar también tiene módulos desarrollados originalmente en Python, los cuales aportan soluciones para los problemas regulares que se enfrentan los desarrolladores en este lenguaje.
+
+Algunos de los módulos por defecto en Python proveen interfaces específicas del lenguaje, mientras que otros son del sistema operativo o módulos relacionados a ambientes web. Aunque gran parte de las librerías se encuentran disponibles directamente en el lenguaje, hay otras que necesitan primero ser descargadas e instaladas en el sistema, ya sea en un entorno virtual o en la instalación base de la distribución elegida a través de pip, el cual es el paquete estándar para administrar los módulos en Python. 
+
+Los módulos, paquetes y librerías que se utilizan en mayor medida en este proyecto de Aprendizaje de Máquina Supervisado son: numpy, pandas, scikitlearn, mljar-supervised, xgboost, tensorflow, seaborn, Pyinstaller, PyQt5, abc, random y json. 
+
+\begin{APAitemize}
+    \item Numpy: Se utiliza para trabajar con vectores y matrices propias del álgebra linear en Python, en vez de utilizar las listas y tuplas que ofrece por defecto el lenguaje.
+    \item Pandas: Está diseñado para manipular estructuras de datos tabulares y multidimensionales, así como la información que contienen archivos csv y tsv.
+    \item Scikitlearn: Es una librería de acceso libre que utiliza principalmente Numpy y pandas. Esta librería proporciona una implementación de varios algoritmos conocidos de Aprendizaje de Máquina, al mismo tiempo que una interfaz fácil de utilizar integrada en Python.
+    \item MLjar-supervised: Es un paquete de Aprendizaje de Máquina Automático que trabaja principalmente con datos tabulares, es decir conjuntos de datos por lo general en formato csv. Está diseñada para ahorrar todo el tiempo posible a científicos de datos gracias a las funciones automatizadas que tiene el algoritmo, tales como búsqueda de hiperparámetros, construcción y ajuste del modelo.
+    \item Xgboost: Es una librería optimizada de gradientes estocástica multiplaforma diseñada para ser eficiente, flexible y portable.
+    \item Tensorflow: Es una librería de matemáticas desarrollada por el equipo de GoogleBrain. Esta librería es de acceso libre y es utilizada por lo general en Aprendizaje de Máquina y Redes Neuronales.
+    \item Seaborn: Es una librería para visualización de información tabular basada en matplotlib para Python, la cual brinda interfaces de alto nivel para dibujar información estadística atractiva y entendible para el usuario.
+    \item PyInstaller: El principal objetivo de este módulo es ser compatible con aplicaciones de terceros sin necesidad de otras extensiones. Este módulo abstrae todos los paquetes de un proyecto y los deja listos para ser utilizados en un archivo ejecutable en diferentes sistemas como Mac Os, Windows, Solaris y AIX.
+    \item PyQt5: Qt es un conjunto de librerías multiplataforma desarrollada en C++, mientras que PyQt5 es el librería para utilizar las funciones disponibles en Qt v5.
+    \item Abc: Este modulo provee la infraestructura para definir clases abstractas en Python.
+    \item Random: Este módulo hace parte del paquete estándar de Python. Su función es implementar generación de pseudo números aleatorios ya se entre un rango de valores enteros o decimales.
+    \item Json: Es un formato liviano de intercambio de información inspirado en la notación clave-valor de JavaScript que hace parte del paquete estándar de Python, pero que es utilizado en todo lenguaje de programación. 
+\end{APAitemize}
+
+La única dependencia que necesita ser obtenida por aparte para el desarrollo de la aplicación es Visual Studio Build Tools 2019, la cual es utilizada en la instalación de mljar-supervised. No obstante, las demás librerías mencionadas previamente si pueden ser instaladas sin ningún problema en un ambiente virtual utilizando pip (ver Figura ~\ref{fig:inslibpip}), a través de un documento de requerimientos creado con anticipación. 
+
+\begin{figure}[H]
+    \centering
+    \caption{Instalación de librerías con pip}
+    \begin{minted}{Console}
+        PS C:\Users\folder> python -m venv envname
+        PS C:\Users\folder> .\envname\Scripts\activate
+        (envname) PS C:\Users\folder> pip install -r requirements.txt
+    \end{minted}
+    \caption*{Nota\normalfont. Este proceso debe realizarse en la consola de comandos (cmd). No es un conjunto de instrucciones que pueda ser ejecutado en una sola línea, sino que las entradas deben ser efectuadas una después de la otra.}
+    \vskip-4ex
+    \label{fig:inslibpip}
+\end{figure}
+
+\subsubsection{Ambiente de desarrollo}
+Un \textit{framework} se define como una estructura base en la cual se puede construir \parencite{CambridgeDefFramework}, pero no es solo un ambiente donde se desarrolla aplicaciones con base a unas funcionalidades preestablecidas, sino que es un conjunto de herramientas para facilitar la construcción de una aplicación o herramienta con un lenguaje base, que en este caso es Python. Toda aplicación necesita de un entorno de desarrollo, pero un editor de texto no es lo suficiente robusto para generar las ideas de un grupo de desarrolladores, por tal motivo se combinan entornos de desarrollo integrado (IDE) como PyCharm con un \textit{framework}, con el fin de generar software con el mínimo esfuerzo posible. En Python existen varios \textit{frameworks} relacionados al desarrollo de aplicaciones de escritorio tales como Kivy, Tkinter y WxPython, pero el más cercano a las necesidades y conocimientos del equipo es Qt Designer \parencite{QTDes}. 
+
+De acuerdo con la documentación de \textcite{QTDesDoc}, este \textit{framework} es un entorno para desarrollar interfaces de usuario con base a los \textit{widgets} disponibles de QT, los cuales pueden ser combinados con lenguajes como Python y C++, a través de la librería PyQt en sistemas operativos como Windows, Mac Os y Linux. Adicionalmente, permite diseñar a partir de arrastrar y soltar elementos como botones, campos de texto y cuadros, funcionalidad que no todos los \textit{framework} de Python comparten, pero que si es utilizada en otros \textit{framework} como Windows Forms de .net.
+
+\subsubsection{Aplicación en Aprendizaje de Máquina}
+\textcite{raschka2015python} en su libro ``\textit{Python Machine Learning}'' menciona que Python es considerado como el más popular en ciencias de datos e inteligencia artificial. Sin embargo, dado que es un lenguaje de interpretado, no tiene la misma velocidad que lenguajes de bajo e intermedio nivel como Fortran y C++, aunque existen librerías como Numpy que solucionan parte del problema y le permiten al lenguaje ser competitivo en la velocidad de ejecución de los algoritmos.
+
+En un principio todos los algoritmos relacionados a inteligencia artificial se encontraban disponibles principalmente en C++, pero con el transcurso del tiempo y la introducción de Python al mercado como uno de los lenguajes más enseñados a estudiantes de ciencias de la computación como primera opción por su fácil sintaxis, los algoritmos migran a este lenguaje como el principal utilizado ya sea con Aprendizaje de Máquina Supervisado, no Supervisado, Reforzado y Redes neuronales. Actualmente la librería más conocida y empleada en estos tipos de problemas es scikit-learn \parencite{scikit-learn}, dado que proporciona una implementación de vanguardia y brinda una gran variedad de algoritmos de Aprendizaje de Máquina tanto supervisados como no supervisados, a través de una interfaz simple de utilizar, que permite realizar comparaciones y generar resultados en el lenguaje de programación de Python.
+
+En el presente proyecto de Aprendizaje de Máquina Supervisado, la principal librería que permite el desarrollo del back-end de la aplicación es sckit-learn, dadas las ventajas que mencionan previamente \textcite{scikit-learn}. Sin embargo, si los requerimientos y habilidades del equipo de desarrollo no estuvieran enfocadas en el desarrollo de software con Python, existen otras opciones de librería en otros lenguajes como C\# y Java, aunque actualmente se encuentran en desuso y la documentación no es igual de comprensible que la disponible por parte del equipo de scikit-learn.
