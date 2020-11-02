@@ -49,9 +49,9 @@ class JSONDataLoader(DataLoader[Union[list, dict]]):
                 if DataEnsurer.validate_py_data(temp, list) or DataEnsurer.validate_py_data(temp, dict):
                     self.data = temp
                     return self.data
-                raise TypeError
+                raise TypeError("Deserialized JSON file is neither a list nor a dict")
         except():
-            raise FileNotFoundError
+            raise FileNotFoundError("Path to JSON file was not found")
 
 
 class CSVDataLoader(DataLoader[DataFrame]):
@@ -68,9 +68,9 @@ class CSVDataLoader(DataLoader[DataFrame]):
                 if DataEnsurer.validate_pd_data(temp):
                     self.data = temp
                     return self.data
-                raise TypeError
+                raise TypeError("Data does not meet sample or column requirements to train a model")
         except():
-            raise FileNotFoundError
+            raise FileNotFoundError("Path to CSV file was not found")
 
 
 class TSVDataLoader(DataLoader[DataFrame]):
@@ -86,9 +86,9 @@ class TSVDataLoader(DataLoader[DataFrame]):
                 if DataEnsurer.validate_pd_data(temp):
                     self.data = temp
                     return self.data
-                raise TypeError
+                raise TypeError("Data does not meet sample or column requirements to train a model")
         except():
-            raise FileNotFoundError
+            raise FileNotFoundError("Path to TSV file was not found")
 
 
 class DataLoaderReturner:
@@ -99,3 +99,6 @@ class DataLoaderReturner:
     def get_data(self) -> Any:
         data = self._data_loader.get_file_transformed()
         return data
+
+    def get_file_path(self) -> str:
+        return self._data_loader.file_path

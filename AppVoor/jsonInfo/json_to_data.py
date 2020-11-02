@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, Any, TypeVar
-
-DesJson = Union[list, dict]
-T = TypeVar('T')
+from typing import Union, Any
 
 
 class JSONMessage(ABC):
@@ -29,12 +26,12 @@ class JSONMessage(ABC):
         pass
 
     @property
-    def data(self) -> DesJson:
+    def data(self) -> Union[list, dict]:
         return self._data
 
     @data.setter
-    def data(self, value: DesJson) -> None:
-        self._data: DesJson = value
+    def data(self, value: Union[list, dict]) -> None:
+        self._data: Union[list, dict] = value
 
     @property
     def file_path(self) -> str:
