@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Generic, TypeVar
 
 import pandas as pd
 from sklearn.metrics import accuracy_score
@@ -6,7 +7,6 @@ from supervised import AutoML
 
 from jsonInfo.random_generator import Randomizer
 from split_data import SplitterReturner, NormalSplitter
-from typing import Generic, TypeVar
 
 T = TypeVar("T")
 DataFrame = pd.DataFrame
