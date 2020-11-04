@@ -101,4 +101,5 @@ class DataLoaderReturner:
         return data
 
     def get_file_path(self) -> str:
-        return self._data_loader.file_path
+        file_path = self._data_loader.file_path
+        return file_path

@@ -6,11 +6,13 @@ from supervised import AutoML
 
 from jsonInfo.random_generator import Randomizer
 from split_data import SplitterReturner, NormalSplitter
+from typing import Generic, TypeVar
 
+T = TypeVar("T")
 DataFrame = pd.DataFrame
 
 
-class AutoMachineLearning(ABC):
+class AutoMachineLearning(ABC, Generic[T]):
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         # initialize _random_state, _n_folds_validation and _shuffle_data.
@@ -31,8 +33,12 @@ class AutoMachineLearning(ABC):
     def predict_model(self, x_test: DataFrame) -> tuple:
         pass
 
+    @abstractmethod
+    def get_model(self) -> T:
+        pass
 
-class JarAutoML(AutoMachineLearning):
+
+class JarAutoML(AutoMachineLearning[AutoML]):
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         super().__init__(n_folds_validation, shuffle_data, max_rand)
@@ -58,6 +64,11 @@ class JarAutoML(AutoMachineLearning):
         prediction_tuple = tuple(self._clf.predict(x_test))
         return prediction_tuple
 
+    # abstract class method implementation
+    def get_model(self) -> AutoML:
+        model = self._clf
+        return model
+
 
 class AutoExecutioner:
 
@@ -65,6 +76,10 @@ class AutoExecutioner:
         # uses AutoMachineLearning and SplitterReturner(NormalSplitter())
         self._auto_ml = auto_ml
         self._splitter_returner = SplitterReturner(NormalSplitter())
+
+    def get_model(self) -> str:
+        model = self._auto_ml.get_model()
+        return str(model)
 
     def train_model(self, df: DataFrame, size: float = 0.0) -> None:
         x, y = self._splitter_returner.split_x_y_from_df(df)
