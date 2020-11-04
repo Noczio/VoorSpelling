@@ -29,7 +29,7 @@ class PdData(ValidData):
         if isinstance(data, expected):
             # x_shape is number of rows (samples) and y_shape is number of columns (features)
             x_shape, y_shape = data.shape
-            if x_shape <= min_data or y_shape == 1:
+            if x_shape <= min_data or y_shape <= 1:
                 return False
             return True
         return False

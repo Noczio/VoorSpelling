@@ -60,7 +60,7 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(ensurer_bol)
 
     def test_df_not_meeting_req_columns(self):
-        dict_test = {'name': ['notch', 'fen', 'sky']}
+        dict_test = {'name': [str(i) + "name" for i in range(200)]}
         df = pd.DataFrame.from_dict(dict_test)
         # is {'name': ['notch', 'fen', 'sky']} a dataframe after pd.DataFrame.from_dict ?
         ensurer_bol = DataEnsurer.validate_pd_data(df)
