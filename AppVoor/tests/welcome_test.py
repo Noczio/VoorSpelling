@@ -78,7 +78,7 @@ class MyTestCase(unittest.TestCase):
         # initialization of welcome_message with its path
         welcome_message = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
         with self.assertRaises(IndexError):
-            _ = welcome_message[-6]  # __getitem__ method raises a error due to index out of bound
+            _ = welcome_message[-6]  # __getitem__ method raises a error due to index out of bounds
 
     def test_data_type_is_list(self):
         # initialization of welcome_message with its path

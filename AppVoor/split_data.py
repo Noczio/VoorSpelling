@@ -40,7 +40,7 @@ class NormalSplitter(DataSplitter):
 
 class SplitterReturner:
 
-    def __init__(self, data_splitter: DataSplitter) -> None:
+    def __init__(self, data_splitter: DataSplitter = NormalSplitter()) -> None:
         self._data_splitter: DataSplitter = data_splitter
 
     def train_and_test_split(self, x: DataFrame, y: DataFrame, size: float) -> tuple:

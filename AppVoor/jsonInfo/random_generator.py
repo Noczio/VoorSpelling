@@ -10,5 +10,5 @@ class Randomizer:
         elif start == end:
             return start
         else:
-            random_number = random.randrange(start, end+1, step)
+            random_number = random.randrange(start, end + 1, step)
             return random_number

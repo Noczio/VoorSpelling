@@ -11,7 +11,7 @@ class JSONMessage(ABC):
         elif data_type is dict:
             self._data: dict = {}
         else:
-            raise TypeError
+            raise TypeError("Parameter data_type is not a list or a dict")
 
         self._file_path: str = file_path
         # load file into data variable when an object of this class is created

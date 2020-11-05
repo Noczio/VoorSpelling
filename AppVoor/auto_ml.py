@@ -13,6 +13,7 @@ DataFrame = pd.DataFrame
 
 
 class AutoMachineLearning(ABC, Generic[T]):
+    _clf: T
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         # initialize _random_state, _n_folds_validation and _shuffle_data.
@@ -33,9 +34,13 @@ class AutoMachineLearning(ABC, Generic[T]):
     def predict_model(self, x_test: DataFrame) -> tuple:
         pass
 
-    @abstractmethod
-    def get_model(self) -> T:
-        pass
+    @property
+    def clf(self) -> T:
+        return self._clf
+
+    @clf.setter
+    def clf(self, value: T) -> None:
+        self._clf = value
 
 
 class JarAutoML(AutoMachineLearning[AutoML]):
@@ -43,7 +48,7 @@ class JarAutoML(AutoMachineLearning[AutoML]):
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         super().__init__(n_folds_validation, shuffle_data, max_rand)
         # initialize _clf as AutoMl type
-        self._clf: AutoML = AutoML(
+        self.clf = AutoML(
             mode="Compete",
             explain_level=0,
             random_state=self._random_state,
@@ -56,18 +61,13 @@ class JarAutoML(AutoMachineLearning[AutoML]):
     # abstract class method implementation
     def fit_model(self, x_train: DataFrame, y_train: DataFrame) -> None:
         # clf fit method
-        self._clf.fit(x_train, y_train)
+        self.clf.fit(x_train, y_train)
 
     # abstract class method implementation
     def predict_model(self, x_test: DataFrame) -> tuple:
         # clf predict. Returns prediction as tuple
-        prediction_tuple = tuple(self._clf.predict(x_test))
+        prediction_tuple = tuple(self.clf.predict(x_test))
         return prediction_tuple
-
-    # abstract class method implementation
-    def get_model(self) -> AutoML:
-        model = self._clf
-        return model
 
 
 class AutoExecutioner:
@@ -78,7 +78,7 @@ class AutoExecutioner:
         self._splitter_returner = SplitterReturner(NormalSplitter())
 
     def get_model(self) -> str:
-        model = self._auto_ml.get_model()
+        model = self._auto_ml.clf
         return str(model)
 
     def train_model(self, df: DataFrame, size: float = 0.0) -> None:

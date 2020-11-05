@@ -3,7 +3,7 @@ import unittest
 import pandas as pd
 
 from is_data import DataEnsurer
-from load_data import CSVDataLoader, DataLoaderReturner
+from load_data import DataLoaderReturner, LoaderCreator
 from split_data import NormalSplitter, SplitterReturner
 
 
@@ -14,7 +14,8 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
+        loader_creator = LoaderCreator.get_instance()
+        csv_type = loader_creator.create_loader(test_full_path, "CSV")
         # initialize data_returner with CSVDataTypeLoader
         data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
@@ -33,7 +34,8 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
+        loader_creator = LoaderCreator.get_instance()
+        csv_type = loader_creator.create_loader(test_full_path, "CSV")
         # initialize data_returner with CSVDataTypeLoader
         data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
@@ -49,7 +51,8 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
+        loader_creator = LoaderCreator.get_instance()
+        csv_type = loader_creator.create_loader(test_full_path, "CSV")
         # initialize data_returner with CSVDataTypeLoader
         data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
@@ -67,7 +70,8 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
+        loader_creator = LoaderCreator.get_instance()
+        csv_type = loader_creator.create_loader(test_full_path, "CSV")
         # initialize data_returner with CSVDataTypeLoader
         data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
@@ -88,7 +92,8 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
+        loader_creator = LoaderCreator.get_instance()
+        csv_type = loader_creator.create_loader(test_full_path, "CSV")
         # initialize data_returner with CSVDataTypeLoader
         data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()
@@ -104,7 +109,8 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
+        loader_creator = LoaderCreator.get_instance()
+        csv_type = loader_creator.create_loader(test_full_path, "CSV")
         # initialize data_returner with CSVDataTypeLoader
         data_returner = DataLoaderReturner(csv_type)
         df = data_returner.get_data()

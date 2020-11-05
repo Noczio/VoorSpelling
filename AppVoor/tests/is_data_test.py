@@ -9,33 +9,28 @@ from load_data import CSVDataLoader, DataLoaderReturner, JSONDataLoader
 class MyTestCase(unittest.TestCase):
 
     def test_data_is_int(self):
-        data_ensurer = DataEnsurer()
         # is 10 an int?
-        ensurer_bol = data_ensurer.validate_py_data(10, int)
+        ensurer_bol = DataEnsurer.validate_py_data(10, int)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_str(self):
-        data_ensurer = DataEnsurer()
         # is "test" a string?
-        ensurer_bol = data_ensurer.validate_py_data("test", str)
+        ensurer_bol = DataEnsurer.validate_py_data("test", str)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_float(self):
-        data_ensurer = DataEnsurer()
         # is 0.25 a float?
-        ensurer_bol = data_ensurer.validate_py_data(0.25, float)
+        ensurer_bol = DataEnsurer.validate_py_data(0.25, float)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_list(self):
-        data_ensurer = DataEnsurer()
         # is [10, "s", True] a list?
-        ensurer_bol = data_ensurer.validate_py_data([10, "s", True], list)
+        ensurer_bol = DataEnsurer.validate_py_data([10, "s", True], list)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_tuple(self):
-        data_ensurer = DataEnsurer()
         # is (10, "s", True) a list?
-        ensurer_bol = data_ensurer.validate_py_data((10, "s", True), tuple)
+        ensurer_bol = DataEnsurer.validate_py_data((10, "s", True), tuple)
         self.assertTrue(ensurer_bol)
 
     def test_data_is_df(self):
@@ -62,7 +57,7 @@ class MyTestCase(unittest.TestCase):
     def test_df_not_meeting_req_columns(self):
         dict_test = {'name': [str(i) + "name" for i in range(200)]}
         df = pd.DataFrame.from_dict(dict_test)
-        # is {'name': ['notch', 'fen', 'sky']} a dataframe after pd.DataFrame.from_dict ?
+        # is {'name': ['0name', '1name', '2name' ...]} a dataframe after pd.DataFrame.from_dict ?
         ensurer_bol = DataEnsurer.validate_pd_data(df)
         # it should be false, since it doesnt have enough samples and features
         self.assertFalse(ensurer_bol)
@@ -74,6 +69,7 @@ class MyTestCase(unittest.TestCase):
         file = data_returner.get_data()
         # is the file a deserialized json list?
         ensurer_bol = DataEnsurer.validate_py_data(file, list)
+        # this should be true, since welcomeMessage.json has list format
         self.assertTrue(ensurer_bol)
 
 

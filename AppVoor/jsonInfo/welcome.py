@@ -3,7 +3,7 @@ from typing import Any
 from is_data import DataEnsurer
 from jsonInfo.json_to_data import JSONMessage
 from jsonInfo.random_generator import Randomizer
-from load_data import JSONDataLoader, DataLoaderReturner
+from load_data import DataLoaderReturner, LoaderCreator
 
 
 class WelcomeMessage(JSONMessage):
@@ -28,7 +28,9 @@ class WelcomeMessage(JSONMessage):
     # abstract class method implementation
     def _load_file(self) -> None:
         # data setter using JSONDataTypeLoader
-        json_type = JSONDataLoader(self.file_path)
+        loader = LoaderCreator.get_instance()
+        json_type = loader.create_loader(self.file_path, "JSON")
+        # use json_type as parameter for DataLoaderReturner and then get the data
         data_returner = DataLoaderReturner(json_type)
         self.data = data_returner.get_data()
 
