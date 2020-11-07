@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Union, Any
 
+from load_data import LoaderCreator, DataLoaderReturner
+
 
 class JSONMessage(ABC):
 
@@ -17,12 +19,16 @@ class JSONMessage(ABC):
         # load file into data variable when an object of this class is created
         self._load_file()
 
-    @abstractmethod
     def _load_file(self) -> None:
-        pass
+        # data setter using JSONDataTypeLoader
+        loader = LoaderCreator.get_instance()
+        json_type = loader.create_loader(self.file_path, "JSON")
+        # use json_type as parameter for DataLoaderReturner and then get the data
+        data_returner = DataLoaderReturner(json_type)
+        self.data = data_returner.get_data()
 
     @abstractmethod
-    def __getitem__(self, key: Union[int, str]) -> tuple:
+    def __getitem__(self, key: Union[int, str]) -> Any:
         pass
 
     @property

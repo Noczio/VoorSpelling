@@ -22,7 +22,7 @@ class AutoMachineLearning(ABC, Generic[T]):
         elif max_rand < 0:
             raise ValueError("Random number must be a positive integer from zero to infinity")
         else:
-            self._random_state: int = Randomizer.get_random_number_range_int(0, max_rand, 1)
+            self._random_state: int = Randomizer.get_random_number_range_int(0, max_rand+1, 1)
             self._n_folds_validation: int = n_folds_validation
             self._shuffle_data: bool = shuffle_data
 

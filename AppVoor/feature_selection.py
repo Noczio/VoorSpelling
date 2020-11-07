@@ -1,52 +1,32 @@
 from abc import ABC, abstractmethod
-from typing import Union
 
 import pandas as pd
-from sklearn.model_selection import cross_validate
+
+from score import CVModelScore, CVScore
 
 DataFrame = pd.DataFrame
 
 
 class FeatureSelection(ABC):
 
-    @abstractmethod
-    def select_features(self, x: DataFrame, y: DataFrame, model, **kwargs) -> tuple:
-        pass
-
-
-class CVModelScore(ABC):
+    def __init__(self, score_type: str, n_folds_validation: int, cv_score: CVModelScore) -> None:
+        self._score_type = score_type
+        self._n_folds_validation = n_folds_validation
+        self._cv_score = cv_score
 
     @abstractmethod
-    def get_score(self, x: DataFrame, y: DataFrame, model, score_type: str,
-                  n_folds_validation: int) -> Union[float, int]:
+    def select_features(self, x: DataFrame, y: DataFrame, model) -> tuple:
         pass
-
-
-class CVScore(CVModelScore):
-    _available_scores = ("accuracy", "f1", "roc_auc", "mutual_info_score", "r2", "precision")
-
-    def get_score(self, x: DataFrame, y: DataFrame, model, score_type: str = "roc_auc",
-                  n_folds_validation: int = 3) -> Union[float, int]:
-        if n_folds_validation < 3 or n_folds_validation > 10:
-            raise ValueError("Number of folds is not greater than three and lesser to ten")
-        if score_type in self._available_scores:
-            cv_results = cross_validate(model, x, y, cv=n_folds_validation, scoring=score_type)
-            avg = cv_results['test_score'].mean()
-            return avg
-        raise ValueError("Parameter score_type is not one of _available_scores")
 
 
 class OwnFeatureSelection(FeatureSelection):
-
-    def __init__(self):
-        self._cv_score = CVScore()
 
     def _first_iteration(self, x: DataFrame, y: DataFrame, model) -> tuple:
         score_lst = []
         for i in range(len(x.columns)):
             k = x.columns[i]
             temp_x = x[[k]]
-            score = self._cv_score.get_score(temp_x, y, model)
+            score = self._cv_score.get_score(temp_x, y, model, self._score_type, self._n_folds_validation)
             score_lst.append(score)
 
         max_score = max(score_lst)  # best score
@@ -58,7 +38,7 @@ class OwnFeatureSelection(FeatureSelection):
 
         return new_best_x, new_x, max_score
 
-    def _else_iteration(self, best_x: DataFrame, x: DataFrame, y: DataFrame, model, actual_score: float):
+    def _else_iteration(self, best_x: DataFrame, x: DataFrame, y: DataFrame, model, actual_score: float) -> tuple:
         new_x_length = len(x.columns)
         if new_x_length > 0:
             score_lst = []
@@ -66,7 +46,7 @@ class OwnFeatureSelection(FeatureSelection):
                 k = x.columns[i]
                 temp_x = x[[k]]
                 temp_new_x = pd.concat([best_x, temp_x], axis=1, ignore_index=True)
-                score = self._cv_score.get_score(temp_new_x, y, model)
+                score = self._cv_score.get_score(temp_new_x, y, model, self._score_type, self._n_folds_validation)
                 score_lst.append(score)
 
             max_score = max(score_lst)  # best score
@@ -86,8 +66,20 @@ class OwnFeatureSelection(FeatureSelection):
 
         return best_x, actual_score
 
-    def select_features(self, x: DataFrame, y: DataFrame, model, **kwargs) -> tuple:
+    def select_features(self, x: DataFrame, y: DataFrame, model) -> tuple:
+        _, initial_y_shape = x.shape
+        # if x only has 1 column then, return dataframe with its score
+        if initial_y_shape == 1:
+            score = self._cv_score.get_score(x, y, model, self._score_type, self._n_folds_validation)
+            return x, score
+        # else if x has more than 1 column
         f_best_x, new_x, f_score = self._first_iteration(x, y, model)
         best_x, best_score = self._else_iteration(f_best_x, new_x, y, model, f_score)
 
         return best_x, best_score
+
+
+class SFMFeatureSelection(FeatureSelection):
+
+    def select_features(self, x: DataFrame, y: DataFrame, model) -> tuple:
+        pass
