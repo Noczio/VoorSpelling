@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from typing import Union, Any
 
 from sklearn.model_selection import cross_validate
@@ -7,28 +7,28 @@ from jsonInfo.json_to_data import JSONMessage
 from jsonInfo.metrics import CVMetrics
 
 import pandas as pd
+import numpy as np
 
+NpArray = np.ndarray
 DataFrame = pd.DataFrame
 
 
 class CVModelScore(ABC):
 
-    def __init__(self, file_path: str, data_type: Any):
+    def __init__(self, cv_metrics: JSONMessage):
         # uses a JSONMessage implementation
-        json_path = file_path
-        json_data_type = data_type
-        cv_metrics: JSONMessage = CVMetrics(file_path=json_path, data_type=json_data_type)
+        cv_metrics: JSONMessage = cv_metrics
         self._available_scores = cv_metrics.data
 
     @abstractmethod
-    def get_score(self, x: DataFrame, y: DataFrame, model: Any, score_type: str,
+    def get_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
                   n_folds_validation: int) -> Union[float, int]:
         pass
 
 
 class CVScore(CVModelScore):
 
-    def get_score(self, x: DataFrame, y: DataFrame, model: Any, score_type: str,
+    def get_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
                   n_folds_validation: int) -> Union[float, int]:
 
         if n_folds_validation < 3 or n_folds_validation > 10:

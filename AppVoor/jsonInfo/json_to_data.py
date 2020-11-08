@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Union, Any
 
-from load_data import LoaderCreator, DataLoaderReturner
+from load_data import LoaderCreator
 
 
 class JSONMessage(ABC):
@@ -23,9 +23,7 @@ class JSONMessage(ABC):
         # data setter using JSONDataTypeLoader
         loader = LoaderCreator.get_instance()
         json_type = loader.create_loader(self.file_path, "JSON")
-        # use json_type as parameter for DataLoaderReturner and then get the data
-        data_returner = DataLoaderReturner(json_type)
-        self.data = data_returner.get_data()
+        self.data = json_type.get_file_transformed()
 
     @abstractmethod
     def __getitem__(self, key: Union[int, str]) -> Any:

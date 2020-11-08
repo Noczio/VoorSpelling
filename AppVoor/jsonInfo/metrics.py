@@ -1,5 +1,3 @@
-from typing import Any
-
 from is_data import DataEnsurer
 from jsonInfo.json_to_data import JSONMessage
 

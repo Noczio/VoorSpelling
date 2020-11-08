@@ -1,27 +1,33 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 import pandas as pd
+import numpy as np
 
 from score import CVModelScore, CVScore
+from sklearn.feature_selection import SelectFromModel, RFE
 
+
+NpArray = np.ndarray
 DataFrame = pd.DataFrame
 
 
 class FeatureSelection(ABC):
 
-    def __init__(self, score_type: str, n_folds_validation: int, cv_score: CVModelScore) -> None:
+    def __init__(self, score_type: str, n_folds_validation: int) -> None:
         self._score_type = score_type
         self._n_folds_validation = n_folds_validation
-        self._cv_score = cv_score
 
     @abstractmethod
-    def select_features(self, x: DataFrame, y: DataFrame, model) -> tuple:
+    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
         pass
 
 
 class OwnFeatureSelection(FeatureSelection):
 
-    def _first_iteration(self, x: DataFrame, y: DataFrame, model) -> tuple:
+    _cv_score: CVModelScore = CVScore(file_path="", data_type=list)
+
+    def _first_iteration(self, x: DataFrame, y: NpArray, model: Any) -> tuple:
         score_lst = []
         for i in range(len(x.columns)):
             k = x.columns[i]
@@ -38,7 +44,7 @@ class OwnFeatureSelection(FeatureSelection):
 
         return new_best_x, new_x, max_score
 
-    def _else_iteration(self, best_x: DataFrame, x: DataFrame, y: DataFrame, model, actual_score: float) -> tuple:
+    def _else_iteration(self, best_x: DataFrame, x: DataFrame, y: NpArray, model: Any, actual_score: float) -> tuple:
         new_x_length = len(x.columns)
         if new_x_length > 0:
             score_lst = []
@@ -66,20 +72,35 @@ class OwnFeatureSelection(FeatureSelection):
 
         return best_x, actual_score
 
-    def select_features(self, x: DataFrame, y: DataFrame, model) -> tuple:
+    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
         _, initial_y_shape = x.shape
         # if x only has 1 column then, return dataframe with its score
         if initial_y_shape == 1:
-            score = self._cv_score.get_score(x, y, model, self._score_type, self._n_folds_validation)
-            return x, score
+            # score = self._cv_score.get_score(x, y, model, self._score_type, self._n_folds_validation)
+            return x
         # else if x has more than 1 column
         f_best_x, new_x, f_score = self._first_iteration(x, y, model)
         best_x, best_score = self._else_iteration(f_best_x, new_x, y, model, f_score)
 
-        return best_x, best_score
+        return best_x
 
 
 class SFMFeatureSelection(FeatureSelection):
 
-    def select_features(self, x: DataFrame, y: DataFrame, model) -> tuple:
-        pass
+    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
+        clf = model.fit(x, y)
+        model = SelectFromModel(clf, prefit=True)
+        feature_idx = model.get_support()
+        feature_name = x.columns[feature_idx]
+        return x[feature_name]
+
+
+class SFSFeatureSelection(FeatureSelection):
+
+    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
+        clf = model
+        model = RFE(clf)
+        model.fit(x, y)
+        feature_idx = model.get_support()
+        feature_name = x.columns[feature_idx]
+        return x[feature_name]

@@ -91,20 +91,6 @@ class TSVDataLoader(DataLoader[DataFrame]):
             raise FileNotFoundError("Path to TSV file was not found")
 
 
-class DataLoaderReturner:
-
-    def __init__(self, data_loader: DataLoader) -> None:
-        self._data_loader = data_loader
-
-    def get_data(self) -> Union[list, dict, DataFrame]:
-        data = self._data_loader.get_file_transformed()
-        return data
-
-    def get_file_path(self) -> str:
-        file_path = self._data_loader.file_path
-        return file_path
-
-
 class LoaderCreator:
     __instance = None
     _types: dict = {"CSV": CSVDataLoader(""), "TSV": TSVDataLoader(""), "JSON": JSONDataLoader("")}

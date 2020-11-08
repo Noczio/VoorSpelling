@@ -3,46 +3,21 @@ import unittest
 import pandas as pd
 
 from is_data import DataEnsurer
-from load_data import CSVDataLoader, DataLoaderReturner, JSONDataLoader
+from load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):
 
-    def test_data_is_int(self):
-        # is 10 an int?
-        ensurer_bol = DataEnsurer.validate_py_data(10, int)
-        self.assertTrue(ensurer_bol)
-
-    def test_data_is_str(self):
-        # is "test" a string?
-        ensurer_bol = DataEnsurer.validate_py_data("test", str)
-        self.assertTrue(ensurer_bol)
-
-    def test_data_is_float(self):
-        # is 0.25 a float?
-        ensurer_bol = DataEnsurer.validate_py_data(0.25, float)
-        self.assertTrue(ensurer_bol)
-
-    def test_data_is_list(self):
-        # is [10, "s", True] a list?
-        ensurer_bol = DataEnsurer.validate_py_data([10, "s", True], list)
-        self.assertTrue(ensurer_bol)
-
-    def test_data_is_tuple(self):
-        # is (10, "s", True) a list?
-        ensurer_bol = DataEnsurer.validate_py_data((10, "s", True), tuple)
-        self.assertTrue(ensurer_bol)
+    _loader_creator = LoaderCreator.get_instance()
 
     def test_data_is_df(self):
         # load diabetes.csv from disk
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_file = CSVDataLoader(test_full_path)
-        # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataLoaderReturner(csv_file)
+        csv_file = self._loader_creator.create_loader(test_full_path, "csv")
         # get the dataframe from the data_returner
-        this_is_a_df = data_returner.get_data()
+        this_is_a_df = csv_file.get_file_transformed()
         # use DataEnsurer and check if it is a dataframe with enough samples and features
         ensurer_bol = DataEnsurer.validate_pd_data(this_is_a_df)
         self.assertTrue(ensurer_bol)
@@ -63,10 +38,8 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(ensurer_bol)
 
     def test_json_is_list(self):
-        json_type = JSONDataLoader(file_path=".\\..\\jsonInfo\\welcomeMessage.json")
-        # initialize data_returner with JSONDataTypeLoader
-        data_returner = DataLoaderReturner(json_type)
-        file = data_returner.get_data()
+        json_type = self._loader_creator.create_loader(".\\..\\jsonInfo\\welcomeMessage.json", "json")
+        file = json_type.get_file_transformed()
         # is the file a deserialized json list?
         ensurer_bol = DataEnsurer.validate_py_data(file, list)
         # this should be true, since welcomeMessage.json has list format
