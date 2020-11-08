@@ -7,7 +7,6 @@ import numpy as np
 from sklearn.feature_selection import SelectFromModel, RFE
 
 from jsonInfo.json_to_data import JSONMessage
-from jsonInfo.metrics import CVMetrics
 from score import CVScore, CVModelScore
 
 NpArray = np.ndarray

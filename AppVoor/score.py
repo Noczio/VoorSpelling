@@ -4,7 +4,6 @@ from typing import Union, Any
 from sklearn.model_selection import cross_validate
 
 from jsonInfo.json_to_data import JSONMessage
-from jsonInfo.metrics import CVMetrics
 
 import pandas as pd
 import numpy as np
