@@ -4,8 +4,6 @@ from typing import Any
 import pandas as pd
 import numpy as np
 
-from jsonInfo.json_to_data import JSONMessage
-from score import CVModelScore, CVScore
 from sklearn.feature_selection import SelectFromModel, RFE
 
 
@@ -16,6 +14,21 @@ DataFrame = pd.DataFrame
 class FeatureSelection(ABC):
 
     @abstractmethod
+    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
+        pass
+
+
+class ForwardFeatureSelection(FeatureSelection):
+
+    def _first_iteration(self, x: DataFrame, y: NpArray, model: Any) -> tuple:
+        pass
+
+    def _else_iteration(self, x: DataFrame, y: NpArray, model: Any) -> tuple:
+        pass
+
+    def _get_cv_score(self, x: DataFrame, y: NpArray, model: Any) -> float:
+        pass
+
     def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
         pass
 
