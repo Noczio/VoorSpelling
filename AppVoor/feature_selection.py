@@ -6,7 +6,6 @@ import numpy as np
 
 from sklearn.feature_selection import SelectFromModel, RFE
 
-from jsonInfo.json_to_data import JSONMessage
 from score import CVScore, CVModelScore
 
 NpArray = np.ndarray
@@ -21,7 +20,7 @@ class FeatureSelection(ABC):
 
 
 class ForwardFeatureSelection(FeatureSelection):
-    _cv_score: CVModelScore
+    _cv_score: CVModelScore = CVScore()
 
     def _first_iteration(self, x: DataFrame, y: NpArray, model: Any) -> tuple:
         score_lst = []  # empty list to store score values
@@ -91,10 +90,6 @@ class ForwardFeatureSelection(FeatureSelection):
         # x dataframe is now empty, return best x dataframe and its score
         # this is bad scenario, because it iterated all features and there was not an improvement
         return best_x, actual_score
-
-    def set_cv_score(self, cv_metrics: JSONMessage):
-        # create a CVScore object
-        self._cv_score = CVScore(cv_metrics)
 
     def _get_cv_score(self, x: DataFrame, y: NpArray, model: Any) -> float:
         # get score using the object and the method parameters and the return it

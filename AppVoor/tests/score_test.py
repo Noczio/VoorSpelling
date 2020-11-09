@@ -1,6 +1,5 @@
 import unittest
 
-from jsonInfo.metrics import CVMetrics
 from load_data import LoaderCreator
 from score import CVScore
 from split_data import SplitterReturner
@@ -18,7 +17,7 @@ class MyTestCase(unittest.TestCase):
         splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)
         # create a CVScore object with its path and data type
-        cv_score = CVScore(CVMetrics(file_path=".\\..\\jsonInfo\\CVMetrics.json", data_type=list))
+        cv_score = CVScore()
         # create a simple linearSVC estimator
         model = LinearSVC(random_state=0, dual=False)
         # get score from a linearSVC estimator with roc_auc score and 10 folds
@@ -34,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)
         # create a CVScore object with its path and data type
-        cv_score = CVScore(CVMetrics(file_path=".\\..\\jsonInfo\\CVMetrics.json", data_type=list))
+        cv_score = CVScore()
         # create a simple linearSVC estimator
         model = LinearSVC(random_state=0, dual=False)
         with self.assertRaises(ValueError):
@@ -49,7 +48,7 @@ class MyTestCase(unittest.TestCase):
         splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)
         # create a CVScore object with its path and data type
-        cv_score = CVScore(CVMetrics(file_path=".\\..\\jsonInfo\\CVMetrics.json", data_type=list))
+        cv_score = CVScore()
         # create a simple linearSVC estimator
         model = LinearSVC(random_state=0, dual=False)
         with self.assertRaises(ValueError):
@@ -64,7 +63,7 @@ class MyTestCase(unittest.TestCase):
         splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)
         # create a CVScore object with its path and data type
-        cv_score = CVScore(CVMetrics(file_path=".\\..\\jsonInfo\\CVMetrics.json", data_type=list))
+        cv_score = CVScore()
         # create a simple linearSVC estimator
         model = LinearSVC(random_state=0, dual=False)
         with self.assertRaises(ValueError):

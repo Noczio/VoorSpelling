@@ -1,7 +1,6 @@
 import unittest
 
 from feature_selection import SFMFeatureSelection, RFEFeatureSelection, ForwardFeatureSelection
-from jsonInfo.metrics import CVMetrics
 from load_data import LoaderCreator
 from split_data import SplitterReturner
 
@@ -70,7 +69,6 @@ class MyTestCase(unittest.TestCase):
         x, y = SplitterReturner.split_x_y_from_df(df)
         _, len_original_y = x.shape
         fs = ForwardFeatureSelection()
-        fs.set_cv_score(CVMetrics(".\\..\\jsonInfo\\CVMetrics.json", list))
         # create a simple LinearSVC
         clf = LinearSVC(random_state=0, dual=True)
         # get new_x with new features

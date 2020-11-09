@@ -13,11 +13,7 @@ DataFrame = pd.DataFrame
 
 
 class CVModelScore(ABC):
-
-    def __init__(self, cv_metrics: JSONMessage):
-        # uses a JSONMessage implementation
-        cv_metrics: JSONMessage = cv_metrics
-        self._available_scores = cv_metrics.data
+    _available_scores = ("roc_auc", "f1")
 
     @abstractmethod
     def get_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
