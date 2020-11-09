@@ -1,8 +1,0 @@
-[
-  "accuracy",
-  "f1",
-  "roc_auc",
-  "mutual_info_score",
-  "r2",
-  "precision"
-]
