@@ -42,6 +42,7 @@ class MyTestCase(unittest.TestCase):
             _ = tsv_type.get_file_transformed()
 
     def test_wrong_sep_for_csv_file(self):
+        # load diabetes.csv from disk
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name

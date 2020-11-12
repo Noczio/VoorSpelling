@@ -3,8 +3,6 @@ from typing import Union, Any
 
 from sklearn.model_selection import cross_validate
 
-from jsonInfo.json_to_data import JSONMessage
-
 import pandas as pd
 import numpy as np
 

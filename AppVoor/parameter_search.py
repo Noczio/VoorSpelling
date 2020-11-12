@@ -35,4 +35,3 @@ class GridSearch(ParameterSearch):
         clf.fit(x, y)
         best_params = clf.best_params_
         return best_params
-

@@ -2,13 +2,16 @@ from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
 import pandas as pd
+import numpy as np
+
 from sklearn.metrics import accuracy_score
 from supervised import AutoML
 
 from jsonInfo.random_generator import Randomizer
-from split_data import SplitterReturner, NormalSplitter
+from split_data import SplitterReturner
 
 T = TypeVar("T")
+NpArray = np.ndarray
 DataFrame = pd.DataFrame
 
 
@@ -27,7 +30,7 @@ class AutoMachineLearning(ABC, Generic[T]):
             self._shuffle_data: bool = shuffle_data
 
     @abstractmethod
-    def fit_model(self, x_train: DataFrame, y_train: DataFrame) -> None:
+    def fit_model(self, x_train: DataFrame, y_train: NpArray) -> None:
         pass
 
     @abstractmethod
@@ -59,7 +62,7 @@ class JarAutoML(AutoMachineLearning[AutoML]):
             })
 
     # abstract class method implementation
-    def fit_model(self, x_train: DataFrame, y_train: DataFrame) -> None:
+    def fit_model(self, x_train: DataFrame, y_train: NpArray) -> None:
         # clf fit method
         self.clf.fit(x_train, y_train)
 
@@ -75,18 +78,17 @@ class AutoExecutioner:
     def __init__(self, auto_ml: AutoMachineLearning) -> None:
         # uses AutoMachineLearning and SplitterReturner(NormalSplitter())
         self._auto_ml = auto_ml
-        self._splitter_returner = SplitterReturner(NormalSplitter())
 
     def get_model(self) -> str:
         model = self._auto_ml.clf
         return str(model)
 
     def train_model(self, df: DataFrame, size: float = 0.0) -> None:
-        x, y = self._splitter_returner.split_x_y_from_df(df)
+        x, y = SplitterReturner.split_x_y_from_df(df)
         if size == 0.0:
             self._auto_ml.fit_model(x, y)
         elif 0.0 < size < 1.0:
-            x_train, _, y_train, _ = self._splitter_returner.train_and_test_split(x, y, size)
+            x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
             self._auto_ml.fit_model(x_train, y_train)
         else:
             raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
