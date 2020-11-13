@@ -1,6 +1,6 @@
 import json
 from abc import abstractmethod, ABC
-from typing import Union, TypeVar, Generic, Any
+from typing import Union, TypeVar, Generic
 
 import pandas as pd
 
@@ -11,11 +11,11 @@ DataFrame = pd.DataFrame
 
 
 class DataLoader(ABC, Generic[T]):
+    _data: T
 
     def __init__(self, file_path: str) -> None:
         # initialization when obj is created. By default _data is None
         self._file_path: str = file_path
-        self._data: T = None
 
     @property
     def data(self) -> T:
@@ -91,15 +91,33 @@ class TSVDataLoader(DataLoader[DataFrame]):
             raise FileNotFoundError("Path to TSV file was not found")
 
 
-class DataLoaderReturner:
+class LoaderCreator:
+    __instance = None
+    _types: dict = {"CSV": CSVDataLoader(""), "TSV": TSVDataLoader(""), "JSON": JSONDataLoader("")}
 
-    def __init__(self, data_loader: DataLoader) -> None:
-        self._data_loader = data_loader
+    @staticmethod
+    def get_instance() -> "LoaderCreator":
+        """Static access method."""
+        if LoaderCreator.__instance is None:
+            LoaderCreator()
+        return LoaderCreator.__instance
 
-    def get_data(self) -> Any:
-        data = self._data_loader.get_file_transformed()
-        return data
+    def __init__(self) -> None:
+        """Virtually private constructor."""
+        if LoaderCreator.__instance is not None:
+            raise Exception("This class is a singleton!")
+        else:
+            LoaderCreator.__instance = self
 
-    def get_file_path(self) -> str:
-        file_path = self._data_loader.file_path
-        return file_path
+    def create_loader(self, file_path: str, loader_type: str) -> DataLoader:
+        key = loader_type.upper().replace(" ", "")  # transform param to capital letters and then replace white spaces
+        if key in self._types.keys():
+            loader = self._types[key]
+            loader.file_path = file_path
+            return loader
+        raise ValueError("Loader type value is wrong. It should be: CSV, TSV or JSON")
+
+    def get_available_types(self) -> tuple:
+        available_types = [k for k in self._types.keys()]
+        types = tuple(available_types)
+        return types

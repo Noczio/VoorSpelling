@@ -3,14 +3,9 @@ from typing import Any
 from is_data import DataEnsurer
 from jsonInfo.json_to_data import JSONMessage
 from jsonInfo.random_generator import Randomizer
-from load_data import JSONDataLoader, DataLoaderReturner
 
 
 class WelcomeMessage(JSONMessage):
-
-    def __init__(self, file_path: str = ".\\welcomeMessage.json", data_type: Any = list) -> None:
-        # call super class init with data as list type
-        super().__init__(file_path, data_type)
 
     # abstract class method implementation
     def __getitem__(self, key: int) -> tuple:
@@ -25,19 +20,14 @@ class WelcomeMessage(JSONMessage):
             raise IndexError
         raise TypeError
 
-    # abstract class method implementation
-    def _load_file(self) -> None:
-        # data setter using JSONDataTypeLoader
-        json_type = JSONDataLoader(self.file_path)
-        data_returner = DataLoaderReturner(json_type)
-        self.data = data_returner.get_data()
-
 
 class WelcomeMessenger:
 
-    def __init__(self, json_message: JSONMessage) -> None:
+    def __init__(self, file_path: str = ".\\welcomeMessage.json", data_type: Any = list) -> None:
         # initialize a WelcomeMessage
-        self._json_message = json_message
+        json_path = file_path
+        json_data_type = data_type
+        self._json_message: JSONMessage = WelcomeMessage(file_path=json_path, data_type=json_data_type)
         # start, end and step for random choice
         random_start = 0
         random_end = len(self._json_message)

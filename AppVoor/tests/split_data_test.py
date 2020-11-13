@@ -1,28 +1,28 @@
 import unittest
 
 import pandas as pd
+import numpy as np
 
 from is_data import DataEnsurer
-from load_data import CSVDataLoader, DataLoaderReturner
-from split_data import NormalSplitter, SplitterReturner
+from load_data import LoaderCreator
+from split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):
+    _loader_creator = LoaderCreator.get_instance()
 
     def test_single_split_columns_match(self):
         # load diabetes.csv from disk
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
-        # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataLoaderReturner(csv_type)
-        df = data_returner.get_data()
+        csv_type = self._loader_creator.create_loader(test_full_path, "CSV")
+        df = csv_type.get_file_transformed()
         expected_y_len, expected_x_len = df.shape  # true prediction and data len with shape method
         # shape returns original column value. x doesn't have prediction column, so it must be original value - 1
         expected_x_len -= 1
         # use of splitterReturner with a NormalSplitter implementation
-        splitter = SplitterReturner(NormalSplitter())
+        splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)
         # do the values match in both x and y dataframes
         self.assertEqual(len(x.columns), expected_x_len)
@@ -33,52 +33,27 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
-        # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataLoaderReturner(csv_type)
-        df = data_returner.get_data()
+        csv_type = self._loader_creator.create_loader(test_full_path, "CSV")
+        df = csv_type.get_file_transformed()
         # use of splitterReturner with a NormalSplitter implementation
-        splitter = SplitterReturner(NormalSplitter())
+        splitter = SplitterReturner()
         # split dataframe into x and y
         data = splitter.split_x_y_from_df(df)
         result = DataEnsurer.validate_py_data(data, tuple)
         self.assertTrue(result)
 
-    def test_single_split_x_and_y_are_a_dataframe(self):
+    def test_single_split_x_and_y_is_a_dataframe_and_numpy_array(self):
         # load diabetes.csv from disk
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
-        # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataLoaderReturner(csv_type)
-        df = data_returner.get_data()
+        csv_type = self._loader_creator.create_loader(test_full_path, "CSV")
+        df = csv_type.get_file_transformed()
         # use of splitterReturner with a NormalSplitter implementation
-        splitter = SplitterReturner(NormalSplitter())
+        splitter = SplitterReturner()
         # split dataframe into x and y
         data = splitter.split_x_y_from_df(df)
-        results = [isinstance(d, pd.DataFrame) for d in data]
-        # are all outputs True?
-        for r in results:
-            self.assertTrue(r)
-
-    def test_train_test_split_data_all_data_is_dataframe(self):
-        # load diabetes.csv from disk
-        folder_name = "datasets"
-        file_name = "diabetes.csv"
-        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
-        # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataLoaderReturner(csv_type)
-        df = data_returner.get_data()
-        # use of splitterReturner with a NormalSplitter implementation
-        splitter = SplitterReturner(NormalSplitter())
-        # split dataframe into x and y, then use train_and_test_split
-        x, y = splitter.split_x_y_from_df(df)
-        data = splitter.train_and_test_split(x, y, 0.2)  # 80 percent of data should be training and the other 20 is
-        # test data
-        # map all data from 0 to 2 (x_train, x_test) and check if it is a dataframe
-        results = [isinstance(d, pd.DataFrame) for d in data]
+        results = [isinstance(data[0], pd.DataFrame), isinstance(data[-1], np.ndarray)]
         # are all outputs True?
         for r in results:
             self.assertTrue(r)
@@ -88,13 +63,11 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
-        # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataLoaderReturner(csv_type)
-        df = data_returner.get_data()
+        csv_type = self._loader_creator.create_loader(test_full_path, "CSV")
+        df = csv_type.get_file_transformed()
         # use of splitterReturner with a NormalSplitter implementation
         with self.assertRaises(ValueError):
-            splitter = SplitterReturner(NormalSplitter())
+            splitter = SplitterReturner()
             # split dataframe into x and y, then use train_and_test_split
             x, y = splitter.split_x_y_from_df(df)
             _ = splitter.train_and_test_split(x, y, 0.0)  # 80 percent of data should be training and the other 20 is
@@ -104,14 +77,12 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        csv_type = CSVDataLoader(test_full_path)
-        # initialize data_returner with CSVDataTypeLoader
-        data_returner = DataLoaderReturner(csv_type)
-        df = data_returner.get_data()
+        csv_type = self._loader_creator.create_loader(test_full_path, "CSV")
+        df = csv_type.get_file_transformed()
         # this should raise a ValueError because size = -0.5 is not a valid number
         with self.assertRaises(ValueError):
             # use of splitterReturner with a NormalSplitter implementation
-            splitter = SplitterReturner(NormalSplitter())
+            splitter = SplitterReturner()
             # split dataframe into x and y, then use train_and_test_split
             x, y = splitter.split_x_y_from_df(df)
             _ = splitter.train_and_test_split(x, y, -0.5)  # -0.5 is not a valid value
@@ -123,7 +94,7 @@ class MyTestCase(unittest.TestCase):
         df = pd.DataFrame.from_dict(temp_dict)
         # this should raise a TypeError because dataframe doesnt meet column requirements
         with self.assertRaises(TypeError):
-            splitter = SplitterReturner(NormalSplitter())
+            splitter = SplitterReturner()
             _, _ = splitter.split_x_y_from_df(df)
 
 
