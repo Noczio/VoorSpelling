@@ -10,8 +10,10 @@ class MyTestCase(unittest.TestCase):
     _loader_creator = LoaderCreator.get_instance()
 
     def test_score_is_more_than_zero(self):
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\diabetes.csv"
         # get df with loader creator
-        csv_type = self._loader_creator.create_loader(".\\..\\datasets\\diabetes.csv", "CSV")
+        csv_type = self._loader_creator.create_loader(path, "CSV")
         df = csv_type.get_file_transformed()
         # split df into x and y
         splitter = SplitterReturner()
@@ -26,8 +28,10 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(is_greater_than_zero)
 
     def test_score_type_raises_ValueError(self):
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\diabetes.csv"
         # get df with loader creator
-        csv_type = self._loader_creator.create_loader(".\\..\\datasets\\diabetes.csv", "CSV")
+        csv_type = self._loader_creator.create_loader(path, "CSV")
         df = csv_type.get_file_transformed()
         # split df into x and y
         splitter = SplitterReturner()
@@ -41,8 +45,10 @@ class MyTestCase(unittest.TestCase):
             _ = cv_score.get_score(x, y, model, "roc", 10)
 
     def test_n_folds_validation_raises_ValueError(self):
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\diabetes.csv"
         # get df with loader creator
-        csv_type = self._loader_creator.create_loader(".\\..\\datasets\\diabetes.csv", "CSV")
+        csv_type = self._loader_creator.create_loader(path, "CSV")
         df = csv_type.get_file_transformed()
         # split df into x and y
         splitter = SplitterReturner()
@@ -56,8 +62,10 @@ class MyTestCase(unittest.TestCase):
             _ = cv_score.get_score(x, y, model, "roc_auc", 2)
 
     def test_n_folds_validation_and_score_type_raises_ValueError(self):
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\diabetes.csv"
         # get df with loader creator
-        csv_type = self._loader_creator.create_loader(".\\..\\datasets\\diabetes.csv", "CSV")
+        csv_type = self._loader_creator.create_loader(path, "CSV")
         df = csv_type.get_file_transformed()
         # split df into x and y
         splitter = SplitterReturner()

@@ -130,3 +130,36 @@ class RFEFeatureSelection(FeatureSelection):
         features = x.columns[rfe.get_support()]
         transformed_x = x[features]
         return transformed_x
+
+
+class FeatureSelectorCreator:
+    __instance = None
+    _types: dict = {"FS": ForwardFeatureSelection(), "SFM": SFMFeatureSelection(),
+                    "RFE": RFEFeatureSelection()}
+
+    @staticmethod
+    def get_instance() -> "FeatureSelectorCreator":
+        """Static access method."""
+        if FeatureSelectorCreator.__instance is None:
+            FeatureSelectorCreator()
+        return FeatureSelectorCreator.__instance
+
+    def __init__(self) -> None:
+        """Virtually private constructor."""
+        if FeatureSelectorCreator.__instance is not None:
+            raise Exception("This class is a singleton!")
+        else:
+            FeatureSelectorCreator.__instance = self
+
+    def create_feature_selector(self, selection_type: str) -> FeatureSelection:
+        # transform param to capital letters and then replace white spaces
+        key = selection_type.upper().replace(" ", "")
+        if key in self._types.keys():
+            feature_selection_type = self._types[key]
+            return feature_selection_type
+        raise ValueError("feature selection type value is wrong. It should be: FS, SFM or FFE")
+
+    def get_available_types(self) -> tuple:
+        available_types = [k for k in self._types.keys()]
+        types = tuple(available_types)
+        return types
