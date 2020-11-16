@@ -32,7 +32,7 @@ class EstimatorCreator:
 
     def create_estimator(self, estimator_type: str) -> Any:
         # replace white spaces
-        key = estimator_type.replace(" ", "")
+        key = estimator_type.upper().replace(" ", "")
         if key in self._types.keys():
             sklearn_estimator_type = self._types[key]
             return sklearn_estimator_type

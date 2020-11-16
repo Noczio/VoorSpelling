@@ -1,27 +1,27 @@
 \subsection{Aprendizaje de Máquina}
 \subsubsection{Definición}
-El Aprendizaje de Máquina (ML) según \textcite{Ethem2014} no está solo relacionado con los conjuntos de datos, sino que es una parte integra de la Inteligencia Artificial, es decir, es la construcción de una aproximación a partir de datos históricos que puede llegar a suministrar salidas correctas. \textcite{Bost2015} Menciona que el Aprendizaje de Máquina se utiliza para diferentes tareas tales como detección de correo basura, reconocimiento facial y estimaciones financieras, pero de igual forma se utiliza en otras áreas como robótica y medicina, es decir, no está ligada a un solo campo del saber.
+El Aprendizaje de Máquina (ML) según \textcite{Ethem2014} no solo está relacionado con los conjuntos de datos, sino que es una parte integra de la Inteligencia Artificial, es decir, es la construcción de una aproximación a partir de datos históricos que puede llegar a suministrar salidas correctas. \textcite{Bost2015} Menciona que el Aprendizaje de Máquina se utiliza para diferentes tareas tales como detección de correo basura, reconocimiento facial y estimaciones financieras, pero de igual forma se utiliza en otras áreas como robótica y medicina, es decir, no está ligada a un solo campo del saber.
 
-La aplicación de métodos Aprendizaje de Máquina a bases de datos se le conoce como Minería de Datos, puesto que la extracción de las materias primas que se extrae en esos sitios son procesados con el fin de producir material más refinado. Este material refinado son los datos de entrada de todo modelo de Inteligencia Artificial, ya sea Aprendizaje de Máquina o Aprendizaje Profundo. Pero en vista de que esos datos representan una parte importante para la generación de modelos, es necesario garantizar la integridad y seguridad de esa información, debido a que pueden contener información sensible de una organización o personas.
+La aplicación de métodos Aprendizaje de Máquina a bases de datos se le conoce como Minería de Datos, puesto que la extracción de las materias primas extraídas en esos sitios son procesados con el fin de producir material más refinado. Este material refinado son los datos de entrada de todo modelo de Inteligencia Artificial, ya sea Aprendizaje de Máquina o Aprendizaje Profundo. Pero en vista de que esos datos representan una parte importante para la generación de modelos, es necesario garantizar la integridad y seguridad de esa información, debido a que pueden contener información sensible de una organización o personas.
 
 \subsubsection{Tipos de problemas}
 Los tipos de problemas en Aprendizaje de Máquina se clasifican en tres grupos dependiendo del tipo de entrada y salida requerida. Según autores como \textcite{Russell2003, Han2012, raschka2015python} estos grupos son: Aprendizaje Supervisado, no Supervisado y Reforzado.
 
 \paragraph{Aprendizaje Supervisado} Este tipo de aprendizaje es sinónimo de clasificación. El Aprendizaje Supervisado aporta como principal herramienta algoritmos con el fin de clasificar información etiquetada a partir de datos históricos. Por lo tanto, a partir de la información conocida se puede predecir los datos a futuro, ya sea un grupo, una cantidad numérica o una clase binaria.
 
-Este tipo de algoritmo es el principal utilizado en el presente proyecto, no solo porque permite realizar gran parte de las tareas que todo estudiante en sus primeros años de formación académica necesita, sino que a diferencia de los demás este es el que mayormente se utiliza en los cursos iniciales de ciencias de datos, mientras que los demás son de uso más avanzado.
+Este tipo de algoritmo es el principal utilizado en el presente proyecto, no solo porque permite realizar gran parte de las tareas que todo estudiante en sus primeros años de formación académica necesita, sino que a diferencia de los demás, este es el que mayormente se utiliza en los cursos iniciales de ciencias de datos, mientras que los demás son de uso más avanzado.
 
 \paragraph{Aprendizaje no Supervisado} Este tipo de aprendizaje es sinónimo de Agrupamiento. El proceso de aprendizaje se considera no supervisado dado que las entradas son datos no etiquetados. Debido a que no se ingresan datos etiquetados al algoritmo de aprendizaje, es el propio algoritmo que se encarga de clasificar los resultados. El Aprendizaje no Supervisado puede traer problemas como tener que descubrir los patrones ocultos en la información, pero sin importar ese inconveniente, puede ser la mejor elección para generar un modelo de Inteligencia Artificial.
 
-\paragraph{Aprendizaje Reforzado} En este caso el modelo intenta tomar acciones viables para maximizar la recompensa en una situación en particular. Es aplicado por varios software para encontrar el mejor camino posible o comportamiento que se debería tomar en una situación especifica. El entrenamiento reforzado se diferencia del supervisado en que en este último los datos de entrenamiento tienen sus respectivas predicciones o respuestas, mientras en el reforzado el modelo se entrena sin datos, es decir, decide que acciones realizar para cumplir con la tarea suministrada con base a la experiencia que acaba de obtener.
+\paragraph{Aprendizaje Reforzado} En este caso el modelo intenta tomar acciones viables para maximizar la recompensa en una situación en particular. Es aplicado por varios software como videojuegos para encontrar el mejor camino posible o comportamiento que se debería tomar en una situación especifica. El entrenamiento reforzado se diferencia del supervisado, dado que los datos de entrenamiento tienen sus respectivas predicciones o respuestas, mientras en el reforzado el modelo se entrena sin datos, es decir, decide que acciones realizar para cumplir con la tarea suministrada con base a la experiencia que acaba de obtener.
 
 \subsubsection{Tipos de predicción}
-La ruta general en Aprendizaje de Máquina Supervisado consiste en una serie de pasos que inicia con la obtención del conjunto de datos y termina con los las métricas del modelo entrenado y probado. Conforme a lo mencionado por \textcite{oswald2020python} en su libro ``\textit{Python 3 for Machine Learning}'' estos pasos son:
+La ruta general en Aprendizaje de Máquina Supervisado consiste en una serie de pasos que inicia con la obtención del conjunto de datos y termina con las métricas del modelo entrenado y probado. Conforme a lo mencionado por \textcite{oswald2020python} en su libro ``\textit{Python 3 for Machine Learning}'' estos pasos son:
 
 \begin{APAenumerate}
     \item Obtener el conjunto de datos.
     \item Limpiar el conjunto de datos.
-    \item Seleccionar las característica y reducir la dimensionalidad..
+    \item Seleccionar las característica y reducir la dimensionalidad.
     \item Seleccionar algoritmo de Aprendizaje de Máquina.
     \item Separar el conjunto de datos en entrenamiento y pruebas.
     \item Entrenar el modelo.
@@ -29,9 +29,9 @@ La ruta general en Aprendizaje de Máquina Supervisado consiste en una serie de 
     \item Optimizar el modelo y obtener el rendimiento.
 \end{APAenumerate}
 
-Independientemente del proceso necesario para obtener las predicciones utilizando Aprendizaje de Máquina Supervisado, es necesario elegir el tipo de predicción que se va a realizar, seleccionar el modelo que más se ajuste a las necesidades del conjunto de datos, ajustar los hiperparámetros y si es necesario reducir la dimensionalidad. Cada uno de los tipos de predicción tiene sus propios algoritmos basados en estadística y matemática, pero por simplicidad se consideran en este proyecto cajas negras. Los tres tipos en Aprendizaje de Máquina Supervisado de acuerdo con \textcite{Geron2019,oswald2020python} son: Clasificación, Regresión y Agrupamiento.
+Independientemente del proceso necesario para obtener las predicciones utilizando Aprendizaje de Máquina Supervisado, es necesario elegir el tipo de predicción que se va a realizar, seleccionar el modelo más óptimo para el conjunto de datos, ajustar los hiperparámetros y si es necesario reducir la dimensionalidad. Cada uno de los tipos de predicción tiene sus propios algoritmos basados en estadística y matemática, que de acuerdo con \textcite{Geron2019,oswald2020python} son Clasificación, Regresión y Agrupamiento, pero por simplicidad se consideran en este proyecto como cajas negras.
 
-\paragraph{Clasificación} La salida obtenida en este tipo es del tipo Booleano, es decir, uno, cero, verdadero, falso, si o no. La clasificación (ver Figura ~\ref{fig:ejclasi}) en pocas palabras es asignar nuevas entradas al modelo para generar la predicción más probable con base a la clase, pero si hay un desbalance significativo entre las posibles salidas lo más seguro es que el resultado no sea correcto.
+\paragraph{Clasificación} La salida obtenida es del tipo Booleano, es decir, uno, cero, verdadero, falso, si o no. La clasificación (ver Figura ~\ref{fig:ejclasi}) en pocas palabras es asignar nuevas entradas al modelo para generar la predicción más probable con base a la clase, pero si hay un desbalance significativo entre las posibles salidas, lo más seguro es que el resultado no sea correcto.
 
  \begin{figure}[H]
     \centering
@@ -48,7 +48,7 @@ Los modelos disponibles para Clasificación en Python a través de la librería 
 
 \begin{APAitemize}
     \item SVC rbf: La implementación de este estimador esta basada en libsvm con kernel igual a \textit{rbf}. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación.
-    \item LinearSVC: Similar a SVC con kernel igual a \textit{linear}, pero implementado en términos de liblinear en vez de lbsvm, por ende adquiere más flexibilidad en la selección de penalizaciones y perdidas de función, con lo que tiene la posibilidad de escalar mejor para grandes cantidades de muestras.
+    \item LinearSVC: Similar a SVC con kernel igual a \textit{linear}, pero implementado en términos de liblinear en vez de lbsvm, por ende adquiere más flexibilidad en la selección de penalizaciones y pérdidas de función, con lo que tiene la posibilidad de escalar mejor para grandes cantidades de muestras.
     \item KNN: \textit{K Nearest Neighbours} Es un algoritmo que almacena los casos disponibles y realiza la clasificación de nuevos casos apoyándose en una medición de similaridad con base a la distancia \textit{k} entre una muestra y la otra.
     \item Gaussian Naive Bayes: Este estimador hace parte de los métodos Naive Bayes. Estos algoritmos están basados en la implementación de teorema de Bayes con la suposición de una independencia condicional entre las características, y de igual forma el algoritmo de clasificación Naive Bayes Gaussiana supone que la probabilidad de las características es Gaussiana.
 \end{APAitemize}
@@ -102,7 +102,7 @@ Este algoritmo se encuentra disponible en la librería scikit-learn \parencite{s
 
 \begin{figure}[H]
     \centering
-    \caption{Implementación de búsqueda Exhaustiva}
+    \caption{Implementación de Búsqueda Exhaustiva}
     \inputminted{Python}{pycode/gridsearch.py}
     \label{fig:impbusexh}
 \end{figure}
@@ -113,18 +113,20 @@ Este algoritmo se encuentra disponible en la librería scikit-learn \parencite{s
 
 \begin{figure}[H]
     \centering
-    \caption{Implementación de búsqueda Bayesiana}
+    \caption{Implementación de Búsqueda Bayesiana}
     \inputminted{Python}{pycode/bayesiansearch.py}
     \label{fig:impbusbay}
 \end{figure}
 
 
 \subsubsection{Reducción de dimensionalidad}
-Existe la creencia respecto al volumen de los datos que más datos es mejor, y por lo general es cierto, pero no en todos los casos esto se cumple. Un mayor número de observaciones redunda en un mejor modelo, pero un mayor número de variables no necesariamente lo hace mejor \parencite{Guerrero2016}. Para conjuntos de datos con varias dimensiones, la reducción de dimensionalidad se ejecuta antes de aplicar los algoritmos de Aprendizaje de Máquina, con el propósito de evitar los problemas relacionados a la maldición de la dimensionalidad. Por tales motivos, autores en años anteriores como \textcite{Finley2005} mencionan que la selección de características se convierte en la opción mas viable, especialmente en conjuntos de datos con alta dimensionalidad.
+Existe la creencia respecto al volumen de los datos que más información es mejor, y por lo general es cierto, pero no en todos los casos esto se cumple. Un mayor número de observaciones redunda en un mejor modelo, pero un mayor número de variables no necesariamente lo hace mejor \parencite{Guerrero2016}. Para conjuntos de datos con varias dimensiones, la reducción de dimensionalidad se ejecuta antes de aplicar los algoritmos de Aprendizaje de Máquina, con el propósito de evitar los problemas relacionados a la maldición de la dimensionalidad. Por tales motivos, autores en años anteriores como \textcite{Finley2005} mencionan que la selección de características se convierte en la opción mas viable, especialmente en conjuntos de datos con alta dimensionalidad.
 
-La selección de características pretende hallar un subconjunto de datos a partir del original, es decir, que el nuevo subconjunto candidato a ser las mejor opción pierde una o más características en el proceso. Esto da como resultado en el mejor de los casos un incremento en el rendimiento del clasificador, mientras que por otro lado, si el proceso de selección de características no es necesario desde el inicio, el resultado final es un clasificador con un rendimiento menor al inicial, dado que las características eliminadas eran significativas. Existen diferentes tipos de métodos con los cuales se aborda el problema de la reducción de la dimensionalidad, los más utilizados según \textcite{Finley2005,Sanchez-Marono2007} son los métodos de filtrado y envolventes.
+Existen diferentes tipos de métodos con los cuales se aborda el problema de la reducción de la dimensionalidad, sin embargo, de acuerdo con \textcite{Finley2005,Sanchez-Marono2007} los más utilizados son los métodos de filtrado y envolventes. Estos métodos pretenden hallar un subconjunto de datos a partir del original, es decir, que el nuevo subconjunto candidato a ser la opción óptima pierde una o más características en el proceso. Esto da como resultado en el mejor de los casos un incremento en el rendimiento del clasificador, mientras que por otro lado, si el proceso de selección de características no es necesario desde el inicio, el resultado final es un clasificador con un rendimiento menor al inicial, dado que las características eliminadas eran significativas. 
  
-\paragraph{Métodos de filtrado} Los métodos de filtrado realizan un análisis de las características individuales para identificar su importancia relativa. Son computacionalmente eficaces e independientes del modelo, pero por otro lado, es posible que una característica no se útil por si sola, pero puede ser significativa cuando está asociada con otra. Por lo tanto, esta situación representa una desventaja en los métodos de filtrado, ya que se pueden perder la potencial importancia de dichas características. Los algoritmos disponibles para métodos de filtrado en Python a través de la librería scikit-learn \parencite{sklearn_api} son:
+\paragraph{Métodos de filtrado} Los métodos de filtrado realizan un análisis de las características individuales para identificar su importancia relativa. Son computacionalmente eficaces e independientes del modelo, pero por otro lado, es posible que una característica no sea útil por si sola, aunque puede ser significativa cuando está asociada con otra. Esta situación representa una desventaja en los métodos de filtrado, ya que se puede perder la potencial importancia de dichas características. 
+
+Los algoritmos disponibles para métodos de filtrado en Python a través de la librería scikit-learn \parencite{sklearn_api} son:
  
  \begin{APAitemize}
      \item VarianceThreshold: es un método para la selección de características que remueve toda aquella característica cuya varianza no supere cierto límite. Adicionalmente, por defecto elimina toda característica con varianza cero, es decir aquellas que tienen el mismo valor en todas las muestras y por ende no otorgan información relevante.
@@ -133,11 +135,13 @@ La selección de características pretende hallar un subconjunto de datos a part
      \item GenericUnivariateSelect: este algoritmo utiliza una estrategia configurable para realizar una selección de características univariadas.
  \end{APAitemize}
  
- \paragraph{Métodos envolventes} Este tipo de métodos inician el proceso de evaluación de las características una a una, para luego seleccionar aquella que tiene el mejor rendimiento. Una vez terminado ese proceso se realiza la selección de las posibles combinaciones hasta que el modelo no tenga un mejor rendimiento con respecto a la última iteración. Los algoritmos disponibles para métodos envolventes en Python a través de la librería scikit-learn \parencite{sklearn_api} son:
+\paragraph{Métodos envolventes} Este tipo de métodos inician el proceso de evaluación de las características una a una, para luego seleccionar aquella que tiene el mejor rendimiento. Una vez terminado ese proceso se realiza la selección de las posibles combinaciones hasta que el modelo no tenga un mejor rendimiento con respecto a la última iteración. 
+ 
+Los algoritmos disponibles para métodos envolventes en Python a través de la librería scikit-learn \parencite{sklearn_api} son:
  
  \begin{APAitemize}
      \item Recursive Feature Elimination: El objetivo de este método es la eliminación de características generando un conjunto de características cada vez más pequeño. Las características menos importantes son eliminadas del conjunto de características actuales, proceso que se repite constantemente hasta llegar a la cantidad requerida de características
-     \item SelectFromModel: Este algoritmo puede ser utilizado con cualquier estimador que tenga los atributos coeficiente o importancia de característica, después de realizar el entrenamiento del modelo. Las características por defecto son consideradas no relevantes si no se supera el umbral suministrado, mientras que aquellas que califican como importantes se mantienen.
+     \item SelectFromModel: Este algoritmo puede ser utilizado con cualquier estimador que tenga los atributos coeficiente o importancia de característica, después de realizar el entrenamiento del modelo. Las características por defecto son consideradas no relevantes al no superar el umbral suministrado, mientras que aquellas que califican como importantes se mantienen.
      \item Sequential Feature Selector: Es un algoritmo exhaustivo que se utiliza para reducir el espacio de características de cierta dimensionalidad a un espacio de menor dimensionalidad. Tiene como finalidad seleccionar automáticamente un subconjunto de características que son relevantes para el problema. 
      \item Exhaustive Feature Selector: Este algoritmo evalúa subconjuntos de características exhaustivamente aplicando todas las posibles combinaciones. El mejor subconjunto se selecciona a partir del rendimiento obtenido entre todas las iteraciones con el modelo seleccionado, ya sea Regresión o Clasificación.
  \end{APAitemize}
@@ -145,11 +149,11 @@ La selección de características pretende hallar un subconjunto de datos a part
 \subsubsection{Aprendizaje automático}
 Inicialmente todos los procesos de Aprendizaje de Máquina se realizaban paso a paso, pero con el desarrollo del primer algoritmo automatizado por parte de \textcite{Thornton2013} en su trabajo titulado ``\textit{Auto-Weka}'' el panorama cambia a uno donde es más efectivo utilizar algoritmos de aprendizaje automático para problemas de nivel empresarial. La ruta más fácil para seleccionar un estimador utilizada por estudiantes es definida a partir de la popularidad que tenga o que tan sencillo parece de utilizar, por consiguiente no se consideran las alternativas disponibles que pueden ser más eficientes. Parte de esos inconvenientes son remediados con los repositorios de acceso libre desarrollados para el uso de la comunidad, tales como: Weka \parencite{Hall2009}, scikit-learn \parencite{scikit-learn} y mljar-supervised \parencite{mljar2018}, los cuales ofrecen paquetes de selección de características, hiperparámetros y modelo por medio de sus algoritmos de aprendizaje automático.
 
-En trabajos posteriores \textcite{Feurer2020} en su artículo ``\textit{Auto-Sklearn 2.0: The Next Generation}'' mencionan que a partir de mejoras en su algoritmo original de Auto-sklearn obtuvieron mejoras significativas a partir de la implementación de una técnica de meta-aprendizaje más sencilla, la cual según los autores es el futuro para tener un Aprendizaje de Máquina automatizado cercano a la perfección y que además sea de libre acceso. No obstante, implementar esta librería actualmente no es posible dado que aún se encuentra en desarrollo, y pese a que la versión 1.0 se encuentra disponible desde el año 2016, es únicamente para sistemas operativos Linux. Por los motivos presentados previamente, la librería utilizada para cubrir las funcionalidades de aprendizaje automático en el presente proyecto es mljar-supervised (ver Figura ~\ref{fig:impautoml}), la cual es desarrollada por \textcite{mljar2018}. Esta librería al igual que otros algoritmos de aprendizaje automatizado, tiene las funcionalidades de vanguardia necesarias para ejecutar optimización de hiperparámetros y selección de modelo, dado que si es necesario, los usuarios de \textit{Voorspelling} pueden elegir entre un proceso paso a paso o automático. Finalmente el objetivo del proyecto no es proporcionar resultados con un solo clic, sino brindar la posibilidad de realizar el proceso teniendo en cuenta todas las alternativas para construir un modelo de inteligencia artificial.
+En trabajos posteriores \textcite{Feurer2020} en su artículo ``\textit{Auto-Sklearn 2.0: The Next Generation}'' mencionan que a partir de mejoras en su algoritmo original de Auto-sklearn, obtienen mejoras significativas a partir de la implementación de una técnica de meta-aprendizaje más sencilla, la cual según los autores es el futuro para tener un Aprendizaje de Máquina automatizado cercano a la perfección y que además sea de libre acceso. No obstante, implementar esta librería actualmente no es posible dado que aún se encuentra en desarrollo, y pese a que la versión 1.0 se encuentra disponible desde el año 2016, es únicamente para sistemas operativos Linux. Por tales motivos, la librería utilizada para cubrir las funcionalidades de aprendizaje automático en el presente proyecto es mljar-supervised (ver Figura ~\ref{fig:impautoml}), la cual es desarrollada por \textcite{mljar2018} como un proyecto de software libre. Esta librería al igual que otros algoritmos de aprendizaje automatizado, tiene las funcionalidades de vanguardia necesarias para ejecutar optimización de hiperparámetros y selección de modelo, dado que si es necesario, los usuarios de \textit{Voorspelling} pueden elegir entre un proceso paso a paso o automático; decisión que está relacionada al objetivo del proyecto.
 
 \begin{figure}[H]
     \centering
-    \caption{Implementación de Automl}
+    \caption{Implementación de AutoML}
     \inputminted{Python}{pycode/automl.py}
     \label{fig:impautoml}
 \end{figure}
