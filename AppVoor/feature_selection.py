@@ -134,7 +134,7 @@ class RFEFeatureSelection(FeatureSelection):
 
 class FeatureSelectorCreator:
     __instance = None
-    _types: dict = {"FS": ForwardFeatureSelection(), "SFM": SFMFeatureSelection(),
+    _types: dict = {"FFS": ForwardFeatureSelection(), "SFM": SFMFeatureSelection(),
                     "RFE": RFEFeatureSelection()}
 
     @staticmethod

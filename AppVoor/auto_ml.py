@@ -45,7 +45,7 @@ class AutoMachineLearning(ABC):
         self._estimator = value
 
 
-class JarAutoML(AutoMachineLearning[AutoML]):
+class JarAutoML(AutoMachineLearning):
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         super().__init__(n_folds_validation, shuffle_data, max_rand)

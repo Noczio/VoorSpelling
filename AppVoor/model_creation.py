@@ -16,12 +16,10 @@ NpArray = np.ndarray
 class MachineLearningModel(ABC):
     _feature_selector: FeatureSelection
     _parameter_selector: ParameterSearch
-    _best_features: tuple
+    _best_features: NpArray
     _best_params: dict
     _clf: Any
-
-    def __init__(self):
-        self._cv_score: CVModelScore = CVScore()
+    _cv_score: CVModelScore = CVScore()
 
     @property
     def feature_selector(self) -> FeatureSelection:
@@ -40,11 +38,11 @@ class MachineLearningModel(ABC):
         self._parameter_selector = value
 
     @property
-    def best_features(self) -> tuple:
+    def best_features(self) -> NpArray:
         return self._best_features
 
     @best_features.setter
-    def best_features(self, value: tuple) -> None:
+    def best_features(self, value: NpArray) -> None:
         self._best_features = value
 
     @property
@@ -73,7 +71,7 @@ class SimpleModel(MachineLearningModel):
     def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
-        # set clf params
+        # set clf params. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_params)
         # return the cv score
         if size == 0.0:
@@ -92,10 +90,11 @@ class OnlyFeatureSelectionModel(MachineLearningModel):
     def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
-        # set clf params
+        # set clf params. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_params)
         # get best features
-        self.best_features = self.feature_selector.select_features(x, y, self.estimator)
+        best_features_dataframe = self.feature_selector.select_features(x, y, self.estimator)
+        self.best_features = best_features_dataframe.columns.values  # get features as numpy data
         # x now has only the best features
         x = x[self.best_features]
         # return the cv score
@@ -117,7 +116,7 @@ class OnlyParameterSearchModel(MachineLearningModel):
         x, y = SplitterReturner.split_x_y_from_df(df)
         # transform best params grid into a simple dict
         self.best_params = self.parameter_selector.search_parameters(x, y, self.best_params, 10, self.estimator)
-        # set clf params from the previous search
+        # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_params)
         # return the cv score
         if size == 0.0:
@@ -137,8 +136,10 @@ class FeatureAndParameterSearch(MachineLearningModel):
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         self.best_params = self.parameter_selector.search_parameters(x, y, self.best_params, 10, self.estimator)
+        # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_params)
-        self.best_features = self.feature_selector.select_features(x, y, self.estimator)
+        best_features_dataframe = self.feature_selector.select_features(x, y, self.estimator)
+        self.best_features = best_features_dataframe.columns.values  # get features as numpy data
         x = x[self.best_features]
 
         if size == 0.0:

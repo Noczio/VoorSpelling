@@ -70,7 +70,7 @@ class MyTestCase(unittest.TestCase):
         x, y = SplitterReturner.split_x_y_from_df(df)
         _, len_original_y = x.shape
         # create a feature selector
-        fs = self._feature_selector_creator.create_feature_selector("FS")
+        fs = self._feature_selector_creator.create_feature_selector("FFS")
         # create a simple LinearSVC
         clf = LinearSVC(random_state=0, dual=False)
         # get new_x with new features
