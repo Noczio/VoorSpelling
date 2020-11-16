@@ -10,6 +10,8 @@
 % figures doublespace
 \captionsetup{skip=0pt, font=doublespacing}
 \usepackage{etoolbox}
+% make toc with apa 7 line space. This uses etoolbox
+\addtocontents{toc}{\protect\renewcommand*\protect\addvspace[1]{}}
 
 % max layer into index
 % -1 part     1 section     3 subsubsection  5 subparagraph 
@@ -77,8 +79,8 @@
 \setquotestyle{english}
 
 \hypersetup{hidelinks}
-\usepackage{adjustbox}
 
+\usepackage{adjustbox}
 % ---------------------------
 
 \begin{document}
@@ -90,10 +92,16 @@
 \tableofcontents % general index
 
 \clearpage
+\let\oldnumberline\numberline % Copy \numberline into \oldnumberline
+\renewcommand{\numberline}[1]{\hspace*{-1.5em}} % Remove number argument 
 \listoffigures % fig index
+\let\numberline\oldnumberline % Restore \numberline (if needed)
 
 \clearpage
-\listoftables
+\let\oldnumberline\numberline % Copy \numberline into \oldnumberline
+\renewcommand{\numberline}[1]{\hspace*{-1.5em}} % Remove number argument 
+\listoftables % fig index
+\let\numberline\oldnumberline % Restore \numberline (if needed)
 
 \clearpage
 \section*{Abstract} % doc abstract

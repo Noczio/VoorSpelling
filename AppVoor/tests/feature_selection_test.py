@@ -1,6 +1,6 @@
 import unittest
 
-from feature_selection import SFMFeatureSelection, RFEFeatureSelection, ForwardFeatureSelection
+from feature_selection import FeatureSelectorCreator
 from load_data import LoaderCreator
 from split_data import SplitterReturner
 
@@ -9,6 +9,7 @@ from sklearn.svm import LinearSVC
 
 class MyTestCase(unittest.TestCase):
     _loader_creator = LoaderCreator.get_instance()
+    _feature_selector_creator = FeatureSelectorCreator.get_instance()
 
     def test_molecules_has_fewer_features_with_sfm(self):
         # load molecules.csv from disk
@@ -22,11 +23,10 @@ class MyTestCase(unittest.TestCase):
         x, y = SplitterReturner.split_x_y_from_df(df)
         x = x.drop(["m_name"], axis=1)
         _, len_original_y = x.shape
-        # create a CVMetrics object and then use it as parameter for OwnFeatureSelection
-        # cv_metrics = CVMetrics(file_path=".\\..\\jsonInfo\\CVMetrics.json", data_type=list)
-        fs = SFMFeatureSelection()
+        # create a feature selector
+        fs = self._feature_selector_creator.create_feature_selector("SFM")
         # create a simple LinearSVC
-        clf = LinearSVC(C=3, tol=0.0001, random_state=0, dual=True)
+        clf = LinearSVC(C=3, tol=0.0001, random_state=0, dual=False)
         # get new_x with new features
         new_x = fs.select_features(x, y, clf)
         _, len_new_y = new_x.shape
@@ -46,9 +46,10 @@ class MyTestCase(unittest.TestCase):
         # get x and y from SplitterReturner
         x, y = SplitterReturner.split_x_y_from_df(df)
         _, len_original_y = x.shape
-        fs = RFEFeatureSelection()
+        # create a feature selector
+        fs = self._feature_selector_creator.create_feature_selector("RFE")
         # create a simple LinearSVC
-        clf = LinearSVC(random_state=0, dual=True)
+        clf = LinearSVC(random_state=0, dual=False)
         # get new_x with new features
         new_x = fs.select_features(x, y, clf)
         _, len_new_y = new_x.shape
@@ -57,7 +58,7 @@ class MyTestCase(unittest.TestCase):
         # this should be True
         self.assertTrue(is_fewer_than_original)
 
-    def test_diabetes_has_fewer_features_with_ffs(self):
+    def test_diabetes_has_fewer_features_with_fs(self):
         # load molecules.csv from disk
         folder_name = "datasets"
         file_name = "diabetes.csv"
@@ -68,9 +69,10 @@ class MyTestCase(unittest.TestCase):
         # get x and y from SplitterReturner
         x, y = SplitterReturner.split_x_y_from_df(df)
         _, len_original_y = x.shape
-        fs = ForwardFeatureSelection()
+        # create a feature selector
+        fs = self._feature_selector_creator.create_feature_selector("FFS")
         # create a simple LinearSVC
-        clf = LinearSVC(random_state=0, dual=True)
+        clf = LinearSVC(random_state=0, dual=False)
         # get new_x with new features
         new_x = fs.select_features(x, y, clf)
         _, len_new_y = new_x.shape

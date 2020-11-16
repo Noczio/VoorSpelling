@@ -110,7 +110,8 @@ class LoaderCreator:
             LoaderCreator.__instance = self
 
     def create_loader(self, file_path: str, loader_type: str) -> DataLoader:
-        key = loader_type.upper().replace(" ", "")  # transform param to capital letters and then replace white spaces
+        # transform param to capital letters and then replace white spaces
+        key = loader_type.upper().replace(" ", "")
         if key in self._types.keys():
             loader = self._types[key]
             loader.file_path = file_path
