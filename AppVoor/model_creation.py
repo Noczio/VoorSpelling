@@ -49,7 +49,7 @@ class MachineLearningModel(ABC):
 
     @property
     def best_params(self) -> dict:
-        return self.best_params
+        return self._best_params
 
     @best_params.setter
     def best_params(self, value: dict) -> None:
@@ -64,24 +64,24 @@ class MachineLearningModel(ABC):
         self._clf = value
 
     @abstractmethod
-    def get_score(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         pass
 
 
 class SimpleModel(MachineLearningModel):
 
-    def get_score(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         # set clf params
-        self.estimator.set_params(self.best_params)
+        self.estimator.set_params(**self.best_params)
         # return the cv score
         if size == 0.0:
             score = self._cv_score.get_score(x, y, self.estimator, score_type, 10)
             return score
         elif 0.0 < size < 1.0:
             x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
-            score = self._cv_score.get_score(x_train, y_train, self.estimator, "roc_auc", 10)
+            score = self._cv_score.get_score(x_train, y_train, self.estimator, score_type, 10)
             return score
         else:
             raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
@@ -89,11 +89,11 @@ class SimpleModel(MachineLearningModel):
 
 class OnlyFeatureSelectionModel(MachineLearningModel):
 
-    def get_score(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         # set clf params
-        self.estimator.set_params(self.best_params)
+        self.estimator.set_params(**self.best_params)
         # get best features
         self.best_features = self.feature_selector.select_features(x, y, self.estimator)
         # x now has only the best features
@@ -104,7 +104,7 @@ class OnlyFeatureSelectionModel(MachineLearningModel):
             return score
         elif 0.0 < size < 1.0:
             x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
-            score = self._cv_score.get_score(x_train, y_train, self.estimator, "roc_auc", 10)
+            score = self._cv_score.get_score(x_train, y_train, self.estimator, score_type, 10)
             return score
         else:
             raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
@@ -112,20 +112,20 @@ class OnlyFeatureSelectionModel(MachineLearningModel):
 
 class OnlyParameterSearchModel(MachineLearningModel):
 
-    def get_score(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         # transform best params grid into a simple dict
         self.best_params = self.parameter_selector.search_parameters(x, y, self.best_params, 10, self.estimator)
         # set clf params from the previous search
-        self.estimator.set_params(self.best_params)
+        self.estimator.set_params(**self.best_params)
         # return the cv score
         if size == 0.0:
             score = self._cv_score.get_score(x, y, self.estimator, score_type, 10)
             return score
         elif 0.0 < size < 1.0:
             x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
-            score = self._cv_score.get_score(x_train, y_train, self.estimator, "roc_auc", 10)
+            score = self._cv_score.get_score(x_train, y_train, self.estimator, score_type, 10)
             return score
         else:
             raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
@@ -133,11 +133,11 @@ class OnlyParameterSearchModel(MachineLearningModel):
 
 class FeatureAndParameterSearch(MachineLearningModel):
 
-    def get_score(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         self.best_params = self.parameter_selector.search_parameters(x, y, self.best_params, 10, self.estimator)
-        self.estimator.set_params(self.best_params)
+        self.estimator.set_params(**self.best_params)
         self.best_features = self.feature_selector.select_features(x, y, self.estimator)
         x = x[self.best_features]
 
@@ -146,30 +146,30 @@ class FeatureAndParameterSearch(MachineLearningModel):
             return score
         elif 0.0 < size < 1.0:
             x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
-            score = self._cv_score.get_score(x_train, y_train, self.estimator, "roc_auc", 10)
+            score = self._cv_score.get_score(x_train, y_train, self.estimator, score_type, 10)
             return score
         else:
             raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
 
 
-class ModelTypeCreator:
+class SBSModelCreator:
     __instance = None
     _types: dict = {"SM": SimpleModel(), "FSM": OnlyFeatureSelectionModel(),
                     "PSM": OnlyParameterSearchModel(), "AM": FeatureAndParameterSearch()}
 
     @staticmethod
-    def get_instance() -> "ModelTypeCreator":
+    def get_instance() -> "SBSModelCreator":
         """Static access method."""
-        if ModelTypeCreator.__instance is None:
-            ModelTypeCreator()
-        return ModelTypeCreator.__instance
+        if SBSModelCreator.__instance is None:
+            SBSModelCreator()
+        return SBSModelCreator.__instance
 
     def __init__(self) -> None:
         """Virtually private constructor."""
-        if ModelTypeCreator.__instance is not None:
+        if SBSModelCreator.__instance is not None:
             raise Exception("This class is a singleton!")
         else:
-            ModelTypeCreator.__instance = self
+            SBSModelCreator.__instance = self
 
     def create_model(self, feature_selection: bool, parameter_search: bool) -> MachineLearningModel:
         if not feature_selection and not parameter_search:

@@ -1,6 +1,5 @@
 import unittest
 
-from scipy.stats import loguniform
 from sklearn.svm import LinearSVC
 
 from load_data import LoaderCreator

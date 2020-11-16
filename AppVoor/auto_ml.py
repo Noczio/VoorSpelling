@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Any
 
 import pandas as pd
 import numpy as np
@@ -10,13 +10,12 @@ from supervised import AutoML
 from jsonInfo.random_generator import Randomizer
 from split_data import SplitterReturner
 
-T = TypeVar("T")
 NpArray = np.ndarray
 DataFrame = pd.DataFrame
 
 
-class AutoMachineLearning(ABC, Generic[T]):
-    _clf: T
+class AutoMachineLearning(ABC):
+    _estimator: Any
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         # initialize _random_state, _n_folds_validation and _shuffle_data.
@@ -38,12 +37,12 @@ class AutoMachineLearning(ABC, Generic[T]):
         pass
 
     @property
-    def clf(self) -> T:
-        return self._clf
+    def estimator(self) -> Any:
+        return self._estimator
 
-    @clf.setter
-    def clf(self, value: T) -> None:
-        self._clf = value
+    @estimator.setter
+    def estimator(self, value: Any) -> None:
+        self._estimator = value
 
 
 class JarAutoML(AutoMachineLearning[AutoML]):
@@ -80,7 +79,7 @@ class AutoExecutioner:
         self._auto_ml = auto_ml
 
     def get_model(self) -> str:
-        model = self._auto_ml.clf
+        model = self._auto_ml.estimator
         return str(model)
 
     def train_model(self, df: DataFrame, size: float = 0.0) -> None:

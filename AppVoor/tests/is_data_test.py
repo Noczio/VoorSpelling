@@ -45,6 +45,16 @@ class MyTestCase(unittest.TestCase):
         # this should be true, since welcomeMessage.json has list format
         self.assertTrue(ensurer_bol)
 
+    def test_loader_path_is_str(self):
+        # load diabetes.csv from disk
+        folder_name = "datasets"
+        file_name = "diabetes.csv"
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        csv_file = self._loader_creator.create_loader(test_full_path, "csv")
+        path = csv_file.file_path
+        bol_answer = DataEnsurer.validate_py_data(path, str)
+        self.assertTrue(bol_answer)
+
 
 if __name__ == '__main__':
     unittest.main()
