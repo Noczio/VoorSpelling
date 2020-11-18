@@ -3,6 +3,7 @@ from typing import Any
 
 import pandas as pd
 import numpy as np
+from sklearn.base import clone
 
 from feature_selection import FeatureSelection
 from parameter_search import ParameterSearch
@@ -14,12 +15,16 @@ NpArray = np.ndarray
 
 
 class MachineLearningModel(ABC):
-    _feature_selector: FeatureSelection
-    _parameter_selector: ParameterSearch
-    _best_features: NpArray
-    _best_params: dict
-    _clf: Any
+    _feature_selector: FeatureSelection = None
+    _parameter_selector: ParameterSearch = None
+    _best_features: NpArray = None
+    _best_params: dict = None
+    _initial_params: dict = None
+    _clf: Any = None
     _cv_score: CVModelScore = CVScore()
+
+    def __init__(self):
+        pass
 
     @property
     def feature_selector(self) -> FeatureSelection:
@@ -54,6 +59,14 @@ class MachineLearningModel(ABC):
         self._best_params = value
 
     @property
+    def initial_params(self) -> dict:
+        return self._initial_params
+
+    @initial_params.setter
+    def initial_params(self, value: dict) -> None:
+        self._initial_params = value
+
+    @property
     def estimator(self) -> Any:
         return self._clf
 
@@ -71,8 +84,10 @@ class SimpleModel(MachineLearningModel):
     def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
+        self.best_params = self.initial_params  # they are the same in a simple model
         # set clf params. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_params)
+        self.best_features = x.columns.values  # get features as numpy data
         # return the cv score
         if size == 0.0:
             score = self._cv_score.get_score(x, y, self.estimator, score_type, 10)
@@ -90,10 +105,11 @@ class OnlyFeatureSelectionModel(MachineLearningModel):
     def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
+        self.best_params = self.initial_params  # they are the same in a only feature selection model
         # set clf params. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_params)
         # get best features
-        best_features_dataframe = self.feature_selector.select_features(x, y, self.estimator)
+        best_features_dataframe = self.feature_selector.select_features(x, y, clone(self.estimator))
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
         # x now has only the best features
         x = x[self.best_features]
@@ -114,8 +130,10 @@ class OnlyParameterSearchModel(MachineLearningModel):
     def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
-        # transform best params grid into a simple dict
-        self.best_params = self.parameter_selector.search_parameters(x, y, self.best_params, 10, self.estimator)
+        # transform initial params grid into a simple dict which is best_params
+        self.best_params = self.parameter_selector.search_parameters(x, y, self.initial_params, 10,
+                                                                     clone(self.estimator))
+        self.best_features = x.columns.values  # get features as numpy data
         # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_params)
         # return the cv score
@@ -135,13 +153,17 @@ class FeatureAndParameterSearch(MachineLearningModel):
     def score_model(self, df: DataFrame, score_type: str, size: float = 0.0) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
-        self.best_params = self.parameter_selector.search_parameters(x, y, self.best_params, 10, self.estimator)
+        # transform best params grid into a simple dict
+        self.best_params = self.parameter_selector.search_parameters(x, y, self.initial_params, 10,
+                                                                     clone(self.estimator))
         # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_params)
-        best_features_dataframe = self.feature_selector.select_features(x, y, self.estimator)
+        # get best features
+        best_features_dataframe = self.feature_selector.select_features(x, y, clone(self.estimator))
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
+        # x now has only the best features
         x = x[self.best_features]
-
+        # return the cv score
         if size == 0.0:
             score = self._cv_score.get_score(x, y, self.estimator, score_type, 10)
             return score
