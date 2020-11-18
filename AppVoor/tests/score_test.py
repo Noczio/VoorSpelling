@@ -64,7 +64,7 @@ class MyTestCase(unittest.TestCase):
             # get score from a linearSVC estimator with roc_auc score and 10 folds
             _ = cv_score.get_score(x, y, model, "roc", 2)
 
-    def test_cv_score_is_more_than_zero_with_LSVC_SVC_KNN_GNB(self):
+    def test_cv_score_is_more_than_zero_with_LSVC_SVC_KNN_GNB_accuracy_5(self):
         # path to diabetes.csv file in project
         path = ".\\..\\datasets\\diabetes.csv"
         # get df with loader creator
@@ -89,9 +89,66 @@ class MyTestCase(unittest.TestCase):
             is_greater_than_zero: bool = True if score > 0 else False
             bol_results.append(is_greater_than_zero)
         # any will return True if there's any truth value in the iterable.
-        answer = any(bol_results)
+        print(bol_results)
+        answer = all(bol_results)
         # all of this should be true
         self.assertTrue(answer)
+
+    def test_cv_score_is_more_than_zero_with_LSVR_SVR_LASSO_SGD_r2_5(self):
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\winequality-red.csv"
+        # get df with loader creator
+        scsv_type = self._loader_creator.create_loader(path, "SCSV")
+        df = scsv_type.get_file_transformed()
+        # split df into x and y
+        splitter = SplitterReturner()
+        x, y = splitter.split_x_y_from_df(df)
+        # create a CVScore object with its path and data type
+        cv_score = CVScore()
+        # create a simple a svc, knn and gnb estimator
+        model_1 = self._estimator_creator.create_estimator("LSVR")
+        model_2 = self._estimator_creator.create_estimator("SVR")
+        model_3 = self._estimator_creator.create_estimator("LASSO")
+        model_4 = self._estimator_creator.create_estimator("SGD")
+        estimators = [model_1, model_2, model_3, model_4]
+        # get score from a linearSVC estimator with accuracy score and 5folds
+        bol_results = []
+        for clf in estimators:
+            score = cv_score.get_score(x, y, clf, "r2", 5)
+            print(clf.__class__.__name__, "score is:", score)
+            is_greater_than_zero: bool = True if score > 0 else False
+            bol_results.append(is_greater_than_zero)
+        print(bol_results)
+        # there is at least one true element, which means on of the scores is greater than 0
+        self.assertTrue(any(bol_results))
+
+    def test_cv_score_is_more_than_zero_with_LSVR_SVR_LASSO_SGD_explained_variance_5(self):
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\winequality-white.csv"
+        # get df with loader creator
+        scsv_type = self._loader_creator.create_loader(path, "SCSV")
+        df = scsv_type.get_file_transformed()
+        # split df into x and y
+        splitter = SplitterReturner()
+        x, y = splitter.split_x_y_from_df(df)
+        # create a CVScore object with its path and data type
+        cv_score = CVScore()
+        # create a simple a svc, knn and gnb estimator
+        model_1 = self._estimator_creator.create_estimator("LSVR")
+        model_2 = self._estimator_creator.create_estimator("SVR")
+        model_3 = self._estimator_creator.create_estimator("LASSO")
+        model_4 = self._estimator_creator.create_estimator("SGD")
+        estimators = [model_1, model_2, model_3, model_4]
+        # get score from a linearSVC estimator with accuracy score and 5folds
+        bol_results = []
+        for clf in estimators:
+            score = cv_score.get_score(x, y, clf, "explained_variance", 5)
+            print(clf.__class__.__name__, "score is:", score)
+            is_greater_than_zero: bool = True if score > 0 else False
+            bol_results.append(is_greater_than_zero)
+        print(bol_results)
+        # there is at least one true element, which means on of the scores is greater than 0
+        self.assertTrue(any(bol_results))
 
 
 if __name__ == '__main__':

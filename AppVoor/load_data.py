@@ -73,6 +73,25 @@ class CSVDataLoader(DataLoader[DataFrame]):
             raise FileNotFoundError("Path to CSV file was not found")
 
 
+class SCSVDataLoader(DataLoader[DataFrame]):
+
+    # abstract class method implementation
+    def get_file_transformed(self) -> DataFrame:
+        # initialize separator  as ","
+        separator = ";"
+        # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
+        try:
+
+            with open(self.file_path, 'r', encoding="utf-8") as f:
+                temp = pd.read_csv(f, sep=separator)
+                if DataEnsurer.validate_pd_data(temp):
+                    self.data = temp
+                    return self.data
+                raise TypeError("Data does not meet sample or column requirements to train a model")
+        except():
+            raise FileNotFoundError("Path to SCSV file was not found")
+
+
 class TSVDataLoader(DataLoader[DataFrame]):
 
     # abstract class method implementation
@@ -93,7 +112,8 @@ class TSVDataLoader(DataLoader[DataFrame]):
 
 class LoaderCreator:
     __instance = None
-    _types: dict = {"CSV": CSVDataLoader(""), "TSV": TSVDataLoader(""), "JSON": JSONDataLoader("")}
+    _types: dict = {"CSV": CSVDataLoader(""), "TSV": TSVDataLoader(""), "JSON": JSONDataLoader(""),
+                    "SCSV": SCSVDataLoader("")}
 
     @staticmethod
     def get_instance() -> "LoaderCreator":
@@ -116,7 +136,7 @@ class LoaderCreator:
             loader = self._types[key]
             loader.file_path = file_path
             return loader
-        raise ValueError("Loader type value is wrong. It should be: CSV, TSV or JSON")
+        raise ValueError("Loader type value is wrong. It should be: CSV, TSV, SCSV or JSON")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]

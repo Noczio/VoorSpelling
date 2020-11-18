@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
     _feature_selection_creator = FeatureSelectorCreator.get_instance()
     _parameter_selection_creator = ParamSearchCreator.get_instance()
 
-    def test_simple_model_LSVC_score_is_float_and_greater_than_zero(self):
+    def test_simple_model_LSVC_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
         model_instance = self._model_creator.create_model(False, False)
         # path to diabetes.csv file in project
@@ -33,14 +33,36 @@ class MyTestCase(unittest.TestCase):
         # set object best params and base estimator
         model_instance.initial_params = initial_prm
         model_instance.estimator = estimator
-        score = model_instance.score_model(df, "roc_auc")
+        score = model_instance.score_model(df, "roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_params)
         print("best features", model_instance.best_features)
         is_valid = True if isinstance(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
 
-    def test_simple_model_SVC_score_is_float_and_greater_than_zero(self):
+    def test_simple_model_LSVC_accuracy_10_score_is_float_and_greater_than_zero(self):
+        # create a simple model using SBSModelCreator
+        model_instance = self._model_creator.create_model(False, False)
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\diabetes.csv"
+        # get df with loader creator
+        csv_type = self._loader_creator.create_loader(path, "CSV")
+        df = csv_type.get_file_transformed()
+        # create a prm variable to store params grid
+        initial_prm = {'C': 2, 'random_state': 0, 'tol': 0.01, "dual": False}
+        # create an estimator using EstimatorCreator
+        estimator = self._estimator_creator.create_estimator("LSVC")
+        # set object best params and base estimator
+        model_instance.initial_params = initial_prm
+        model_instance.estimator = estimator
+        score = model_instance.score_model(df, "accuracy", 10)
+        print("score:", score)
+        print("best params", model_instance.best_params)
+        print("best features", model_instance.best_features)
+        is_valid = True if isinstance(score, float) and score > 0.0 else False
+        self.assertTrue(is_valid)
+
+    def test_simple_model_SVC_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
         model_instance = self._model_creator.create_model(False, False)
         # path to diabetes.csv file in project
@@ -55,14 +77,36 @@ class MyTestCase(unittest.TestCase):
         # set object best params and base estimator
         model_instance.initial_params = initial_prm
         model_instance.estimator = estimator
-        score = model_instance.score_model(df, "roc_auc")
+        score = model_instance.score_model(df, "roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_params)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
 
-    def test_only_feature_selection_model_SVC_FFS_score_is_float_and_greater_than_zero(self):
+    def test_simple_model_SVC_accuracy_5_score_is_float_and_greater_than_zero(self):
+        # create a simple model using SBSModelCreator
+        model_instance = self._model_creator.create_model(False, False)
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\diabetes.csv"
+        # get df with loader creator
+        csv_type = self._loader_creator.create_loader(path, "CSV")
+        df = csv_type.get_file_transformed()
+        # create a prm variable to store params grid
+        initial_prm = {'C': 2, 'random_state': 0, 'tol': 0.01, "kernel": "rbf"}
+        # create an estimator using EstimatorCreator
+        estimator = self._estimator_creator.create_estimator("SVC")
+        # set object best params and base estimator
+        model_instance.initial_params = initial_prm
+        model_instance.estimator = estimator
+        score = model_instance.score_model(df, "accuracy", 5)
+        print("score:", score)
+        print("best params", model_instance.best_params)
+        print("best features", model_instance.best_features)
+        is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
+        self.assertTrue(is_valid)
+
+    def test_only_feature_selection_model_SVC_FFS_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
         model_instance = self._model_creator.create_model(True, False)
         # path to diabetes.csv file in project
@@ -80,39 +124,15 @@ class MyTestCase(unittest.TestCase):
         model_instance.initial_params = initial_prm
         model_instance.estimator = estimator
         model_instance.feature_selector = feature_selector
-        score = model_instance.score_model(df, "roc_auc")
+        score = model_instance.score_model(df, "roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_params)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
 
-    def test_only_feature_selection_model_SVC_SFM_score_is_float_and_greater_than_zero(self):
-        # create a simple model using SBSModelCreator
-        model_instance = self._model_creator.create_model(True, False)
-        # path to diabetes.csv file in project
-        path = ".\\..\\datasets\\diabetes.csv"
-        # get df with loader creator
-        csv_type = self._loader_creator.create_loader(path, "CSV")
-        df = csv_type.get_file_transformed()
-        # create a prm variable to store params grid
-        initial_prm = {'C': 2, 'random_state': 0, 'tol': 0.01, "kernel": "rbf"}
-        # create an estimator using EstimatorCreator
-        estimator = self._estimator_creator.create_estimator("SVC")
-        # create a feature selector variable to store a FeatureSelection instance
-        feature_selector = self._feature_selection_creator.create_feature_selector("SFM")
-        # set object best params, base estimator and feature selector
-        model_instance.initial_params = initial_prm
-        model_instance.estimator = estimator
-        model_instance.feature_selector = feature_selector
-        score = model_instance.score_model(df, "roc_auc")
-        print("score:", score)
-        print("best params", model_instance.best_params)
-        print("best features", model_instance.best_features)
-        is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
-        self.assertTrue(is_valid)
+    def test_only_feature_selection_model_SVC_BFS__roc_auc_10_score_is_float_and_greater_than_zero(self):
 
-    def test_only_feature_selection_model_SVC_BFS_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
         model_instance = self._model_creator.create_model(True, False)
         # path to diabetes.csv file in project
@@ -130,39 +150,14 @@ class MyTestCase(unittest.TestCase):
         model_instance.initial_params = initial_prm
         model_instance.estimator = estimator
         model_instance.feature_selector = feature_selector
-        score = model_instance.score_model(df, "roc_auc")
+        score = model_instance.score_model(df, "roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_params)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
 
-    def test_only_feature_selection_model_LSVC_RFE_score_is_float_and_greater_than_zero(self):
-        # create a simple model using SBSModelCreator
-        model_instance = self._model_creator.create_model(True, False)
-        # path to diabetes.csv file in project
-        path = ".\\..\\datasets\\diabetes.csv"
-        # get df with loader creator
-        csv_type = self._loader_creator.create_loader(path, "CSV")
-        df = csv_type.get_file_transformed()
-        # create a prm variable to store params grid
-        initial_prm = {'C': 2, 'random_state': 0, 'tol': 0.01, "dual": False}
-        # create an estimator using EstimatorCreator
-        estimator = self._estimator_creator.create_estimator("LSVC")
-        # create a feature selector variable to store a FeatureSelection instance
-        feature_selector = self._feature_selection_creator.create_feature_selector("RFE")
-        # set object best params, base estimator and feature selector
-        model_instance.initial_params = initial_prm
-        model_instance.estimator = estimator
-        model_instance.feature_selector = feature_selector
-        score = model_instance.score_model(df, "roc_auc")
-        print("score:", score)
-        print("best params", model_instance.best_params)
-        print("best features", model_instance.best_features)
-        is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
-        self.assertTrue(is_valid)
-
-    def test_only_parameter_search_model_SVC_BS_score_is_float_and_greater_than_zero(self):
+    def test_only_parameter_search_model_SVC_BS_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
         model_instance = self._model_creator.create_model(False, True)
         # path to molecules.csv file in project
@@ -184,14 +179,14 @@ class MyTestCase(unittest.TestCase):
         model_instance.initial_params = initial_prm
         model_instance.estimator = estimator
         model_instance.parameter_selector = parameter_selector
-        score = model_instance.score_model(df, "roc_auc")
+        score = model_instance.score_model(df, "roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_params)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
 
-    def test_all_model_SVC_BS_FFM_score_is_float_and_greater_than_zero(self):
+    def test_all_model_SVC_BS_FFS_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
         model_instance = self._model_creator.create_model(True, True)
         # path to diabetes.csv file in project
@@ -215,7 +210,7 @@ class MyTestCase(unittest.TestCase):
         model_instance.estimator = estimator
         model_instance.feature_selector = feature_selector
         model_instance.parameter_selector = parameter_selector
-        score = model_instance.score_model(df, "roc_auc")
+        score = model_instance.score_model(df, "roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_params)
         print("best features", model_instance.best_features)
