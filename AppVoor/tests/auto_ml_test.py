@@ -1,6 +1,6 @@
 import unittest
 
-from auto_ml import JarAutoML
+from auto_ml import JarAutoML, AutoExecutioner
 
 
 class MyTestCase(unittest.TestCase):
@@ -33,6 +33,13 @@ class MyTestCase(unittest.TestCase):
             bol_answer = False
         # this should be True
         self.assertTrue(bol_answer)
+
+    def test_auto_executioner_get_model_prints_model(self):
+        max_rand = 4000
+        auto_ml = JarAutoML(3, False, max_rand)
+        auto_executioner = AutoExecutioner(auto_ml)
+        model = auto_executioner.get_model()
+        print(model)
 
 
 if __name__ == '__main__':
