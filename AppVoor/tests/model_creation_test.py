@@ -217,6 +217,37 @@ class MyTestCase(unittest.TestCase):
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
 
+    def test_all_model_LASSO_BS_BFS_r2_5_score_is_float_and_greater_than_zero(self):
+        # create a simple model using SBSModelCreator
+        model_instance = self._model_creator.create_model(True, True)
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\winequality-red.csv"
+        # get df with loader creator
+        scsv_type = self._loader_creator.create_loader(path, "SCSV")
+        df = scsv_type.get_file_transformed()
+        # create a prm variable to store params grid
+        initial_prm = {'alpha': Real(1, 10, prior='log-uniform'),
+                       'tol': Real(1e-4, 1e+1, prior='log-uniform'),
+                       'random_state': Integer(0, 10),
+                       "selection": Categorical(["cyclic", "random"])}
+        # create an estimator using EstimatorCreator
+        estimator = self._estimator_creator.create_estimator("lasso")
+        # create a feature selector variable to store a FeatureSelection instance
+        feature_selector = self._feature_selection_creator.create_feature_selector("BFS")
+        # create a parameter selector variable to store a ParameterSearch instance
+        parameter_selector = self._parameter_selection_creator.create_param_selector("BS")
+        # set object best params, base estimator, parameter selector and feature selector
+        model_instance.initial_params = initial_prm
+        model_instance.estimator = estimator
+        model_instance.feature_selector = feature_selector
+        model_instance.parameter_selector = parameter_selector
+        score = model_instance.score_model(df, "r2", 5)
+        print("score:", score)
+        print("best params", model_instance.best_params)
+        print("best features", model_instance.best_features)
+        is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
+        print("is float and greater than 0:", is_valid)
+
 
 if __name__ == '__main__':
     unittest.main()

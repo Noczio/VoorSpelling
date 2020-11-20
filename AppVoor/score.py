@@ -11,16 +11,19 @@ DataFrame = pd.DataFrame
 
 
 class CVModelScore(ABC):
-    _types = ("roc_auc", "accuracy", "r2", "explained_variance", "mutual_info_score",
-              "homogeneity_score")
 
     @abstractmethod
     def get_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
                   n_folds_validation: int) -> float:
         pass
 
+    @abstractmethod
+    def get_available_types(self) -> tuple:
+        pass
+
 
 class CVScore(CVModelScore):
+    _types = ("roc_auc", "accuracy", "r2", "explained_variance", "mutual_info_score")
 
     def get_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
                   n_folds_validation: int) -> float:
@@ -35,3 +38,6 @@ class CVScore(CVModelScore):
             cv_results = cross_validate(model, x, y, cv=n_folds_validation, scoring=score_type)
             avg = cv_results['test_score'].mean()
             return avg
+
+    def get_available_types(self) -> tuple:
+        return self._types

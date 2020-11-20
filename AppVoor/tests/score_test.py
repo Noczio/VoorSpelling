@@ -150,6 +150,32 @@ class MyTestCase(unittest.TestCase):
         # there is at least one true element, which means on of the scores is greater than 0
         self.assertTrue(any(bol_results))
 
+    def test_cv_score_is_more_than_zero_with_APROPAGATION_KMEANS_MINIKMEANS_MEANSHIFT_mutual_info_score_5(self):
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\iris.csv"
+        # get df with loader creator
+        csv_type = self._loader_creator.create_loader(path, "CSV")
+        df = csv_type.get_file_transformed()
+        # split df into x and y
+        splitter = SplitterReturner()
+        x, y = splitter.split_x_y_from_df(df)
+        # create a CVScore object with its path and data type
+        cv_score = CVScore()
+        # create a simple a svc, knn and gnb estimator
+        model_1 = self._estimator_creator.create_estimator("APROPAGATION")
+        model_2 = self._estimator_creator.create_estimator("KMEANS")
+        model_3 = self._estimator_creator.create_estimator("MINIKMEANS")
+        model_4 = self._estimator_creator.create_estimator("MEANSHIFT")
+        estimators = [model_1.set_params(random_state=0), model_2, model_3, model_4]
+        # get score from a linearSVC estimator with accuracy score and 5folds
+        bol_results = []
+        for clf in estimators:
+            score = cv_score.get_score(x, y, clf, "mutual_info_score", 5)
+            print(clf.__class__.__name__, "score is:", score)
+            is_greater_than_zero: bool = True if score > 0 else False
+            bol_results.append(is_greater_than_zero)
+        print(bol_results)
+
 
 if __name__ == '__main__':
     unittest.main()

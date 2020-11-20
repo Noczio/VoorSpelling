@@ -4,6 +4,7 @@ from typing import Any
 import pandas as pd
 import numpy as np
 
+from is_data import DataEnsurer
 from score import CVScore, CVModelScore
 
 NpArray = np.ndarray
@@ -30,7 +31,7 @@ class BackwardsFeatureSelection(FeatureSelection):
         # first check x len. this variable will become smaller and smaller over time
         new_x_length = len(x.columns)
         # if there are columns in the x dataframe then do the following process
-        if new_x_length > 0:
+        if new_x_length > 1:
             score_lst = []  # empty list to store score values
             # iterate over all features from x dataframe
             for i in range(new_x_length):
@@ -48,7 +49,10 @@ class BackwardsFeatureSelection(FeatureSelection):
             # get the index of all score with max score
             max_score_index = [i for i, j in enumerate(score_lst) if j == max_score]
             # get the top score from the max score index list
-            top_score_index = max_score_index[0]
+            if DataEnsurer.validate_py_data(max_score_index, list):
+                top_score_index = max_score_index[0]
+            else:
+                top_score_index = max_score_index
             # drop the feature where the best score is. Without that feature the model improves
             temp_col_name = x.columns[top_score_index]
             new_best_x = x.drop([temp_col_name], axis=1)
@@ -75,7 +79,13 @@ class BackwardsFeatureSelection(FeatureSelection):
             self._initial_score = initial_score
             # call recursive function and then return best x
             best_x, best_score = self._iteration(x, y, model, initial_score, score_type, n_folds_validation)
-            return best_x
+            # data might be len 1 or wrong
+            if DataEnsurer.validate_py_data(best_x, pd.Series):
+                return best_x.to_frame()
+            elif DataEnsurer.validate_py_data(best_x, DataFrame):
+                return best_x
+            else:
+                raise TypeError("Output is not a dataframe")
         else:
             return x
 
@@ -102,7 +112,10 @@ class ForwardFeatureSelection(FeatureSelection):
         # get the index of all score with max score
         max_score_index = [i for i, j in enumerate(score_lst) if j == max_score]
         # get the top score from the max score index list
-        top_score_index = max_score_index[0]
+        if DataEnsurer.validate_py_data(max_score_index, list):
+            top_score_index = max_score_index[0]
+        else:
+            top_score_index = max_score_index
         # get feature name using top_score_index from original x dataframe
         new_feature = x.columns[top_score_index]
         # create a new dataframe with the winning feature
@@ -139,7 +152,10 @@ class ForwardFeatureSelection(FeatureSelection):
             # get the index of all score with max score
             max_score_index = [i for i, j in enumerate(score_lst) if j == max_score]
             # get the top score from the max score index list
-            top_score_index = max_score_index[0]
+            if DataEnsurer.validate_py_data(max_score_index, list):
+                top_score_index = max_score_index[0]
+            else:
+                top_score_index = max_score_index
             # get feature name using top_score_index from original x dataframe
             new_feature = x.columns[top_score_index]
             # create a new dataframe with the winning feature
@@ -172,7 +188,13 @@ class ForwardFeatureSelection(FeatureSelection):
             # call recursive function and then return best x
             best_x, best_score = self._else_iteration(f_best_x, new_x, y, model, f_score, score_type,
                                                       n_folds_validation)
-            return best_x
+            # data might be len 1 or wrong
+            if DataEnsurer.validate_py_data(best_x, pd.Series):
+                return best_x.to_frame()
+            elif DataEnsurer.validate_py_data(best_x, DataFrame):
+                return best_x
+            else:
+                raise TypeError("Output is not a dataframe")
 
 
 class FeatureSelectorCreator:
