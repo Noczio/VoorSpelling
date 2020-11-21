@@ -12,11 +12,17 @@ DataFrame = pd.DataFrame
 
 
 class FeatureSelection(ABC):
+    _cv_score: CVModelScore = CVScore()
 
     @abstractmethod
     def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
                         n_folds_validation: int) -> DataFrame:
         pass
+
+    def _get_cv_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str, n_folds_validation: int) -> float:
+        # get score using the object and the method parameters and the return it
+        score = self._cv_score.get_score(x, y, model, score_type, n_folds_validation)
+        return score
 
 
 class BackwardsFeatureSelection(FeatureSelection):
@@ -24,7 +30,6 @@ class BackwardsFeatureSelection(FeatureSelection):
     def __init__(self):
         self._initial_score: float = 0.0
         self._initial_x: DataFrame = DataFrame()
-        self._cv_score: CVModelScore = CVScore()
 
     def _iteration(self, x: DataFrame, y: NpArray, model: Any, actual_score: float, score_type: str,
                    n_folds_validation: int) -> tuple:
@@ -64,18 +69,14 @@ class BackwardsFeatureSelection(FeatureSelection):
         # this is bad scenario, because it iterated all features and there was not an improvement
         return self._initial_x, self._initial_score
 
-    def _get_cv_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str, n_folds_validation: int) -> float:
-        # get score using the object and the method parameters and the return it
-        score = self._cv_score.get_score(x, y, model, score_type, n_folds_validation)
-        return score
-
     def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
                         n_folds_validation: int) -> DataFrame:
         self._initial_x = x
         _, initial_y_shape = x.shape  # original column len for evaluation
         if initial_y_shape > 1:
             initial_score = self._get_cv_score(x, y, model, score_type,
-                                               n_folds_validation)  # initial score with all features
+                                               n_folds_validation)
+            # initial score with all features
             self._initial_score = initial_score
             # call recursive function and then return best x
             best_x, best_score = self._iteration(x, y, model, initial_score, score_type, n_folds_validation)
@@ -91,9 +92,6 @@ class BackwardsFeatureSelection(FeatureSelection):
 
 
 class ForwardFeatureSelection(FeatureSelection):
-
-    def __init__(self):
-        self._cv_score: CVModelScore = CVScore()
 
     def _first_iteration(self, x: DataFrame, y: NpArray, model: Any, score_type: str, n_folds_validation: int) -> tuple:
         score_lst = []  # empty list to store score values
@@ -170,11 +168,6 @@ class ForwardFeatureSelection(FeatureSelection):
         # x dataframe is now empty, return best x dataframe and its score
         # this is bad scenario, because it iterated all features and there was not an improvement
         return best_x, actual_score
-
-    def _get_cv_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str, n_folds_validation: int) -> float:
-        # get score using the object and the method parameters and the return it
-        score = self._cv_score.get_score(x, y, model, score_type, n_folds_validation)
-        return score
 
     def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
                         n_folds_validation: int) -> DataFrame:

@@ -37,25 +37,25 @@ class GridSearch(ParameterSearch):
         return best_params
 
 
-class ParamSearchCreator:
+class ParameterSearchCreator:
     __instance = None
     _types: dict = {"BS": BayesianSearch(), "GS": GridSearch()}
 
     @staticmethod
-    def get_instance() -> "ParamSearchCreator":
+    def get_instance() -> "ParameterSearchCreator":
         """Static access method."""
-        if ParamSearchCreator.__instance is None:
-            ParamSearchCreator()
-        return ParamSearchCreator.__instance
+        if ParameterSearchCreator.__instance is None:
+            ParameterSearchCreator()
+        return ParameterSearchCreator.__instance
 
     def __init__(self) -> None:
         """Virtually private constructor."""
-        if ParamSearchCreator.__instance is not None:
+        if ParameterSearchCreator.__instance is not None:
             raise Exception("This class is a singleton!")
         else:
-            ParamSearchCreator.__instance = self
+            ParameterSearchCreator.__instance = self
 
-    def create_param_selector(self, selection_type: str) -> ParameterSearch:
+    def create_parameter_selector(self, selection_type: str) -> ParameterSearch:
         # transform param to capital letters and then replace white spaces
         key = selection_type.upper().replace(" ", "")
         if key in self._types.keys():

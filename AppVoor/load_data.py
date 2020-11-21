@@ -11,10 +11,10 @@ DataFrame = pd.DataFrame
 
 
 class DataLoader(ABC, Generic[T]):
-    _data: T
+    _data: T = None
 
     def __init__(self, file_path: str) -> None:
-        # initialization when obj is created. By default _data is None
+        # initialization when obj is created.
         self._file_path: str = file_path
 
     @property
