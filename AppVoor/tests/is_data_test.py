@@ -3,11 +3,11 @@ import unittest
 import pandas as pd
 
 from is_data import DataEnsurer
+from jsonInfo.welcome import WelcomeMessage
 from load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):
-
     _loader_creator = LoaderCreator.get_instance()
 
     def test_data_is_df(self):
@@ -53,6 +53,14 @@ class MyTestCase(unittest.TestCase):
         csv_file = self._loader_creator.create_loader(test_full_path, "csv")
         path = csv_file.file_path
         bol_answer = DataEnsurer.validate_py_data(path, str)
+        self.assertTrue(bol_answer)
+
+    def test_data_type_is_list(self):
+        # initialization of welcome_message with its path
+        welcome_message = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json", data_type=list)
+        data = welcome_message.data  # get data value using its property
+        bol_answer = DataEnsurer.validate_py_data(data, list)
+        # is data a list?
         self.assertTrue(bol_answer)
 
 

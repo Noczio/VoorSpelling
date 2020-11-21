@@ -15,7 +15,7 @@ DataFrame = pd.DataFrame
 
 
 class AutoMachineLearning(ABC):
-    _estimator: Any
+    _estimator: Any = None
 
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         # initialize _random_state, _n_folds_validation and _shuffle_data.
@@ -50,7 +50,7 @@ class JarAutoML(AutoMachineLearning):
     def __init__(self, n_folds_validation: int, shuffle_data: bool, max_rand: int) -> None:
         super().__init__(n_folds_validation, shuffle_data, max_rand)
         # initialize _clf as AutoMl type
-        self.clf = AutoML(
+        self.estimator = AutoML(
             mode="Compete",
             explain_level=0,
             random_state=self._random_state,
@@ -63,12 +63,12 @@ class JarAutoML(AutoMachineLearning):
     # abstract class method implementation
     def fit_model(self, x_train: DataFrame, y_train: NpArray) -> None:
         # clf fit method
-        self.clf.fit(x_train, y_train)
+        self.estimator.fit(x_train, y_train)
 
     # abstract class method implementation
     def predict_model(self, x_test: DataFrame) -> tuple:
         # clf predict. Returns prediction as tuple
-        prediction_tuple = tuple(self.clf.predict(x_test))
+        prediction_tuple = tuple(self.estimator.predict(x_test))
         return prediction_tuple
 
 

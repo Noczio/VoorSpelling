@@ -76,14 +76,6 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(IndexError):
             _ = welcome_message[-6]  # __getitem__ method raises a error due to index out of bounds
 
-    def test_data_type_is_list(self):
-        # initialization of welcome_message with its path
-        welcome_message = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json", data_type=list)
-        data = welcome_message.data  # get data value using its property
-        bol_answer = DataEnsurer.validate_py_data(data, list)
-        # is data a list?
-        self.assertTrue(bol_answer)
-
 
 if __name__ == '__main__':
     unittest.main()

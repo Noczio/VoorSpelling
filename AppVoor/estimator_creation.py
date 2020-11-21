@@ -4,7 +4,7 @@ from sklearn.svm import LinearSVC, SVC, LinearSVR, SVR
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import Lasso, SGDClassifier
-from sklearn.cluster import SpectralClustering, KMeans, MiniBatchKMeans, MeanShift
+from sklearn.cluster import AffinityPropagation, KMeans, MiniBatchKMeans, MeanShift
 
 
 class EstimatorCreator:
@@ -13,7 +13,7 @@ class EstimatorCreator:
                     "KNN": KNeighborsClassifier(), "GNB": GaussianNB(),
                     "LSVR": LinearSVR(), "SVR": SVR(),
                     "LASSO": Lasso(), "SGD": SGDClassifier(),
-                    "SPC": SpectralClustering(), "KMEANS": KMeans(),
+                    "APROPAGATION": AffinityPropagation(), "KMEANS": KMeans(),
                     "MINIKMEANS": MiniBatchKMeans(), "MEANSHIFT": MeanShift()}
 
     @staticmethod
@@ -37,7 +37,7 @@ class EstimatorCreator:
             sklearn_estimator_type = self._types[key]
             return sklearn_estimator_type
         raise ValueError("feature selection type value is wrong. It should be: LSVC, SVC, KNN, GNB, LSVR, SVR, LASSO, "
-                         "SGD, SPC, KMEANS, MINIKMEANS or MEANSHIFT")
+                         "SGD, APROPAGATION, KMEANS, MINIKMEANS or MEANSHIFT")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]

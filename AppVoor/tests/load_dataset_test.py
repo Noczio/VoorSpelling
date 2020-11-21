@@ -18,6 +18,18 @@ class MyTestCase(unittest.TestCase):
         # do the values match?
         self.assertEqual(df_column_len, 9)
 
+    def test_data_loaded_scsv(self):
+        # load diabetes.csv from disk
+        folder_name = "datasets"
+        file_name = "winequality-red.csv"
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        # get dataframe using LoaderCreator
+        scsv_type = self._loader_creator.create_loader(test_full_path, "SCSV")
+        df = scsv_type.get_file_transformed()
+        df_column_len = len(df.columns)
+        # do the values match?
+        self.assertEqual(df_column_len, 12)
+
     def test_data_load_tsv(self):
         # load molecules.csv from disk
         folder_name = "datasets"
@@ -40,6 +52,17 @@ class MyTestCase(unittest.TestCase):
             tsv_type = self._loader_creator.create_loader(test_full_path, "CSV")
             # this should raise an TypeError
             _ = tsv_type.get_file_transformed()
+
+    def test_wrong_sep_for_scsv_file(self):
+        # load molecules.csv from disk
+        folder_name = "datasets"
+        file_name = "winequality-red.csv"
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        with self.assertRaises(TypeError):
+            # get dataframe using LoaderCreator
+            scsv_type = self._loader_creator.create_loader(test_full_path, "CSV")
+            # this should raise an TypeError
+            _ = scsv_type.get_file_transformed()
 
     def test_wrong_sep_for_csv_file(self):
         # load diabetes.csv from disk
@@ -73,6 +96,17 @@ class MyTestCase(unittest.TestCase):
             tsv_type = self._loader_creator.create_loader(test_full_path, "TSV")
             # this should raise an FileNotFoundError
             _ = tsv_type.get_file_transformed()
+
+    def test_wrong_path_scsv_file(self):
+        # load mol.csv from disk. This file does not exist
+        folder_name = "datasets"
+        file_name = "mol.csv"
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        with self.assertRaises(FileNotFoundError):
+            # get dataframe using LoaderCreator
+            scsv_type = self._loader_creator.create_loader(test_full_path, "SCSV")
+            # this should raise an FileNotFoundError
+            _ = scsv_type.get_file_transformed()
 
     def test_creator_value_is_wrong(self):
         # load molecules.csv from disk
@@ -110,7 +144,7 @@ class MyTestCase(unittest.TestCase):
     def test_loader_creator_types_are_correct(self):
         # check for available types
         loader_types = self._loader_creator.get_available_types()
-        expected_types = ("CSV", "TSV", "JSON")
+        expected_types = ("CSV", "TSV", "JSON", "SCSV")
         bol_answer = expected_types == loader_types
         # this should assert true
         self.assertTrue(bol_answer)

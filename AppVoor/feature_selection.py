@@ -4,8 +4,7 @@ from typing import Any
 import pandas as pd
 import numpy as np
 
-from sklearn.feature_selection import SelectFromModel, RFE
-
+from is_data import DataEnsurer
 from score import CVScore, CVModelScore
 
 NpArray = np.ndarray
@@ -13,25 +12,97 @@ DataFrame = pd.DataFrame
 
 
 class FeatureSelection(ABC):
+    _cv_score: CVModelScore = CVScore()
 
     @abstractmethod
-    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
+    def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
+                        n_folds_validation: int) -> DataFrame:
         pass
+
+    def _get_cv_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str, n_folds_validation: int) -> float:
+        # get score using the object and the method parameters and the return it
+        score = self._cv_score.get_score(x, y, model, score_type, n_folds_validation)
+        return score
+
+
+class BackwardsFeatureSelection(FeatureSelection):
+
+    def __init__(self):
+        self._initial_score: float = 0.0
+        self._initial_x: DataFrame = DataFrame()
+
+    def _iteration(self, x: DataFrame, y: NpArray, model: Any, actual_score: float, score_type: str,
+                   n_folds_validation: int) -> tuple:
+        # first check x len. this variable will become smaller and smaller over time
+        new_x_length = len(x.columns)
+        # if there are columns in the x dataframe then do the following process
+        if new_x_length > 1:
+            score_lst = []  # empty list to store score values
+            # iterate over all features from x dataframe
+            for i in range(new_x_length):
+                # drop feature by index and store the results in a temp variable
+                temp_col_name = x.columns[i]
+                temp_x = x.drop([temp_col_name], axis=1)
+                # get its score in a cv and append that value to the score_lst
+                score = self._get_cv_score(temp_x, y, model, score_type, n_folds_validation)
+                score_lst.append(score)
+            # get the max score from the score_lst
+            max_score = max(score_lst)
+            # check if this iteration was worth it. If not then break the recursive method
+            if actual_score > max_score:
+                return x, actual_score
+            # get the index of all score with max score
+            max_score_index = [i for i, j in enumerate(score_lst) if j == max_score]
+            # get the top score from the max score index list
+            if DataEnsurer.validate_py_data(max_score_index, list):
+                top_score_index = max_score_index[0]
+            else:
+                top_score_index = max_score_index
+            # drop the feature where the best score is. Without that feature the model improves
+            temp_col_name = x.columns[top_score_index]
+            new_best_x = x.drop([temp_col_name], axis=1)
+            # finally return the best feature dataframe, the new x without that feature and the max score of this
+            # iteration
+            return self._iteration(new_best_x, y, model, max_score, score_type, n_folds_validation)
+
+        # x dataframe is now empty, return the initial x dataframe and its score
+        # this is bad scenario, because it iterated all features and there was not an improvement
+        return self._initial_x, self._initial_score
+
+    def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
+                        n_folds_validation: int) -> DataFrame:
+        self._initial_x = x
+        _, initial_y_shape = x.shape  # original column len for evaluation
+        if initial_y_shape > 1:
+            initial_score = self._get_cv_score(x, y, model, score_type,
+                                               n_folds_validation)
+            # initial score with all features
+            self._initial_score = initial_score
+            # call recursive function and then return best x
+            best_x, best_score = self._iteration(x, y, model, initial_score, score_type, n_folds_validation)
+            # data might be len 1 or wrong
+            if DataEnsurer.validate_py_data(best_x, pd.Series):
+                return best_x.to_frame()
+            elif DataEnsurer.validate_py_data(best_x, DataFrame):
+                return best_x
+            else:
+                raise TypeError("Output is not a dataframe")
+        else:
+            return x
 
 
 class ForwardFeatureSelection(FeatureSelection):
-    _cv_score: CVModelScore = CVScore()
 
-    def _first_iteration(self, x: DataFrame, y: NpArray, model: Any) -> tuple:
+    def _first_iteration(self, x: DataFrame, y: NpArray, model: Any, score_type: str, n_folds_validation: int) -> tuple:
         score_lst = []  # empty list to store score values
         # iterate over all features
         for i in range(len(x.columns)):
             # in each iteration get the column
-            k = x.columns[i]
+            temp_col_name = x.columns[i]
             # create a temp dataframe with the selected column
-            temp_x = x[[k]]
+            temp_x = x[[temp_col_name]]
             # get its score in a cv and append that values to the score_lst
-            score = self._get_cv_score(temp_x, y, model)
+            score = self._get_cv_score(temp_x, y, model, score_type, n_folds_validation)
             score_lst.append(score)
 
         # get the max score from the score_lst
@@ -39,7 +110,10 @@ class ForwardFeatureSelection(FeatureSelection):
         # get the index of all score with max score
         max_score_index = [i for i, j in enumerate(score_lst) if j == max_score]
         # get the top score from the max score index list
-        top_score_index = max_score_index[0]
+        if DataEnsurer.validate_py_data(max_score_index, list):
+            top_score_index = max_score_index[0]
+        else:
+            top_score_index = max_score_index
         # get feature name using top_score_index from original x dataframe
         new_feature = x.columns[top_score_index]
         # create a new dataframe with the winning feature
@@ -49,7 +123,8 @@ class ForwardFeatureSelection(FeatureSelection):
         # finally return the best feature dataframe, the new x without that feature and the max score of this iteration
         return new_best_x, new_x, max_score
 
-    def _else_iteration(self, best_x: DataFrame, x: DataFrame, y: NpArray, model, actual_score: float) -> tuple:
+    def _else_iteration(self, best_x: DataFrame, x: DataFrame, y: NpArray, model: Any, actual_score: float,
+                        score_type: str, n_folds_validation: int) -> tuple:
         # first check x len. this variable will become smaller and smaller over time
         new_x_length = len(x.columns)
         # if there are columns in the x dataframe then do the following process
@@ -58,12 +133,12 @@ class ForwardFeatureSelection(FeatureSelection):
             # iterate over all features from x dataframe
             for i in range(new_x_length):
                 # in each iteration get the column
-                k = x.columns[i]
+                temp_col_name = x.columns[i]
                 # create a temp dataframe with the selected column
-                temp_x = x[[k]]
+                temp_x = x[[temp_col_name]]
                 temp_new_x = pd.concat([best_x, temp_x], axis=1, ignore_index=True)
                 # get its score in a cv and append that values to the score_lst
-                score = self._get_cv_score(temp_new_x, y, model)
+                score = self._get_cv_score(temp_new_x, y, model, score_type, n_folds_validation)
                 score_lst.append(score)
 
             # get the max score from the score_lst once the for loop has ended
@@ -75,7 +150,10 @@ class ForwardFeatureSelection(FeatureSelection):
             # get the index of all score with max score
             max_score_index = [i for i, j in enumerate(score_lst) if j == max_score]
             # get the top score from the max score index list
-            top_score_index = max_score_index[0]
+            if DataEnsurer.validate_py_data(max_score_index, list):
+                top_score_index = max_score_index[0]
+            else:
+                top_score_index = max_score_index
             # get feature name using top_score_index from original x dataframe
             new_feature = x.columns[top_score_index]
             # create a new dataframe with the winning feature
@@ -85,57 +163,36 @@ class ForwardFeatureSelection(FeatureSelection):
             # drop the winning feature from the x dataframe and then store it into a new variable
             new_x = x.drop(new_feature, axis=1)
             # call the recursive function all over again until the condition is met
-            return self._else_iteration(new_best_x, new_x, y, model, max_score)
+            return self._else_iteration(new_best_x, new_x, y, model, max_score, score_type, n_folds_validation)
 
         # x dataframe is now empty, return best x dataframe and its score
         # this is bad scenario, because it iterated all features and there was not an improvement
         return best_x, actual_score
 
-    def _get_cv_score(self, x: DataFrame, y: NpArray, model: Any) -> float:
-        # get score using the object and the method parameters and the return it
-        score = self._cv_score.get_score(x, y, model, "roc_auc", 10)
-        return score
-
-    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
+    def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
+                        n_folds_validation: int) -> DataFrame:
         _, initial_y_shape = x.shape  # original column len for evaluation
         # if x only has 1 column then return original dataframe
         if initial_y_shape == 1:
             return x
         else:
             # else if x has more than 1 column
-            f_best_x, new_x, f_score = self._first_iteration(x, y, model)
+            f_best_x, new_x, f_score = self._first_iteration(x, y, model, score_type, n_folds_validation)
             # call recursive function and then return best x
-            best_x, best_score = self._else_iteration(f_best_x, new_x, y, model, f_score)
-            return best_x
-
-
-class SFMFeatureSelection(FeatureSelection):
-
-    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
-        clf = model.fit(x, y)
-        sfm = SelectFromModel(clf, prefit=True)
-        _ = sfm.transform(x)
-        features = x.columns[sfm.get_support()]
-        transformed_x = x[features]
-        return transformed_x
-
-
-class RFEFeatureSelection(FeatureSelection):
-
-    def select_features(self, x: DataFrame, y: NpArray, model: Any) -> DataFrame:
-        clf = model
-        rfe = RFE(clf)
-        rfe.fit(x, y)
-        _ = rfe.transform(x)
-        features = x.columns[rfe.get_support()]
-        transformed_x = x[features]
-        return transformed_x
+            best_x, best_score = self._else_iteration(f_best_x, new_x, y, model, f_score, score_type,
+                                                      n_folds_validation)
+            # data might be len 1 or wrong
+            if DataEnsurer.validate_py_data(best_x, pd.Series):
+                return best_x.to_frame()
+            elif DataEnsurer.validate_py_data(best_x, DataFrame):
+                return best_x
+            else:
+                raise TypeError("Output is not a dataframe")
 
 
 class FeatureSelectorCreator:
     __instance = None
-    _types: dict = {"FFS": ForwardFeatureSelection(), "SFM": SFMFeatureSelection(),
-                    "RFE": RFEFeatureSelection()}
+    _types: dict = {"FFS": ForwardFeatureSelection(), "BFS": BackwardsFeatureSelection()}
 
     @staticmethod
     def get_instance() -> "FeatureSelectorCreator":
@@ -157,7 +214,7 @@ class FeatureSelectorCreator:
         if key in self._types.keys():
             feature_selection_type = self._types[key]
             return feature_selection_type
-        raise ValueError("feature selection type value is wrong. It should be: FS, SFM or FFE")
+        raise ValueError("feature selection type value is wrong. It should be: FFS or BFS")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]

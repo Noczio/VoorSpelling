@@ -7,6 +7,9 @@ from jsonInfo.random_generator import Randomizer
 
 class WelcomeMessage(JSONMessage):
 
+    def __init__(self, file_path: str, data_type: Any = list):
+        super().__init__(file_path, data_type)
+
     # abstract class method implementation
     def __getitem__(self, key: int) -> tuple:
         if DataEnsurer.validate_py_data(key, int):
@@ -23,11 +26,9 @@ class WelcomeMessage(JSONMessage):
 
 class WelcomeMessenger:
 
-    def __init__(self, file_path: str = ".\\welcomeMessage.json", data_type: Any = list) -> None:
+    def __init__(self, file_path: str = ".\\welcomeMessage.json") -> None:
         # initialize a WelcomeMessage
-        json_path = file_path
-        json_data_type = data_type
-        self._json_message: JSONMessage = WelcomeMessage(file_path=json_path, data_type=json_data_type)
+        self._json_message: JSONMessage = WelcomeMessage(file_path)
         # start, end and step for random choice
         random_start = 0
         random_end = len(self._json_message)

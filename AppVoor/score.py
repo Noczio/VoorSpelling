@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Union, Any
+from typing import Any
 
 from sklearn.model_selection import cross_validate
 
@@ -11,18 +11,22 @@ DataFrame = pd.DataFrame
 
 
 class CVModelScore(ABC):
-    _types = ("roc_auc", "f1", "accuracy")
 
     @abstractmethod
     def get_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
-                  n_folds_validation: int) -> Union[float, int]:
+                  n_folds_validation: int) -> float:
+        pass
+
+    @abstractmethod
+    def get_available_types(self) -> tuple:
         pass
 
 
 class CVScore(CVModelScore):
+    _types = ("roc_auc", "accuracy", "r2", "explained_variance", "mutual_info_score")
 
     def get_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
-                  n_folds_validation: int) -> Union[float, int]:
+                  n_folds_validation: int) -> float:
 
         if n_folds_validation < 3 or n_folds_validation > 10 and score_type in self._types:
             raise ValueError("Number of folds is not greater than three and lesser to ten")
@@ -34,3 +38,6 @@ class CVScore(CVModelScore):
             cv_results = cross_validate(model, x, y, cv=n_folds_validation, scoring=score_type)
             avg = cv_results['test_score'].mean()
             return avg
+
+    def get_available_types(self) -> tuple:
+        return self._types

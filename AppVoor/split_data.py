@@ -27,14 +27,15 @@ class NormalSplitter(DataSplitter):
     def train_test_split_data(self, x: DataFrame, y: NpArray, size: float) -> tuple:
         # return x_train, x_test, y_train, y_test using scikitlearn train_test_split
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size)
-        temp_answer = [x_train, x_test, y_train, y_test]
-        return tuple(temp_answer)
+        temp_answer = x_train, x_test, y_train, y_test
+        return temp_answer
 
     # interface method implementation
     def split_data_into_x_and_y(self, df: DataFrame) -> tuple:
-        # fix y as pd.DataFrame. By default it is a pd.Series. It should returns a np.array
+        # fix y as pd.DataFrame. By default it is a pd.Series
         y = df[df.columns[-1]].to_frame()
         x = df.drop([df.columns[-1]], axis=1)
+        # it should returns a pd.DataFrame and a np.array
         return x, y.values.ravel()
 
 
@@ -47,7 +48,7 @@ class SplitterReturner:
         if 0.0 < size < 1.0:
             tuple_answer = data_splitter.train_test_split_data(x, y, size)
             return tuple_answer
-        raise ValueError("Size variable is not between 0.0 and 1.0")
+        raise ValueError("Size variable should be between 0.0 and 1.0 without them")
 
     @staticmethod
     def split_x_y_from_df(df: DataFrame) -> tuple:
