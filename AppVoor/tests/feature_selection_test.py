@@ -236,7 +236,7 @@ class MyTestCase(unittest.TestCase):
         # this should be True
         self.assertTrue(is_fewer_than_original)
 
-    def test_iris_has_fewer_features_with_MEANSHING_BFS_mutual_info_score_10(self):
+    def test_iris_has_fewer_features_with_MEANSHIFT_BFS_mutual_info_score_10(self):
         # load molecules.csv from disk
         folder_name = "datasets"
         file_name = "iris.csv"

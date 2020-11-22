@@ -19,11 +19,6 @@ class FeatureSelection(ABC):
                         n_folds_validation: int) -> DataFrame:
         pass
 
-    def _get_cv_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str, n_folds_validation: int) -> float:
-        # get score using the object and the method parameters and the return it
-        score = self._cv_score.get_score(x, y, model, score_type, n_folds_validation)
-        return score
-
 
 class BackwardsFeatureSelection(FeatureSelection):
 
@@ -44,7 +39,7 @@ class BackwardsFeatureSelection(FeatureSelection):
                 temp_col_name = x.columns[i]
                 temp_x = x.drop([temp_col_name], axis=1)
                 # get its score in a cv and append that value to the score_lst
-                score = self._get_cv_score(temp_x, y, model, score_type, n_folds_validation)
+                score = self._cv_score.get_score(temp_x, y, model, score_type, n_folds_validation)
                 score_lst.append(score)
             # get the max score from the score_lst
             max_score = max(score_lst)
@@ -74,8 +69,8 @@ class BackwardsFeatureSelection(FeatureSelection):
         self._initial_x = x
         _, initial_y_shape = x.shape  # original column len for evaluation
         if initial_y_shape > 1:
-            initial_score = self._get_cv_score(x, y, model, score_type,
-                                               n_folds_validation)
+            initial_score = self._cv_score.get_score(x, y, model, score_type,
+                                                     n_folds_validation)
             # initial score with all features
             self._initial_score = initial_score
             # call recursive function and then return best x
@@ -102,7 +97,7 @@ class ForwardFeatureSelection(FeatureSelection):
             # create a temp dataframe with the selected column
             temp_x = x[[temp_col_name]]
             # get its score in a cv and append that values to the score_lst
-            score = self._get_cv_score(temp_x, y, model, score_type, n_folds_validation)
+            score = self._cv_score.get_score(temp_x, y, model, score_type, n_folds_validation)
             score_lst.append(score)
 
         # get the max score from the score_lst
@@ -138,7 +133,7 @@ class ForwardFeatureSelection(FeatureSelection):
                 temp_x = x[[temp_col_name]]
                 temp_new_x = pd.concat([best_x, temp_x], axis=1, ignore_index=True)
                 # get its score in a cv and append that values to the score_lst
-                score = self._get_cv_score(temp_new_x, y, model, score_type, n_folds_validation)
+                score = self._cv_score.get_score(temp_new_x, y, model, score_type, n_folds_validation)
                 score_lst.append(score)
 
             # get the max score from the score_lst once the for loop has ended
@@ -214,7 +209,7 @@ class FeatureSelectorCreator:
         if key in self._types.keys():
             feature_selection_type = self._types[key]
             return feature_selection_type
-        raise ValueError("feature selection type value is wrong. It should be: FFS or BFS")
+        raise KeyError("Feature selection key value is wrong. It should be: FFS or BFS")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]

@@ -18,6 +18,10 @@ class MyTestCase(unittest.TestCase):
     _feature_selection_creator = FeatureSelectorCreator.get_instance()
     _parameter_selection_creator = ParameterSearchCreator.get_instance()
 
+    def test_parameters_are_wrong_raises_type_error(self):
+        with self.assertRaises(TypeError):
+            _ = self._model_creator.create_model("False", False)
+
     def test_simple_model_LSVC_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
         model_instance = self._model_creator.create_model(False, False)
@@ -217,7 +221,7 @@ class MyTestCase(unittest.TestCase):
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
 
-    def test_all_model_LASSO_BS_BFS_r2_5_score_is_float_and_greater_than_zero(self):
+    def test_all_model_LASSO_BS_BFS_r2_5_score_is_float(self):
         # create a simple model using SBSModelCreator
         model_instance = self._model_creator.create_model(True, True)
         # path to diabetes.csv file in project
@@ -245,8 +249,8 @@ class MyTestCase(unittest.TestCase):
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
-        is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
-        print("is float and greater than 0:", is_valid)
+        is_valid = True if DataEnsurer.validate_py_data(score, float) else False
+        self.assertTrue(is_valid)
 
 
 if __name__ == '__main__':

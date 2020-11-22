@@ -26,16 +26,16 @@ class JSONMessage(ABC):
         self.data = json_type.get_file_transformed()
 
     @abstractmethod
-    def __getitem__(self, key: Union[int, str]) -> Any:
+    def __getitem__(self, key: Any) -> Any:
         pass
 
     @property
-    def data(self) -> Union[list, dict]:
+    def data(self) -> Any:
         return self._data
 
     @data.setter
-    def data(self, value: Union[list, dict]) -> None:
-        self._data: Union[list, dict] = value
+    def data(self, value: Any) -> None:
+        self._data = value
 
     @property
     def file_path(self) -> str:
@@ -43,7 +43,7 @@ class JSONMessage(ABC):
 
     @file_path.setter
     def file_path(self, value: str) -> None:
-        self._file_path: str = value
+        self._file_path = value
 
     def __len__(self) -> int:
         return len(self.data)

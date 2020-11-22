@@ -31,13 +31,13 @@ class EstimatorCreator:
             EstimatorCreator.__instance = self
 
     def create_estimator(self, estimator_type: str) -> Any:
-        # replace white spaces
+        # replace white spaces and turn parameter to capital
         key = estimator_type.upper().replace(" ", "")
         if key in self._types.keys():
             sklearn_estimator_type = self._types[key]
             return sklearn_estimator_type
-        raise ValueError("feature selection type value is wrong. It should be: LSVC, SVC, KNN, GNB, LSVR, SVR, LASSO, "
-                         "SGD, APROPAGATION, KMEANS, MINIKMEANS or MEANSHIFT")
+        raise KeyError("Estimator key value is wrong. It should be: LSVC, SVC, KNN, GNB, LSVR, SVR, LASSO, "
+                       "SGD, APROPAGATION, KMEANS, MINIKMEANS or MEANSHIFT")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]

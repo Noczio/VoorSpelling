@@ -46,12 +46,12 @@ class JSONDataLoader(DataLoader[Union[list, dict]]):
         try:
             with open(self.file_path, 'r', encoding="utf-8") as f:
                 temp = json.load(f)
-                if DataEnsurer.validate_py_data(temp, list) or DataEnsurer.validate_py_data(temp, dict):
-                    self.data = temp
-                    return self.data
-                raise TypeError("Deserialized JSON file is neither a list nor a dict")
-        except():
+                self.data = temp
+                return self.data
+        except FileNotFoundError:
             raise FileNotFoundError("Path to JSON file was not found")
+        except Exception:
+            raise Exception
 
 
 class CSVDataLoader(DataLoader[DataFrame]):
@@ -62,15 +62,18 @@ class CSVDataLoader(DataLoader[DataFrame]):
         separator = ","
         # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
         try:
-
             with open(self.file_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
                 if DataEnsurer.validate_pd_data(temp):
                     self.data = temp
                     return self.data
-                raise TypeError("Data does not meet sample or column requirements to train a model")
-        except():
+                raise TypeError
+        except FileNotFoundError:
             raise FileNotFoundError("Path to CSV file was not found")
+        except TypeError:
+            raise TypeError("Data does not meet sample or column requirements to train a model")
+        except Exception:
+            raise Exception
 
 
 class SCSVDataLoader(DataLoader[DataFrame]):
@@ -81,15 +84,18 @@ class SCSVDataLoader(DataLoader[DataFrame]):
         separator = ";"
         # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
         try:
-
             with open(self.file_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
                 if DataEnsurer.validate_pd_data(temp):
                     self.data = temp
                     return self.data
-                raise TypeError("Data does not meet sample or column requirements to train a model")
-        except():
+                raise TypeError
+        except FileNotFoundError:
             raise FileNotFoundError("Path to SCSV file was not found")
+        except TypeError:
+            raise TypeError("Data does not meet sample or column requirements to train a model")
+        except Exception:
+            raise Exception
 
 
 class TSVDataLoader(DataLoader[DataFrame]):
@@ -105,9 +111,13 @@ class TSVDataLoader(DataLoader[DataFrame]):
                 if DataEnsurer.validate_pd_data(temp):
                     self.data = temp
                     return self.data
-                raise TypeError("Data does not meet sample or column requirements to train a model")
-        except():
+                raise TypeError
+        except FileNotFoundError:
             raise FileNotFoundError("Path to TSV file was not found")
+        except TypeError:
+            raise TypeError("Data does not meet sample or column requirements to train a model")
+        except Exception:
+            raise Exception
 
 
 class LoaderCreator:
@@ -136,7 +146,7 @@ class LoaderCreator:
             loader = self._types[key]
             loader.file_path = file_path
             return loader
-        raise ValueError("Loader type value is wrong. It should be: CSV, TSV, SCSV or JSON")
+        raise ValueError("Loader key value is wrong. It should be: CSV, TSV, SCSV or JSON")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]
