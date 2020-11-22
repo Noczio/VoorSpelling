@@ -62,7 +62,6 @@ class CSVDataLoader(DataLoader[DataFrame]):
         separator = ","
         # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
         try:
-
             with open(self.file_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
                 if DataEnsurer.validate_pd_data(temp):
@@ -81,7 +80,6 @@ class SCSVDataLoader(DataLoader[DataFrame]):
         separator = ";"
         # try to load file. Raise TypeError if it does not meet requirements, else raise FileNotFoundError
         try:
-
             with open(self.file_path, 'r', encoding="utf-8") as f:
                 temp = pd.read_csv(f, sep=separator)
                 if DataEnsurer.validate_pd_data(temp):

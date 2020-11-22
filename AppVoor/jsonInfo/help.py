@@ -23,7 +23,3 @@ class HelpMessage(JSONMessage):
             raise KeyError
         # key is not string. Raise TypeError
         raise TypeError
-
-
-class HelpButton:
-    pass
