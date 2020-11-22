@@ -21,6 +21,7 @@ class WelcomeMessage(JSONMessage):
                 return author, quote
             # index is out of boundaries. Raise IndexError
             raise IndexError
+        # index is not integer. Raise TypeError
         raise TypeError
 
 

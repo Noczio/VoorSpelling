@@ -47,10 +47,10 @@ Este tipo de clasificación se utiliza para predecir una clase discreta o etique
 Los modelos disponibles para Clasificación en Python a través de la librería scikit-learn \parencite{sklearn_api} que se utilizan en este proyecto son:
 
 \begin{APAitemize}
-    \item SVC rbf: La implementación de este estimador esta basada en libsvm con kernel igual a \textit{rbf}. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación.
-    \item LinearSVC: Similar a SVC con kernel igual a \textit{linear}, pero implementado en términos de liblinear en vez de lbsvm, por ende adquiere más flexibilidad en la selección de penalizaciones y pérdidas de función, con lo que tiene la posibilidad de escalar mejor para grandes cantidades de muestras.
-    \item KNN: \textit{K Nearest Neighbours} Es un algoritmo que almacena los casos disponibles y realiza la clasificación de nuevos casos apoyándose en una medición de similaridad con base a la distancia \textit{k} entre una muestra y la otra.
-    \item Gaussian Naive Bayes: Este estimador hace parte de los métodos Naive Bayes. Estos algoritmos están basados en la implementación de teorema de Bayes con la suposición de una independencia condicional entre las características, y de igual forma el algoritmo de clasificación Naive Bayes Gaussiana supone que la probabilidad de las características es Gaussiana.
+    \item SVC rbf: la implementación de este estimador esta basada en libsvm con kernel igual a \textit{rbf}. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación.
+    \item LinearSVC: similar a SVC con kernel igual a \textit{linear}, pero implementado en términos de liblinear en vez de lbsvm. Por tal motivo adquiere más flexibilidad en la selección de penalizaciones y pérdidas de función, con lo que tiene la posibilidad de escalar mejor para grandes cantidades de muestras.
+    \item KNN: \textit{K Nearest Neighbours} es un algoritmo que almacena los casos disponibles y realiza la clasificación de nuevos casos apoyándose en una medición de similitud con base a la distancia \textit{k} entre una muestra y la otra.
+    \item Gaussian Naive Bayes: este estimador hace parte de los métodos Naive Bayes. Estos algoritmos están basados en la implementación de teorema de Bayes con la suposición de una independencia condicional entre las características. Asimismo, este algoritmo supone que la probabilidad de las características es Gaussiana.
 \end{APAitemize}
 
 \paragraph{Regresión} En este tipo de predicción el resultado se calcula a partir de un modelo que minimice la función de pérdida. Dado que la salida de estos algoritmos es un número, la Regresión (ver Figura ~\ref{fig:ejregre}) puede ser empleada tanto en problemas para clasificar clases, como estimar cantidad numéricas. Por tal motivo, es utilizada para predecir todo tipo de situaciones donde la salida sean datos continuos, por ejemplo: el valor de un seguro de vida y el valor en bolsa. 
@@ -67,10 +67,10 @@ Los modelos disponibles para Clasificación en Python a través de la librería 
 Los modelos disponibles de Regresión en Python a través de la librería scikit-learn \parencite{sklearn_api} que se utilizan en este proyecto son:
 
 \begin{APAitemize}
-    \item Lasso: Es un tipo de regresión lineal que utiliza contracción de los valores con base a un punto central, al igual que la media. Este procedimiento fomenta modelos más simples y dispersos, lo cual se traduce a modelos con menos parámetros.
-    \item SGDClassifer: Este estimador implementa modelos lineales regulados, con un gradiente aleatorio de aprendizaje en descenso. El gradiente de las pérdidas se estima en cada muestra a la vez que modelo se actualiza en paraleo con la curva de aprendizaje.
-    \item SVR rbf: Los parámetros en el modelo son \textit{C} y \textit{epsilon}. La implementación es basada en libsvm con kernel igual a \textit{rbf}. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades.
-    \item LinearSVR: Similar a SVC con kernel igual a \textit{linear}, pero implementado en términos de liblinear en vez de lbsvm. Permite mayor flexibilidad en la selección de penalizaciones y perdidas de función, y además escala mejor para grandes cantidades de muestras.
+    \item Lasso: es un tipo de regresión lineal que utiliza contracción de los valores con base a un punto central, al igual que la media. Este procedimiento fomenta modelos más simples y dispersos, lo cual se traduce a modelos con menos parámetros.
+    \item SGDClassifer: este estimador implementa modelos lineales regulados con un gradiente aleatorio de aprendizaje en descenso. El gradiente de las pérdidas se estima en cada muestra a la vez que modelo se actualiza en paralelo con la curva de aprendizaje.
+    \item SVR rbf: los parámetros más importantes en el estimador son \textit{C} y \textit{epsilon}. La implementación es basada en libsvm con kernel igual a \textit{rbf}. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades.
+    \item LinearSVR: similar a SVR con kernel igual a \textit{linear}, pero implementado en términos de liblinear en vez de lbsvm. Permite mayor flexibilidad en la selección de penalizaciones y perdidas de función, y además escala mejor para grandes cantidades de muestras.
 \end{APAitemize}
 
 \paragraph{Agrupamiento} A este tipo de algoritmos se les conoce en inglés como \textit{Clustering} (ver Figura ~\ref{fig:ejcluster}). Su principal objetivo es entrenar un algoritmo para generar las agrupaciones deseadas, dado un conjunto de datos con sus respectivos datos históricos. La similitud de los grupos está dada por información adicional suministrada por el usuario, lo que puede convertirse en un problema de optimización de hiperparámetros, sobre todo si hay muchos atributos que deben considerarse para el entrenamiento. 
@@ -87,10 +87,10 @@ Los modelos disponibles de Regresión en Python a través de la librería scikit
 Los modelos disponibles de Agrupamiento en Python a través de la librería scikit-learn \parencite{sklearn_api} que se utilizan en este proyecto son:
 
 \begin{APAitemize}
-    \item Affinity Propagation: crea grupos a través del envío de mensajes entre las parejas en las muestras hasta que se haya convergencia. Un conjunto de datos es luego descrito utilizando una parte de las muestras, las cuales son seleccionadas como las más representativas entre el conjunto total de muestras.
-    \item Kmeans: Este algoritmo agrupa información tratando de separar muestras en un numero de grupos equivalente a la varianza, minimizando un criterio conocido como la inercia o suma de los cuadrados dentro de un grupo. Este algoritmo requiere un número de grupos especificados desde el inicio, pero trabaja bien para un gran número de muestras, a diferencia de otros modelos.
-    \item Minibatch Kmeans: Este algoritmo es una variante del algoritmo KMeans, el cual utiliza minilotes para reducir el tiempo de compilación, mientras optimiza la función objetivo.
-    \item Meanshift: Esta forma de agrupamiento tiene como fin descubrir irregularidades en una superficie de muestras. Este algoritmo está basado en datos centrales llamados centroides, los cuales funcionan convirtiendo los candidatos en la media de los puntos dentro de una determinada región. Estos candidatos son filtrados en una etapa de post-procesamiento con la finalidad de eliminar cualquier duplicado cercano del conjunto de centroides finales.
+    \item Affinity Propagation: crea grupos a través del envío de mensajes entre las parejas de las muestras hasta que haya convergencia. Un conjunto de datos es luego descrito utilizando una parte de las muestras, las cuales son seleccionadas como las más representativas entre el conjunto total de muestras.
+    \item Kmeans: este algoritmo agrupa información tratando de separar muestras en un numero de grupos equivalente a la varianza, minimizando un criterio conocido como la inercia o suma de los cuadrados dentro de un grupo. Kmeans requiere un número de grupos especificados desde el inicio, aunque trabaja correctamente para un gran número de muestras, a diferencia de otros modelos.
+    \item Minibatch Kmeans: este algoritmo es una variante del algoritmo KMeans, el cual utiliza pequeños lotes para reducir el tiempo de compilación, al mismo tiempo que optimiza la función objetivo.
+    \item Meanshift: esta forma de agrupamiento tiene como fin descubrir irregularidades en una superficie de muestras. Este algoritmo está basado en datos centrales llamados centroides, los cuales funcionan convirtiendo los candidatos en la media de los puntos dentro de una determinada región. Estos candidatos son filtrados en una etapa de post-procesamiento con la finalidad de eliminar cualquier duplicado cercano del conjunto de centroides finales.
 \end{APAitemize}
 
 \subsubsection{Selección de hiperparámetros}
@@ -107,7 +107,7 @@ Este algoritmo se encuentra disponible en la librería scikit-learn \parencite{s
     \label{fig:impbusexh}
 \end{figure}
 
-\paragraph{Búsqueda Bayesiana}  Este algoritmo está basado en el teorema de Bayes y se le conoce como búsqueda Bayesiana. A diferencia de una búsqueda Exhaustiva, es una de las estrategias más eficientes con respecto al número de evaluaciones necesarias. Esta búsqueda es utilizada comúnmente cuando las ya mencionadas evaluaciones requieren de grandes cantidades de tiempo, cuando el problema no es convexo y cuando no se tiene una expresión para la función objetivo, pero si se puede obtener la información de los eventos de la función \parencite{Brochu2010}. 
+\paragraph{Búsqueda Bayesiana}  a \parencite{Brochu2010}. 
 
 Este algoritmo se encuentra disponible en la librería scikit-learn \parencite{sklearn_api} para Python con el nombre de BayesSearchCV (ver Figura ~\ref{fig:impbusbay}), y aunque existan otras opciones de vanguardia, utilizar directamente la implementación de scikit-learn beneficia al proyecto en el tiempo de desarrollo requerido para desplegar la aplicación.
 

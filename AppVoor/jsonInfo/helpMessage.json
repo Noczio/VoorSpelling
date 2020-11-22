@@ -1,0 +1,158 @@
+{
+  "file_separation": {
+    "title": "Extensión y separación de archivo",
+    "body": "Independientemente de la extensión del archivo ya sea csv, tsv o txt, lo más importante es como está separada la información internamente. Esta información puede estar separada por coma (csv), tabulación (tsv) e incluso en algúnos casos por punto y coma.",
+    "example": "Si la información está separada de esta forma: nombre, edad, género, altura. Entonces el archivo está separado por comas (csv), mientras que si la información está separada de esta forma: nombre edad  género  altura. Entonces el archivo está separado por tabulación (tsv)",
+    "url": ""
+  },
+  "step_by_step": {
+    "title": "Aprendizaje paso a paso",
+    "body": "Este tipo de aprendizaje es normalmente utilizado para crear un modelo de inteligencia artificial. Se puede elegir entre clasificación, regresión y agrupamiento dependiendo del tipo de datos y la predicción requerida.",
+    "example": "Si se elige este proceso se puede elegir el tipo de predicción, estimador, proceso de selección de características y parametros. Por ejemplo: clasififación, knn, forward feature selection y k=10",
+    "url": ""
+  },
+  "auto_machine_learning": {
+    "title": "Aprendizaje automatizado",
+    "body": "Este proceso hace parte del algoritmo suministrado por mljar. Todo es automático y se valida con diferentes estimadores.",
+    "example": "automl = AutoML(mode='Compete')\nautoml.fit(X_train,y_train)\nprediction = automl.predict(X_test)",
+    "url": "https://github.com/mljar/mljar-supervised"
+  },
+  "classification": {
+    "title": "Clasificación",
+    "body": "La salida obtenida es del tipo Booleano, es decir, uno, cero; verdadero, falso; si o no. La clasificación en pocas palabras es asignar nuevas entradas al modelo para generar la predicción más probable con base a la clase, pero si hay un desbalance significativo entre las posibles salidas, lo más seguro es que el resultado no sea correcto.",
+    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar si una paciente sufre de diabetes. Si esas características cumplen con la condición, entonces el paciente tiene diabetes.",
+    "url": ""
+  },
+  "regression": {
+    "title": "Regresión",
+    "body": "En este tipo de predicción el resultado se calcula a partir de un modelo que minimice la función de pérdida. Dado que la salida de estos algoritmos es un número, la regresión puede ser empleada tanto en problemas para clasificar clases, como estimar cantidad numéricas.",
+    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar la calidad de un producto como una cantidad numérica de 0 a 10. Si esas características cumplen con ciertas condiciones, el producto puede obtener un 5.7 o 9.3; aunque si es de mala calidad entonces recivira un 0",
+    "url": ""
+  },
+  "clustering": {
+    "title": "Agrupamiento",
+    "body": "A este tipo de algoritmos se les conoce en inglés como Clustering. Su principal objetivo es entrenar un algoritmo para generar las agrupaciones deseadas, dado un conjunto de datos con sus respectivos datos históricos.",
+    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar el grupo al que debe pertener una molécula. Si esas características cumplen con ciertas condición, entonces la muestra puede agrupada como A, B, C ,D o E.",
+    "url": ""
+  },
+  "knn": {
+    "title": "Estimador: K Nearest Neighbours (KNN)",
+    "body": "Es un algoritmo que almacena los casos disponibles y realiza la clasificación de nuevos casos apoyándose en una medición de similitud con base a la distancia k entre una muestra y la otra.",
+    "example": "estimator = KNeighborsClassifier()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html"
+  },
+  "linear_svc": {
+    "title": "Estimador: LinearSVC",
+    "body": "Similar a SVC con kernel igual a lineal, pero implementado en términos de liblinear en vez de lbsvm. Por tal motivo adquiere más flexibilidad en la selección de penalizaciones y pérdidas de función, con lo que tiene la posibilidad de escalar mejor para grandes cantidades de muestras.",
+    "example": "estimator = LinearSVC()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html"
+  },
+  "svc_rbf": {
+    "title": "Estimador: SVC kernel rbf",
+    "body": "La implementación de este estimador esta basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación.",
+    "example": "estimator = SVC()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html"
+  },
+  "gaussian_naive_bayes": {
+    "title": "Estimador: Gaussian Naive Bayes",
+    "body": "Este estimador hace parte de los métodos Naive Bayes. Estos algoritmos están basados en la implementación de teorema de Bayes con la suposición de una independencia condicional entre las características. Asimismo, este algoritmo supone que la probabilidad de las características es Gaussiana.",
+    "example": "estimator = GaussianNB()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html"
+  },
+  "lasso": {
+    "title": "Estimador: Lasso",
+    "body": "Es un tipo de regresión lineal que utiliza contracción de los valores con base a un punto central, al igual que la media. Este procedimiento fomenta modelos más simples y dispersos, lo cual se traduce a modelos con menos parámetros.",
+    "example": "estimator = Lasso()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html"
+  },
+  "linear_svr": {
+    "title": "Estimador: LinearSVR",
+    "body": "Similar a SVR con kernel igual a lineal, pero implementado en términos de liblinear en vez de lbsvm. Permite mayor flexibilidad en la selección de penalizaciones y perdidas de función, y además escala mejor para grandes cantidades de muestras.",
+    "example": "estimator = LinearSVR()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVR.html"
+  },
+  "svr_rbf": {
+    "title": "Estimador: SVR kernel rbf",
+    "body": "Los parámetros más importantes en el estimador son C y epsilon. La implementación es basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades.",
+    "example": "estimator = SVR()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html"
+  },
+  "sgd": {
+    "title": "Estimador: Stochastic Gradient Descent (SGD)",
+    "body": "Este estimador implementa modelos lineales regulados con un gradiente aleatorio de aprendizaje en descenso. El gradiente de las pérdidas se estima en cada muestra a la vez que modelo se actualiza en paralelo con la curva de aprendizaje.",
+    "example": "estimator = SGDClassifier()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html"
+  },
+  "affinity_propagation": {
+    "title": "Estimador: Affinity Progragation",
+    "body": "Crea grupos a través del envío de mensajes entre las parejas de las muestras hasta que haya convergencia. Un conjunto de datos es luego descrito utilizando una parte de las muestras, las cuales son seleccionadas como las más representativas entre el conjunto total de muestras.",
+    "example": "estimator = AffinityPropagation()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AffinityPropagation.html"
+  },
+  "minibatch_kmeans": {
+    "title": "Estimador: Minibatch Kmeans",
+    "body": "Este algoritmo es una variante del algoritmo KMeans, el cual utiliza pequeños lotes para reducir el tiempo de compilación, al mismo tiempo que optimiza la función objetivo.",
+    "example": "estimator = MiniBatchKMeans()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html"
+  },
+  "meanshift": {
+    "title": "Estimador: Meanshift",
+    "body": "Esta forma de agrupamiento tiene como fin descubrir irregularidades en una superficie de muestras. Este algoritmo está basado en datos centrales llamados centroides, los cuales funcionan convirtiendo los candidatos en la media de los puntos dentro de una determinada región. Estos candidatos son filtrados en una etapa de post-procesamiento con la finalidad de eliminar cualquier duplicado cercano del conjunto de centroides finales.",
+    "example": "estimator = MeanShift()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html"
+  },
+  "kmeans": {
+    "title": "Estimador: Kmeans",
+    "body": "Este algoritmo agrupa información tratando de separar muestras en un numero de grupos equivalente a la varianza, minimizando un criterio conocido como la inercia o suma de los cuadrados dentro de un grupo. Kmeans requiere un número de grupos especificados desde el inicio, aunque trabaja correctamente para un gran número de muestras, a diferencia de otros modelos.",
+    "example": "estimator = KMeans()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html"
+  },
+  "feature_selection": {
+    "title": "Modelo con reducción de dimensionalidad",
+    "body": "Para conjuntos de datos con varias dimensiones, la reducción de dimensionalidad se ejecuta antes de aplicar los algoritmos de Aprendizaje de Máquina, con el propósito de evitar los problemas relacionados a la maldición de la dimensionalidad. Existen diferentes tipos de métodos con los cuales se aborda el problema de la reducción de la dimensionalidad, sin embargo, os más utilizados son los métodos de filtrado y envolventes.",
+    "example": "Características iniciales: nombre, edad, peso, altura, género, salario, experiencia\nCaracterísticas finales: edad, peso, altura, género",
+    "url": "https://github.com/Noczio/VoorSpelling/blob/master/AppVoor/feature_selection.py"
+  },
+  "no_feature_selection": {
+    "title": "Modelo sin reducción de dimensionalidad",
+    "body": "No siempre es necesario reducir la dimensionalidad; aunque si no se valida la importancia de las características del modelo se puede terminar teniendo un menor rendimiento",
+    "example": "Características iniciales: nombre, edad, peso, altura, género, salario, experiencia\nCaracterísticas finales: nombre, edad, peso, altura, género, salario, experiencia",
+    "url": ""
+  },
+  "parameter_search": {
+    "title": "Búsqueda de hiperparámetros",
+    "body": "Los hiperparámetros son de gran importancia en el Aprendizaje de Máquina, dado que se encargan de cambiar el comportamiento de los algoritmos cuando entrenan el modelo. Las dos más utilizadas son la búsqueda bayesiana y la búsqueda exhaustiva; aunque en algúnos casos también se opta por búsqueda aleatoria.",
+    "example": "Si se quiere evaluar el hiperparámetro C para el estimador SVR entre los valores de 1 a 20, entonces utilizando una búsqueda de hiperparámetros (bayesiana, exhaustiva o aleatoría) el resultado despues de ejecutar el algoritmo es por ejemplo: C = 9",
+    "url": "https://github.com/Noczio/VoorSpelling/blob/master/AppVoor/parameter_search.py"
+  },
+  "manually_set_parameters": {
+    "title": "Ingreso manual de hiperparámetros",
+    "body": "Una vez ya se conocen los hiperparámetros que optimizan el rendimiento, ingreasarlos uno por uno no representa ningún problema. Sin embargo, si no se conocen, obtener un buen rendimiento es cuestión del azar.",
+    "example": "parameters = {'C': 3, 'gamma': 'auto', 'random_state': 0, 'tol': 0.51}\nestimator = SVC()\nestimator.set_params(**parameters)",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html"
+  },
+  "forward_feature_selection": {
+    "title": "Selección de características en ascenso",
+    "body": "En inglés se conoce como forward feature selection. Este algoritmo evalua el rendimiento del modelo en primera instancia individualmente por cada característica, luego extrae aquella que obtuvo el mejor resultado y se continua el proceso. Las siguientes iteraciones ya no evaluan el rendimiento de una sola característica, sino que extrae como mejores características aquellas que combinandose con las anteriores extraidas entreguen un mejor rendimiento",
+    "example": "Conjunto inicial: nombre, edad, peso, altura\nPrimera iteración: nombre = 0, edad = 0.3, peso = 0.12, altura = 0.4; ganador altura\nSegunda iteración: altura y nombre = 0.4, altura y edad = 0.42, altura y peso = 0.37; ganador altura y edad\nEl proceso continua hasta que el rendimiento no mejore con respecto a la anterior iteración.",
+    "url": ""
+  },
+  "backwards_feature_selection": {
+    "title": "Selección de características en reversa",
+    "body": "En inglés se conoce como backwards feature selection. Este algoritmo evalua el rendimiento del modelo con todas sus características y luego elimina una a una las características que al no ser utilizadas mejoran el rendimiento.",
+    "example": "Conjunto inicial: nombre, edad, peso, altura; rendimiento = 0.6\nPrimera iteración: edad, peso y altura; rendimiento = 0.65\nSegunda iteración: nombre, peso y altura; rendimiento 0.58\nTercera iteración: nombre, edad y altura; rendimiento = 0.45. El mejor rendimiento se obtiene si se limina la característica nombre, por lo tanto se continua el proceso con las características restantes hasta que no haya una mejora de rendimiento.",
+    "url": ""
+  },
+  "bayesian_search": {
+    "title": "Búsqueda Bayesiana",
+    "body": "Este algoritmo está basado en el teorema de Bayes y se le conoce como búsqueda Bayesiana. A diferencia de una búsqueda exhaustiva, es una de las estrategias más eficientes con respecto al número de evaluaciones necesarias. Esta búsqueda es utilizada comúnmente cuando las ya mencionadas evaluaciones requieren de grandes cantidades de tiempo, cuando el problema no es convexo y cuando no se tiene una expresión para la función objetivo, pero si se puede obtener la información de los eventos de la función.",
+    "example": "estimator = BayesSearchCV(estimator=clf, search_spaces=parameters, cv=n_folds_validation)\nestimator.fit(X, y)\nbest_params = estimator.best_params_",
+    "url": "https://scikit-optimize.github.io/stable/auto_examples/sklearn-gridsearchcv-replacement.html"
+  },
+  "grid_search": {
+    "title": "Búsqueda Exhaustiva",
+    "body": "Este tipo de búsqueda es conocida como en inglés como greedy. La búsqueda exhaustiva implica realizar una exploración utilizando todos los valores posibles dada una lista de elementos S, pero en la mayoría de casos no se busca optimizar un solo hiperparámetro, sino que se requiere realizar una búsqueda para al menos dos o más listas de valores.",
+    "example": "estimator = GridSearchCV(estimator=clf, param_grid=parameters, cv=n_folds_validation)\nestimator.fit(X, y)\nbest_params = estimator.best_params_",
+    "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html"
+  }
+}
