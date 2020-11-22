@@ -31,10 +31,6 @@ class MyTestCase(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             _ = HelpMessage(".\\..\\jsonInfo\\help.sjon")
 
-    def test_path_is_wrong_raise_unicode_error(self):
-        with self.assertRaises(UnicodeError):
-            _ = HelpMessage(".\\..\\datasets\\iris.csv")
-
 
 if __name__ == '__main__':
     unittest.main()
