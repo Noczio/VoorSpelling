@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.base import clone
 
 from feature_selection import FeatureSelection
+from is_data import DataEnsurer
 from parameter_search import ParameterSearch
 from score import CVScore, CVModelScore
 from split_data import SplitterReturner
@@ -196,14 +197,17 @@ class SBSModelCreator:
             SBSModelCreator.__instance = self
 
     def create_model(self, feature_selection: bool, parameter_search: bool) -> SBSMachineLearning:
-        if not feature_selection and not parameter_search:
-            return self._types["SM"]
-        elif feature_selection and not parameter_search:
-            return self._types["FSM"]
-        elif not feature_selection and parameter_search:
-            return self._types["PSM"]
-        else:
-            return self._types["AM"]
+        if DataEnsurer.validate_py_data(feature_selection, bool) and DataEnsurer.validate_py_data(parameter_search,
+                                                                                                  bool):
+            if not feature_selection and not parameter_search:
+                return self._types["SM"]
+            elif feature_selection and not parameter_search:
+                return self._types["FSM"]
+            elif not feature_selection and parameter_search:
+                return self._types["PSM"]
+            else:
+                return self._types["AM"]
+        raise TypeError("Both parameters should be Boolean type")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]
