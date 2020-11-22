@@ -20,6 +20,6 @@ class HelpMessage(JSONMessage):
                 url = actual_data["url"]
                 return title, body, example, url
             # key does not exist. Raise KeyError
-            raise KeyError
+            raise KeyError("Key does not exist")
         # key is not string. Raise TypeError
-        raise TypeError
+        raise TypeError("Key is not string")

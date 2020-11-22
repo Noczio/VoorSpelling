@@ -20,9 +20,9 @@ class WelcomeMessage(JSONMessage):
                 quote = self.data[key]["Quote"]
                 return author, quote
             # index is out of boundaries. Raise IndexError
-            raise IndexError
+            raise IndexError("Index is out of boundaries")
         # index is not integer. Raise TypeError
-        raise TypeError
+        raise TypeError("Index is not integer")
 
 
 class WelcomeMessenger:

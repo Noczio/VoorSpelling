@@ -61,7 +61,7 @@ class ParameterSearchCreator:
         if key in self._types.keys():
             param_search_type = self._types[key]
             return param_search_type
-        raise ValueError("feature selection type value is wrong. It should be: BS or GS")
+        raise KeyError("Parameter selection key value is wrong. It should be: BS or GS")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]

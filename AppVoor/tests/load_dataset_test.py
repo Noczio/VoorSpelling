@@ -149,6 +149,17 @@ class MyTestCase(unittest.TestCase):
         # this should assert true
         self.assertTrue(bol_answer)
 
+    def test_file_is_not_a_dataset_it_is_a_json(self):
+        # load mol.csv from disk. This file does not exist
+        folder_name = "jsonInfo"
+        file_name = "helpMessage.json"
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        with self.assertRaises(Exception):
+            # get dataframe using LoaderCreator
+            csv_type = self._loader_creator.create_loader(test_full_path, "CSV")
+            # this should raise an FileNotFoundError
+            _ = csv_type.get_file_transformed()
+
 
 if __name__ == '__main__':
     unittest.main()

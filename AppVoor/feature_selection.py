@@ -209,7 +209,7 @@ class FeatureSelectorCreator:
         if key in self._types.keys():
             feature_selection_type = self._types[key]
             return feature_selection_type
-        raise ValueError("feature selection type value is wrong. It should be: FFS or BFS")
+        raise KeyError("Feature selection key value is wrong. It should be: FFS or BFS")
 
     def get_available_types(self) -> tuple:
         available_types = [k for k in self._types.keys()]

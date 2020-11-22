@@ -29,7 +29,11 @@ class MyTestCase(unittest.TestCase):
 
     def test_path_is_wrong_raise_file_not_found_error(self):
         with self.assertRaises(FileNotFoundError):
-            _ = HelpMessage(".\\..\\jsonInfo\\help.sjon")
+            _ = HelpMessage(".\\..\\jsonInfo\\help.txt")
+
+    def test_file_raises_type_error(self):
+        with self.assertRaises(Exception):
+            _ = HelpMessage(".\\..\\datasets\\iris.csv")
 
 
 if __name__ == '__main__':
