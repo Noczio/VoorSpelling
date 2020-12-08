@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="image">
+    <file>voorspelling_logo.png</file>
+  </qresource>
+  <qresource prefix="botton">
+    <file>bxs-left-arrow-circle.svg</file>
+  </qresource>
+</RCC>
