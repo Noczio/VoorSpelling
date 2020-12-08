@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 
 from jsonInfo.welcome import WelcomeMessenger
 
+import forms.resources
+
 
 class Window(QMainWindow):
     def __init__(self, window: str):
