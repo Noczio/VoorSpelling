@@ -10,8 +10,20 @@
     <height>1024</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1440</width>
+    <height>1024</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1440</width>
+    <height>1024</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Voorspelling</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QFrame" name="left_bar">
@@ -187,7 +199,7 @@ Licencia BSD 3</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_tittle_2">
+    <widget class="QLabel" name="lbl_tittle">
      <property name="geometry">
       <rect>
        <x>400</x>
@@ -250,7 +262,7 @@ border-radius: 10px;</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_phrase">
+    <widget class="QLabel" name="lbl_message_3">
      <property name="geometry">
       <rect>
        <x>200</x>
@@ -278,7 +290,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QProgressBar" name="progressBar">
+    <widget class="QProgressBar" name="progress_bar">
      <property name="geometry">
       <rect>
        <x>200</x>
@@ -297,7 +309,7 @@ border: none;</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_message">
+    <widget class="QLabel" name="lbl_message_2">
      <property name="geometry">
       <rect>
        <x>200</x>
@@ -325,7 +337,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_message_3">
+    <widget class="QLabel" name="lbl_cancel">
      <property name="geometry">
       <rect>
        <x>410</x>
@@ -354,7 +366,7 @@ color: rgb(144, 135, 239);</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_message_2">
+    <widget class="QLabel" name="lbl_message_1">
      <property name="geometry">
       <rect>
        <x>200</x>
@@ -373,7 +385,7 @@ color: rgb(144, 135, 239);</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Entrenando...
+      <string>Entrenando ...
  Tiempo de espera estimado = 25min</string>
      </property>
      <property name="alignment">

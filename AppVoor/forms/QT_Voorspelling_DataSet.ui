@@ -10,8 +10,20 @@
     <height>1024</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1440</width>
+    <height>1024</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1440</width>
+    <height>1024</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Voorspelling</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QFrame" name="left_bar">
@@ -187,7 +199,7 @@ Licencia BSD 3</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_tittle_2">
+    <widget class="QLabel" name="lbl_tittle">
      <property name="geometry">
       <rect>
        <x>400</x>
@@ -250,7 +262,7 @@ border-radius: 10px;</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_phrase">
+    <widget class="QLabel" name="lbl_description">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -278,7 +290,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_nuevo_modelo">
+    <widget class="QPushButton" name="btn_next">
      <property name="geometry">
       <rect>
        <x>360</x>
@@ -320,7 +332,7 @@ border-right-color: rgb(195, 190, 239);
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_info1">
+    <widget class="QPushButton" name="btn_info_data_type">
      <property name="geometry">
       <rect>
        <x>800</x>
@@ -362,119 +374,44 @@ background-color: rgb(160, 150, 240);
       <string>i</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_info2">
+    <widget class="QPushButton" name="btn_back">
      <property name="geometry">
       <rect>
-       <x>800</x>
-       <y>470</y>
-       <width>50</width>
-       <height>50</height>
+       <x>60</x>
+       <y>50</y>
+       <width>70</width>
+       <height>70</height>
       </rect>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton{
-background: rgba(101, 85, 198, 0.2);
-border: 2px solid #6555C6;
-box-sizing: border-box;
-border-radius: 25px;
+background-image: url(:/botton/bxs-left-arrow-circle.svg);
+border-radius: 35px;
+border: none;
 
-
-position: absolute;
-width: 25px;
-height: 44.55px;
-font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 30px;
-line-height: 56px;
-display: flex;
-align-items: center;
-text-align: center;
 
 color: #6555C6;
 }
 QPushButton:hover{
-background-color: rgb(190, 185, 250);
+background-color: rgb(235, 225, 250);
+
 }
 QPushButton:pressed{
-background-color: rgb(160, 150, 240);
-}</string>
+
+background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(200, 190, 250, 205), stop:0.6 rgba(200, 190, 250, 205), stop:1 rgba(255, 255, 255, 0));
+
+}
+
+</string>
      </property>
      <property name="text">
-      <string>i</string>
+      <string/>
      </property>
-    </widget>
-    <widget class="QComboBox" name="comboBox">
-     <property name="geometry">
-      <rect>
-       <x>540</x>
-       <y>470</y>
-       <width>51</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
-     <item>
-      <property name="text">
-       <string>3</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>4</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>5</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>6</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>7</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>8</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QLabel" name="lbl_phrase_2">
-     <property name="geometry">
-      <rect>
-       <x>440</x>
-       <y>470</y>
-       <width>91</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(105, 105, 105);
-border: none;</string>
-     </property>
-     <property name="text">
-      <string>CV</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
      </property>
     </widget>
    </widget>

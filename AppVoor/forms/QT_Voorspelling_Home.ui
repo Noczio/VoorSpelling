@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -205,7 +205,7 @@ Licencia BSD 3</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_tittle_2">
+    <widget class="QLabel" name="lbl_tittle">
      <property name="geometry">
       <rect>
        <x>400</x>
@@ -303,7 +303,7 @@ color: rgb(144, 135, 239);</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_phrase">
+    <widget class="QLabel" name="lbl_description">
      <property name="geometry">
       <rect>
        <x>190</x>
@@ -349,7 +349,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_new_model">
+    <widget class="QPushButton" name="btn_next">
      <property name="geometry">
       <rect>
        <x>360</x>

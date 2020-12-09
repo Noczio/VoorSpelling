@@ -10,8 +10,20 @@
     <height>1024</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1440</width>
+    <height>1024</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1440</width>
+    <height>1024</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Voorspelling</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QFrame" name="left_bar">
@@ -187,7 +199,7 @@ Licencia BSD 3</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_tittle_2">
+    <widget class="QLabel" name="lbl_tittle">
      <property name="geometry">
       <rect>
        <x>400</x>
@@ -250,7 +262,7 @@ border-radius: 10px;</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_descripcion">
+    <widget class="QLabel" name="lbl_description">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -278,7 +290,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_info1">
+    <widget class="QPushButton" name="btn_info_FS">
      <property name="geometry">
       <rect>
        <x>800</x>
@@ -320,7 +332,7 @@ background-color: rgb(160, 150, 240);
       <string>i</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_info2">
+    <widget class="QPushButton" name="btn_info_BFS">
      <property name="geometry">
       <rect>
        <x>800</x>
@@ -362,7 +374,7 @@ background-color: rgb(160, 150, 240);
       <string>i</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btm_back">
+    <widget class="QPushButton" name="btn_back">
      <property name="geometry">
       <rect>
        <x>60</x>
