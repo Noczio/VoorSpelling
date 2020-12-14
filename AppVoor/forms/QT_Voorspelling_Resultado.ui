@@ -353,8 +353,16 @@ border: none;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none;
-color: rgb(144, 135, 239);</string>
+      <string notr="true">QLabel
+{
+   border: none;
+	color: rgb(144, 135, 239);
+}
+
+QLabel:hover
+{
+   color: rgba(144, 135, 239, 0.8);
+}</string>
      </property>
      <property name="text">
       <string>Cancelar entrenamiento</string>
