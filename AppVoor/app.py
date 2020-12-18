@@ -96,6 +96,7 @@ class GlobalVariables:
     def estimator(self, value: Any) -> None:
         self._clf = value
 
+
 class Window(QMainWindow):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
@@ -152,8 +153,10 @@ class DataSetWindow(Window):
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
         self.btn_back.clicked.connect(self.back)
-        self.btn_next.clicked.connect(self.next)
+
         self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
+
+        self.btn_next.clicked.connect(self.next)
         self._file_type = "CSV"
         self._selected_data_path = ""
 
@@ -183,8 +186,10 @@ class MLTypeWindow(Window):
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
         self.btn_back.clicked.connect(self.back)
+
         self.btn_info_automl.clicked.connect(lambda: self.useful_info_pop_up("auto_machine_learning"))
         self.btn_info_sbsml.clicked.connect(lambda: self.useful_info_pop_up("step_by_step"))
+
         self.btn_next.clicked.connect(self.next)
 
     def next(self) -> None:
@@ -247,9 +252,11 @@ class PredictionType(Window):
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
         self.btn_back.clicked.connect(self.back)
+
         self.btn_info_Classification.clicked.connect(lambda: self.useful_info_pop_up("classification"))
         self.btn_info_Regression.clicked.connect(lambda: self.useful_info_pop_up("regression"))
         self.btn_info_Clustering.clicked.connect(lambda: self.useful_info_pop_up("clustering"))
+
         self.btn_Classification.clicked.connect(lambda: self.next("classification"))
         self.btn_Regression.clicked.connect(lambda: self.next("regression"))
         self.btn_Clustering.clicked.connect(lambda: self.next("clustering"))
@@ -277,6 +284,24 @@ class ClassificationSelection(Window):
         super().__init__(window, help_message_path)
         self.btn_back.clicked.connect(self.back)
 
+        self.btn_info_KNN.clicked.connect(lambda: self.useful_info_pop_up("knn"))
+        self.btn_info_LinearSVC.clicked.connect(lambda: self.useful_info_pop_up("linear_svc"))
+        self.btn_info_SVC_rbf.clicked.connect(lambda: self.useful_info_pop_up("svc_rbf"))
+        self.btn_info_Gaussian_Naive_Bayes.clicked.connect(lambda: self.useful_info_pop_up("gaussian_naive_bayes"))
+
+        self.btn_LinearSVC.clicked.connect(lambda: self.next("LSVC"))
+        self.btn_SVC_rbf.clicked.connect(lambda: self.next("SVC"))
+        self.btn_KNN.clicked.connect(lambda: self.next("KNN"))
+        self.btn_Gaussian_Naive_Bayes.clicked.connect(lambda: self.next("GNB"))
+
+    def next(self, event):
+        clf = estimator_creator.create_estimator(event)
+        global_var.estimator = clf
+        next_form = WantFeatureSelection(ui_window["feature_selection"])
+        widget.addWidget(next_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
     def back(self) -> None:
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
@@ -289,6 +314,24 @@ class RegressionSelection(Window):
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
         self.btn_back.clicked.connect(self.back)
+
+        self.btn_info_Lasso.clicked.connect(lambda: self.useful_info_pop_up("lasso"))
+        self.btn_info_SVR_Linear.clicked.connect(lambda: self.useful_info_pop_up("linear_svr"))
+        self.btn_info_SVR_rbf.clicked.connect(lambda: self.useful_info_pop_up("svr_rbf"))
+        self.btn_info_SGD.clicked.connect(lambda: self.useful_info_pop_up("sgd"))
+
+        self.btn_Lasso.clicked.connect(lambda: self.next("LASSO"))
+        self.btn_SVR_Linear.clicked.connect(lambda: self.next("LSVR"))
+        self.btn_SVR_rbf.clicked.connect(lambda: self.next("SVR"))
+        self.btn_SGD.clicked.connect(lambda: self.next("SGD"))
+
+    def next(self, event):
+        clf = estimator_creator.create_estimator(event)
+        global_var.estimator = clf
+        next_form = WantFeatureSelection(ui_window["feature_selection"])
+        widget.addWidget(next_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
         last_form = PredictionType(ui_window["prediction_type"])
@@ -303,6 +346,24 @@ class ClusteringSelection(Window):
         super().__init__(window, help_message_path)
         self.btn_back.clicked.connect(self.back)
 
+        self.btn_info_Affinity_Propagation.clicked.connect(lambda: self.useful_info_pop_up("affinity_propagation"))
+        self.btn_info_Minibatch_Kmeans.clicked.connect(lambda: self.useful_info_pop_up("minibatch_kmeans"))
+        self.btn_info_Meanshift.clicked.connect(lambda: self.useful_info_pop_up("meanshift"))
+        self.btn_info_Kmeans.clicked.connect(lambda: self.useful_info_pop_up("kmeans"))
+
+        self.btn_Affinity_Propagation.clicked.connect(lambda: self.next("APROPAGATION"))
+        self.btn_Minibatch_KMeans.clicked.connect(lambda: self.next("MINIKMEANS"))
+        self.btn_Meanshift.clicked.connect(lambda: self.next("MEANSHIFT"))
+        self.btn_KMeans.clicked.connect(lambda: self.next("KMEANS"))
+
+    def next(self, event):
+        clf = estimator_creator.create_estimator(event)
+        global_var.estimator = clf
+        next_form = WantFeatureSelection(ui_window["feature_selection"])
+        widget.addWidget(next_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
     def back(self) -> None:
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
@@ -310,10 +371,60 @@ class ClusteringSelection(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
 
+class WantFeatureSelection(Window):
+
+    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
+        super().__init__(window, help_message_path)
+        self.btn_back.clicked.connect(self.back)
+
+        self.btn_info_FSM.clicked.connect(lambda: self.useful_info_pop_up("feature_selection"))
+        self.btn_info_No_FSM.clicked.connect(lambda: self.useful_info_pop_up("no_feature_selection"))
+
+        self.btn_next.clicked.connect(self.next)
+
+    def next(self) -> None:
+        if self.rbtn_FSM.isChecked():
+            global_var.uses_feature_selection = True
+            next_form = FeatureSelectionMethod(ui_window["feature_selection_method"])
+            widget.addWidget(next_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
+        else:
+            global_var.uses_feature_selection = False
+            next_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
+            widget.addWidget(next_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
+
+    def back(self) -> None:
+        last_form = MLTypeWindow(ui_window["model"])
+        widget.addWidget(last_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
+
+class FeatureSelectionMethod(Window):
+
+    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
+        super().__init__(window, help_message_path)
+
+
+class WantHiperparameterSearch(Window):
+
+    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
+        super().__init__(window, help_message_path)
+
+
 if __name__ == "__main__":
 
     # global_var instance to store program important variables across all forms
     global_var = GlobalVariables.get_instance()
+    # create a var for each singleton creator
+    loader_creator = LoaderCreator.get_instance()
+    model_creator = SBSModelCreator.get_instance()
+    estimator_creator = EstimatorCreator.get_instance()
+    feature_selection_creator = FeatureSelectorCreator.get_instance()
+    parameter_selection_creator = ParameterSearchCreator.get_instance()
 
     # dict with path to every view
     ui_window = {"home": ".\\forms\\QT_Voorspelling_Home.ui",

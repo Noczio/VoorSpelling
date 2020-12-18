@@ -540,7 +540,7 @@ border-right-color: rgb(195, 190, 239);
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_info_Measnshift">
+    <widget class="QPushButton" name="btn_info_Meanshift">
      <property name="geometry">
       <rect>
        <x>90</x>
