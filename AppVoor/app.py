@@ -10,12 +10,91 @@ from jsonInfo.help import HelpMessage
 from load_data import LoaderCreator
 from model_creation import SBSModelCreator
 from estimator_creation import EstimatorCreator
-from feature_selection import FeatureSelectorCreator
-from parameter_search import ParameterSearchCreator
+from feature_selection import FeatureSelection, FeatureSelectorCreator
+from parameter_search import ParameterSearch, ParameterSearchCreator
 from auto_ml import JarAutoML, AutoExecutioner
 from split_data import SplitterReturner
 import forms.resources
 
+import pandas as pd
+import numpy as np
+from typing import Any
+
+DataFrame = pd.DataFrame
+NpArray = np.ndarray
+
+
+class GlobalVariables:
+
+    _df: DataFrame
+    _fs: bool
+    _ps: bool
+    _fsm: FeatureSelection
+    _psm: ParameterSearch
+    _clf: Any
+    __instance = None
+
+    @staticmethod
+    def get_instance() -> "GlobalVariables":
+        """Static access method."""
+        if GlobalVariables.__instance is None:
+            GlobalVariables()
+        return GlobalVariables.__instance
+
+    def __init__(self) -> None:
+        """Virtually private constructor."""
+        if GlobalVariables.__instance is not None:
+            raise Exception("This class is a singleton!")
+        else:
+            GlobalVariables.__instance = self
+
+    @property
+    def data_frame(self) -> DataFrame:
+        return self._df
+
+    @data_frame.setter
+    def data_frame(self, value: DataFrame) -> None:
+        self._df = value
+
+    @property
+    def uses_feature_selection(self) -> bool:
+        return self._fs
+
+    @uses_feature_selection.setter
+    def uses_feature_selection(self, value: bool) -> None:
+        self._fs = value
+
+    @property
+    def uses_parameter_search(self) -> bool:
+        return self._ps
+
+    @uses_parameter_search.setter
+    def uses_parameter_search(self, value: bool) -> None:
+        self._ps = value
+
+    @property
+    def feature_selection_method(self) -> FeatureSelection:
+        return self._fsm
+
+    @feature_selection_method.setter
+    def feature_selection_method(self, value: FeatureSelection) -> None:
+        self._fsm = value
+
+    @property
+    def parameter_search_method(self) -> ParameterSearch:
+        return self._psm
+
+    @parameter_search_method.setter
+    def parameter_search_method(self, value: ParameterSearch) -> None:
+        self._psm = value
+
+    @property
+    def estimator(self) -> Any:
+        return self._clf
+
+    @estimator.setter
+    def estimator(self, value: Any) -> None:
+        self._clf = value
 
 class Window(QMainWindow):
 
@@ -233,6 +312,10 @@ class ClusteringSelection(Window):
 
 if __name__ == "__main__":
 
+    # global_var instance to store program important variables across all forms
+    global_var = GlobalVariables.get_instance()
+
+    # dict with path to every view
     ui_window = {"home": ".\\forms\\QT_Voorspelling_Home.ui",
                  "dataset": ".\\forms\\QT_Voorspelling_DataSet.ui",
                  "model": ".\\forms\\QT_Voorspelling_Modelo.ui",
@@ -248,8 +331,12 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     widget = QtWidgets.QStackedWidget()
+    # by default first form is home
     home_window = HomeWindow(ui_window["home"])
     home_window.center_window()
+    # set first view in widgetStack, its min and max size. Finally, show it and start app logic
     widget.addWidget(home_window)
+    widget.setMaximumSize(1440, 1024)
+    widget.setMinimumSize(1440, 1024)
     widget.show()
     sys.exit(app.exec_())
