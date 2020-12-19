@@ -407,12 +407,72 @@ class FeatureSelectionMethod(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
+        self.btn_back.clicked.connect(self.back)
+
+        self.btn_info_FS.clicked.connect(lambda: self.useful_info_pop_up("forward_feature_selection"))
+        self.btn_info_BFS.clicked.connect(lambda: self.useful_info_pop_up("backwards_feature_selection"))
+
+        self.btn_FS.clicked.connect(lambda: self.next("FFS"))
+        self.btn_BFS.clicked.connect(lambda: self.next("BFS"))
+
+    def next(self, event):
+        feature_selection_method = feature_selection_creator.create_feature_selector(event)
+        global_var.feature_selection_method = feature_selection_method
+        next_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
+        widget.addWidget(next_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
+    def back(self):
+        last_form = WantFeatureSelection(ui_window["feature_selection"])
+        widget.addWidget(last_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
 
 
 class WantHiperparameterSearch(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
+        self.btn_back.clicked.connect(self.back)
+
+        self.btn_info_Search_Hiperparameters.clicked.connect(lambda: self.useful_info_pop_up("parameter_search"))
+        self.btn_info_Hiperparameters_By_Hand.clicked.connect(lambda: self.useful_info_pop_up("manually_set_parameters"))
+
+        self.btn_next.clicked.connect(self.next)
+
+    def next(self):
+        if self.rbtn_Search_Hiperparameters.isChecked():
+            global_var.uses_parameter_search = True
+            next_form = HiperparameterMethod(ui_window["hiperparameter_search_method"])
+            widget.addWidget(next_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
+        else:
+            global_var.uses_parameter_search = False
+            # to do form implementation depending on estimator
+
+    def back(self):
+        last_form = WantFeatureSelection(ui_window["feature_selection"])
+        widget.addWidget(last_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
+
+class HiperparameterMethod(Window):
+
+    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
+        super().__init__(window, help_message_path)
+        self.btn_back.clicked.connect(self.back)
+
+        self.btn_info_Bayesian_Search.clicked.connect(lambda: self.useful_info_pop_up("bayesian_search"))
+        self.btn_info_Grid_Search.clicked.connect(lambda: self.useful_info_pop_up("grid_search"))
+
+    def back(self):
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
+        widget.addWidget(last_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
 
 
 if __name__ == "__main__":
