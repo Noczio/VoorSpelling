@@ -58,3 +58,26 @@ class WarningPopUp(PopUp):
             return True
         else:
             return False
+
+
+class CriticalPopUp(PopUp):
+
+    def open_pop_up(self, title: str, body: str, additional: str) -> bool:
+        # set font as QFont object
+        font = QFont()
+        font.setFamily("MS Shell")
+        font.setPointSize(11)
+        # create a QMessageBox object and then set its values
+        msg = QMessageBox()
+        msg.setWindowTitle(title)
+        msg.setText(body)
+
+        if additional is not "":
+            msg.setInformativeText(additional)
+
+        msg.setIcon(QMessageBox.Critical)
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setFont(font)
+
+        _ = msg.exec_()  # this will show the messagebox
+        return True

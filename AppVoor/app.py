@@ -1,100 +1,70 @@
 import sys
 
 from PyQt5 import QtWidgets, uic
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QPushButton, QWidget, QLineEdit
 
-from pop_up import PopUp, InfoPopUp, WarningPopUp
+from pop_up import PopUp, InfoPopUp, WarningPopUp, CriticalPopUp
 from jsonInfo.welcome import WelcomeMessenger
 from jsonInfo.help import HelpMessage
 from load_data import LoaderCreator
 from model_creation import SBSModelCreator
 from estimator_creation import EstimatorCreator
-from feature_selection import FeatureSelection, FeatureSelectorCreator
-from parameter_search import ParameterSearch, ParameterSearchCreator
+from feature_selection import FeatureSelectorCreator
+from parameter_search import ParameterSearchCreator
 from auto_ml import JarAutoML, AutoExecutioner
 from split_data import SplitterReturner
+from global_vars import GlobalVariables
 import forms.resources
 
-import pandas as pd
-import numpy as np
-from typing import Any
 
-DataFrame = pd.DataFrame
-NpArray = np.ndarray
+class QDragAndDropButton(QPushButton):
 
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.setAcceptDrops(True)
+        self._file_path = ""
+        self._file_is_dropped = False
 
-class GlobalVariables:
-
-    _df: DataFrame
-    _fs: bool
-    _ps: bool
-    _fsm: FeatureSelection
-    _psm: ParameterSearch
-    _clf: Any
-    __instance = None
-
-    @staticmethod
-    def get_instance() -> "GlobalVariables":
-        """Static access method."""
-        if GlobalVariables.__instance is None:
-            GlobalVariables()
-        return GlobalVariables.__instance
-
-    def __init__(self) -> None:
-        """Virtually private constructor."""
-        if GlobalVariables.__instance is not None:
-            raise Exception("This class is a singleton!")
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
         else:
-            GlobalVariables.__instance = self
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.setDropAction(Qt.CopyAction)
+            file_path = event.mimeData().urls()[0].toLocalFile()
+            self.file_path = file_path
+            self.file_is_dropped = True
+            event.accept()
+        else:
+            self.file_is_dropped = False
+            event.ignore()
 
     @property
-    def data_frame(self) -> DataFrame:
-        return self._df
+    def file_path(self):
+        return self._file_path
 
-    @data_frame.setter
-    def data_frame(self, value: DataFrame) -> None:
-        self._df = value
-
-    @property
-    def uses_feature_selection(self) -> bool:
-        return self._fs
-
-    @uses_feature_selection.setter
-    def uses_feature_selection(self, value: bool) -> None:
-        self._fs = value
+    @file_path.setter
+    def file_path(self, value: str):
+        self._file_path = value
 
     @property
-    def uses_parameter_search(self) -> bool:
-        return self._ps
+    def file_is_dropped(self):
+        return self._file_is_dropped
 
-    @uses_parameter_search.setter
-    def uses_parameter_search(self, value: bool) -> None:
-        self._ps = value
-
-    @property
-    def feature_selection_method(self) -> FeatureSelection:
-        return self._fsm
-
-    @feature_selection_method.setter
-    def feature_selection_method(self, value: FeatureSelection) -> None:
-        self._fsm = value
-
-    @property
-    def parameter_search_method(self) -> ParameterSearch:
-        return self._psm
-
-    @parameter_search_method.setter
-    def parameter_search_method(self, value: ParameterSearch) -> None:
-        self._psm = value
-
-    @property
-    def estimator(self) -> Any:
-        return self._clf
-
-    @estimator.setter
-    def estimator(self, value: Any) -> None:
-        self._clf = value
+    @file_is_dropped.setter
+    def file_is_dropped(self, value: bool):
+        self._file_is_dropped = value
 
 
 class Window(QMainWindow):
@@ -152,23 +122,81 @@ class DataSetWindow(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
-        self.btn_back.clicked.connect(self.back)
-
-        self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
-
-        self.btn_next.clicked.connect(self.next)
         self._file_type = "CSV"
-        self._selected_data_path = ""
+        self._file_path = ""
+
+        self.btn_back.clicked.connect(self.back)
+        self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
+        # by default is CSV, so tsv button should not be visible
+        self.btn_tsv.hide()
+        # change selected type to the other when clicked
+        self.btn_csv.clicked.connect(lambda: self.selected_type("TSV"))
+        self.btn_tsv.clicked.connect(lambda: self.selected_type("CSV"))
+
+        self.btn_drag_file = QDragAndDropButton(self.main_area)
+        self.btn_load_file = QPushButton(self.main_area)
+        self.initialize_load_and_drag_file_buttons()
+
+        self.btn_load_file.clicked.connect(self.load_dataset)
+        self.btn_next.clicked.connect(self.next)
+
+    def initialize_load_and_drag_file_buttons(self):
+        self.btn_drag_file.setObjectName(u"btn_drag_file")
+        self.btn_drag_file.setGeometry(QRect(360, 350, 331, 191))
+        self.btn_drag_file.setStyleSheet(u"image: url(:/file/bx-file 1.svg);\n"
+                                         "padding-top: 20px;\n"
+                                         "padding-bottom: 80px;\n"
+                                         "border-color: rgb(220, 220, 220);\n"
+                                         "")
+        self.btn_drag_file.setText("")
+        self.btn_drag_file.raise_()
+
+        self.btn_load_file.setObjectName(u"btn_load_file")
+        self.btn_load_file.setGeometry(QRect(410, 490, 230, 40))
+        font = QFont()
+        font.setPointSize(14)
+        self.btn_load_file.setFont(font)
+        self.btn_load_file.setStyleSheet(u"QPushButton:hover{\n"
+                                         "background-color: rgb(235, 225, 240);\n"
+                                         "}\n"
+                                         "QPushButton:pressed{\n"
+                                         "background-color: rgb(220, 211, 230);\n"
+                                         "border-left-color: rgb(190, 185, 220);\n"
+                                         "border-top-color: rgb(190, 185, 220);\n"
+                                         "border-bottom-color: rgb(215, 200, 239);\n"
+                                         "border-right-color: rgb(215, 200, 239);\n"
+                                         "}")
+        self.btn_load_file.setText("Buscar archivo")
+        self.btn_load_file.raise_()
+
+    def selected_type(self, event):
+        self._file_type = event
 
     def next(self) -> None:
-        # to do. Validate if info is correct. If it is not don't continue and show pop up
-        # loader_creator = LoaderCreator.get_instance()
-        # loader = loader_creator.create_loader(selected_data, self._file_type)
-        # file_transformed = loader.get_file_transformed()
-        next_form = MLTypeWindow(ui_window["model"])
-        widget.addWidget(next_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
+        pop_up: PopUp = CriticalPopUp()
+
+        if self.btn_drag_file.file_is_dropped:
+            self._file_path = self.btn_drag_file.file_path
+
+        try:
+            loader = loader_creator.create_loader(self._file_path, self._file_type)
+            file = loader.get_file_transformed()
+            global_var.data_frame = file
+            next_form = MLTypeWindow(ui_window["model"])
+            widget.addWidget(next_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
+        except FileNotFoundError:
+            body = "No se encontró o no se ha subido el archivo de datos para realizar el entrenamiento"
+            pop_up.open_pop_up("Error", body, "")
+        except TypeError:
+            body = "El archivo suministrado no cumple con los requerimientos"
+            additional = "El archivo debe tener más de cien muestras y por lo menos una característica y la " \
+                         "predicción. Además, es importante seleccionar correctamente si el archivo está " \
+                         "separado por coma (CSV) o tabulación (TSV)"
+            pop_up.open_pop_up("Error", body, additional)
+        except Exception as e:
+            pop_up.open_pop_up("Error", "Error desconocido", "Información detallada:" + " " + str(e))
 
     def back(self) -> None:
         last_form = HomeWindow(ui_window["home"])
@@ -177,8 +205,9 @@ class DataSetWindow(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def load_dataset(self):
-        # to do. Open a file browser a store path into _selected_data_path
-        pass
+        file_name = QFileDialog.getOpenFileName(self, 'Seleccionar archivo', 'C:',
+                                                'Text files (*.txt *.csv *.tsv)')
+        self._file_path = file_name[0]
 
 
 class MLTypeWindow(Window):
@@ -437,7 +466,8 @@ class WantHiperparameterSearch(Window):
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_Search_Hiperparameters.clicked.connect(lambda: self.useful_info_pop_up("parameter_search"))
-        self.btn_info_Hiperparameters_By_Hand.clicked.connect(lambda: self.useful_info_pop_up("manually_set_parameters"))
+        self.btn_info_Hiperparameters_By_Hand.clicked.connect(lambda:
+                                                              self.useful_info_pop_up("manually_set_parameters"))
 
         self.btn_next.clicked.connect(self.next)
 
@@ -450,7 +480,7 @@ class WantHiperparameterSearch(Window):
             widget.setCurrentIndex(widget.currentIndex())
         else:
             global_var.uses_parameter_search = False
-            # to do form implementation depending on estimator
+            # to do form implementation depending on estimator and if user wants or not hiperparameter search
 
     def back(self):
         last_form = WantFeatureSelection(ui_window["feature_selection"])
