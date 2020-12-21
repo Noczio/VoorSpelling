@@ -80,3 +80,17 @@ class GlobalVariables:
     @estimator.setter
     def estimator(self, value: Any) -> None:
         self._clf = value
+
+    @classmethod
+    def reset(cls, **kwargs):
+        if len(kwargs) == 0:
+            cls.data_frame = pd.DataFrame()
+            cls.uses_feature_selection = False
+            cls.uses_parameter_search = False
+            cls.feature_selection_method = None
+            cls.parameter_search_method = None
+            cls.estimator = None
+        elif len(kwargs) > 0:
+            for key, value in kwargs.items():
+                if hasattr(cls, key):
+                    setattr(cls, key, value)

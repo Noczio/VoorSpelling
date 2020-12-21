@@ -1,4 +1,5 @@
 import sys
+import datetime
 
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtGui import QFont
@@ -18,14 +19,18 @@ from split_data import SplitterReturner
 from global_vars import GlobalVariables
 import forms.resources
 
+import pandas as pd
+
+DateTime = datetime
+
 
 class QDragAndDropButton(QPushButton):
 
     def __init__(self, parent):
         super().__init__(parent)
         self.setAcceptDrops(True)
-        self._file_path = ""
-        self._file_is_dropped = False
+        self._file_path: str = ""
+        self._time_loaded: DateTime = None
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls:
@@ -44,10 +49,9 @@ class QDragAndDropButton(QPushButton):
             event.setDropAction(Qt.CopyAction)
             file_path = event.mimeData().urls()[0].toLocalFile()
             self.file_path = file_path
-            self.file_is_dropped = True
+            self.time_loaded = datetime.datetime.now()
             event.accept()
         else:
-            self.file_is_dropped = False
             event.ignore()
 
     @property
@@ -59,12 +63,12 @@ class QDragAndDropButton(QPushButton):
         self._file_path = value
 
     @property
-    def file_is_dropped(self):
-        return self._file_is_dropped
+    def time_loaded(self):
+        return self._time_loaded
 
-    @file_is_dropped.setter
-    def file_is_dropped(self, value: bool):
-        self._file_is_dropped = value
+    @time_loaded.setter
+    def time_loaded(self, value: DateTime):
+        self._time_loaded = value
 
 
 class Window(QMainWindow):
@@ -122,23 +126,27 @@ class DataSetWindow(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
-        self._file_type = "CSV"
-        self._file_path = ""
+        self.file_type: str = "CSV"
+        self.file_path: str = ""
+        self.time_loaded: DateTime = None
+
+        self.btn_drag_file = QDragAndDropButton(self.main_area)
+        self.btn_load_file = QPushButton(self.main_area)
+        self.initialize_load_and_drag_file_buttons()
 
         self.btn_back.clicked.connect(self.back)
         self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
         # by default is CSV, so tsv button should not be visible
         self.btn_tsv.hide()
         # change selected type to the other when clicked
-        self.btn_csv.clicked.connect(lambda: self.selected_type("TSV"))
-        self.btn_tsv.clicked.connect(lambda: self.selected_type("CSV"))
-
-        self.btn_drag_file = QDragAndDropButton(self.main_area)
-        self.btn_load_file = QPushButton(self.main_area)
-        self.initialize_load_and_drag_file_buttons()
+        self.btn_csv.clicked.connect(lambda: self.select_file_type("TSV"))
+        self.btn_tsv.clicked.connect(lambda: self.select_file_type("CSV"))
 
         self.btn_load_file.clicked.connect(self.load_dataset)
         self.btn_next.clicked.connect(self.next)
+
+    def select_file_type(self, event):
+        self.file_type = event
 
     def initialize_load_and_drag_file_buttons(self):
         self.btn_drag_file.setObjectName(u"btn_drag_file")
@@ -169,36 +177,47 @@ class DataSetWindow(Window):
         self.btn_load_file.setText("Buscar archivo")
         self.btn_load_file.raise_()
 
-    def selected_type(self, event):
-        self._file_type = event
-
     def next(self) -> None:
         pop_up: PopUp = CriticalPopUp()
-
-        if self.btn_drag_file.file_is_dropped:
-            self._file_path = self.btn_drag_file.file_path
-
-        try:
-            loader = loader_creator.create_loader(self._file_path, self._file_type)
-            file = loader.get_file_transformed()
-            global_var.data_frame = file
-            next_form = MLTypeWindow(ui_window["model"])
-            widget.addWidget(next_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
-        except FileNotFoundError:
-            body = "No se encontró o no se ha subido el archivo de datos para realizar el entrenamiento"
+        if self.file_path == "" and self.btn_drag_file.file_path == "":
+            body = "Ningun archivo ha sido seleccionado. Por favor subir un archivo y seleccionar la separación del " \
+                   "mismo, ya sea TSV o CSV "
             pop_up.open_pop_up("Error", body, "")
-        except TypeError:
-            body = "El archivo suministrado no cumple con los requerimientos"
-            additional = "El archivo debe tener más de cien muestras y por lo menos una característica y la " \
-                         "predicción. Además, es importante seleccionar correctamente si el archivo está " \
-                         "separado por coma (CSV) o tabulación (TSV)"
-            pop_up.open_pop_up("Error", body, additional)
-        except Exception as e:
-            pop_up.open_pop_up("Error", "Error desconocido", "Información detallada:" + " " + str(e))
+        else:
+            try:
+                if self.btn_drag_file.file_path is not "" and self.file_path == "":
+                    loader = loader_creator.create_loader(self.btn_drag_file.file_path, self.file_type)
+                elif self.btn_drag_file.file_path == "" and self.file_path is not "":
+                    loader = loader_creator.create_loader(self.file_path, self.file_type)
+                else:
+                    if self.btn_drag_file.time_loaded < self.time_loaded:
+                        loader = loader_creator.create_loader(self.file_path, self.file_type)
+                    else:
+                        loader = loader_creator.create_loader(self.btn_drag_file.file_path, self.file_type)
+                file = loader.get_file_transformed()
+                global_var.data_frame = file
+                next_form = MLTypeWindow(ui_window["model"])
+                widget.addWidget(next_form)
+                widget.removeWidget(widget.currentWidget())
+                widget.setCurrentIndex(widget.currentIndex())
+            except FileNotFoundError:
+                body = "No se encontró el archivo de datos para realizar el entrenamiento"
+                pop_up.open_pop_up("Error", body, "")
+            except TypeError:
+                body = "El archivo suministrado no cumple con los requerimientos"
+                additional = "El archivo debe tener más de cien muestras y por lo menos una característica y la " \
+                             "predicción. Además, es importante seleccionar correctamente si el archivo está " \
+                             "separado por coma (CSV) o tabulación (TSV)"
+                pop_up.open_pop_up("Error", body, additional)
+            except Exception as e:
+                body = "El archivo seleccionado no cumple con los requerimientos para ser utilizado para entrenar un " \
+                       "modelo de inteligencia artificial "
+                additional = "Debe ser un archivo con extensión .txt .csv o .tsv"
+                pop_up.open_pop_up("Error", body, additional)
+                print(e)
 
     def back(self) -> None:
+        global_var.reset(data_frame=pd.DataFrame())
         last_form = HomeWindow(ui_window["home"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -207,7 +226,8 @@ class DataSetWindow(Window):
     def load_dataset(self):
         file_name = QFileDialog.getOpenFileName(self, 'Seleccionar archivo', 'C:',
                                                 'Text files (*.txt *.csv *.tsv)')
-        self._file_path = file_name[0]
+        self.file_path = file_name[0]
+        self.time_loaded = datetime.datetime.now()
 
 
 class MLTypeWindow(Window):
@@ -234,6 +254,7 @@ class MLTypeWindow(Window):
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
+        global_var.reset()
         last_form = DataSetWindow(ui_window["dataset"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -252,6 +273,7 @@ class AutoLoad(Window):
         body = "¿Estas seguro que deseas cancelar el entrenamiento?. Toda la información será eliminada."
         answer = pop_up.open_pop_up(title, body, "")
         if answer:
+            global_var.reset()
             last_form = HomeWindow(ui_window["home"])
             widget.addWidget(last_form)
             widget.removeWidget(widget.currentWidget())
@@ -270,6 +292,7 @@ class StepByStepLoad(Window):
         body = "¿Estas seguro que deseas cancelar el entrenamiento?. Toda la información será eliminada."
         answer = pop_up.open_pop_up(title, body, "")
         if answer:
+            global_var.reset()
             last_form = HomeWindow(ui_window["home"])
             widget.addWidget(last_form)
             widget.removeWidget(widget.currentWidget())
@@ -301,6 +324,8 @@ class PredictionType(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
+        global_var.reset(uses_feature_selection=False, uses_parameter_search=False, estimator=None,
+                         feature_selection_method=None, parameter_search_method=None)
         last_form = MLTypeWindow(ui_window["model"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -332,6 +357,7 @@ class ClassificationSelection(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
+        global_var.reset(estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -363,6 +389,7 @@ class RegressionSelection(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
+        global_var.reset(estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -394,6 +421,7 @@ class ClusteringSelection(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
+        global_var.reset(estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -426,6 +454,7 @@ class WantFeatureSelection(Window):
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
+        global_var.reset(estimator=None)
         last_form = MLTypeWindow(ui_window["model"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -453,6 +482,7 @@ class FeatureSelectionMethod(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self):
+        global_var.reset(uses_feature_selection=False, uses_parameter_search=False, feature_selection_method=None)
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -483,6 +513,7 @@ class WantHiperparameterSearch(Window):
             # to do form implementation depending on estimator and if user wants or not hiperparameter search
 
     def back(self):
+        global_var.reset(uses_parameter_search=False, uses_feature_selection=False, feature_selection_method=None)
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -499,6 +530,7 @@ class HiperparameterMethod(Window):
         self.btn_info_Grid_Search.clicked.connect(lambda: self.useful_info_pop_up("grid_search"))
 
     def back(self):
+        global_var.reset(uses_parameter_search=False, parameter_search_method=None)
         last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
