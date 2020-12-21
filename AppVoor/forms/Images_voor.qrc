@@ -5,4 +5,7 @@
   <qresource prefix="botton">
     <file>bxs-left-arrow-circle.svg</file>
   </qresource>
+  <qresource prefix="file">
+    <file>bx-file 1.svg</file>
+  </qresource>
 </RCC>

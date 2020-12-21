@@ -302,7 +302,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_SVR_rbf">
+    <widget class="QPushButton" name="btn_SVC_rbf">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -338,7 +338,7 @@ border-right-color: rgb(195, 190, 239);
 }</string>
      </property>
      <property name="text">
-      <string>SVR rbf</string>
+      <string>SVC rbf</string>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
@@ -552,7 +552,7 @@ border-right-color: rgb(195, 190, 239);
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_info_SVR_rbf">
+    <widget class="QPushButton" name="btn_info_SVC_rbf">
      <property name="geometry">
       <rect>
        <x>90</x>

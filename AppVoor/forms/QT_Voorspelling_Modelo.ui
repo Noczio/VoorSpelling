@@ -456,7 +456,7 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       </size>
      </property>
     </widget>
-    <widget class="QRadioButton" name="rdtn_sbsml">
+    <widget class="QRadioButton" name="rbtn_sbsml">
      <property name="geometry">
       <rect>
        <x>300</x>
@@ -483,6 +483,9 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       </size>
      </property>
      <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
       <bool>true</bool>
      </property>
     </widget>

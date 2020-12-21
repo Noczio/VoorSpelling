@@ -26,13 +26,13 @@
   "regression": {
     "title": "Regresión",
     "body": "En este tipo de predicción el resultado se calcula a partir de un modelo que minimice la función de pérdida. Dado que la salida de estos algoritmos es un número, la regresión puede ser empleada tanto en problemas para clasificar clases, como estimar cantidad numéricas.",
-    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar la calidad de un producto como una cantidad numérica de 0 a 10. Si esas características cumplen con ciertas condiciones, el producto puede obtener un 5.7 o 9.3; aunque si es de mala calidad entonces recivira un 0",
+    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar la calidad de un producto como una cantidad numérica de 0 a 10. Si esas características cumplen con ciertas condiciones, el producto puede obtener un 5.7 o 9.3; aunque si es de mala calidad entonces recivirá un 0",
     "url": ""
   },
   "clustering": {
     "title": "Agrupamiento",
     "body": "A este tipo de algoritmos se les conoce en inglés como Clustering. Su principal objetivo es entrenar un algoritmo para generar las agrupaciones deseadas, dado un conjunto de datos con sus respectivos datos históricos.",
-    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar el grupo al que debe pertener una molécula. Si esas características cumplen con ciertas condición, entonces la muestra puede agrupada como A, B, C ,D o E.",
+    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar el grupo al que debe pertener una molécula. Si esas características cumplen con ciertas condición, entonces la muestra puede ser agrupada como A, B, C ,D o E.",
     "url": ""
   },
   "knn": {
@@ -110,13 +110,13 @@
   "feature_selection": {
     "title": "Modelo con reducción de dimensionalidad",
     "body": "Para conjuntos de datos con varias dimensiones, la reducción de dimensionalidad se ejecuta antes de aplicar los algoritmos de Aprendizaje de Máquina, con el propósito de evitar los problemas relacionados a la maldición de la dimensionalidad. Existen diferentes tipos de métodos con los cuales se aborda el problema de la reducción de la dimensionalidad, sin embargo, os más utilizados son los métodos de filtrado y envolventes.",
-    "example": "Características iniciales: nombre, edad, peso, altura, género, salario, experiencia\nCaracterísticas finales: edad, peso, altura, género",
+    "example": "Características iniciales: nombre, edad, peso, altura, género, salario, experiencia\n\nCaracterísticas finales: edad, peso, altura, género",
     "url": "https://github.com/Noczio/VoorSpelling/blob/master/AppVoor/feature_selection.py"
   },
   "no_feature_selection": {
     "title": "Modelo sin reducción de dimensionalidad",
     "body": "No siempre es necesario reducir la dimensionalidad; aunque si no se valida la importancia de las características del modelo se puede terminar teniendo un menor rendimiento",
-    "example": "Características iniciales: nombre, edad, peso, altura, género, salario, experiencia\nCaracterísticas finales: nombre, edad, peso, altura, género, salario, experiencia",
+    "example": "Características iniciales: nombre, edad, peso, altura, género, salario, experiencia\n\nCaracterísticas finales: nombre, edad, peso, altura, género, salario, experiencia",
     "url": ""
   },
   "parameter_search": {

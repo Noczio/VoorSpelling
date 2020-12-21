@@ -336,7 +336,7 @@ border-right-color: rgb(195, 190, 239);
      <property name="geometry">
       <rect>
        <x>800</x>
-       <y>220</y>
+       <y>270</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -414,6 +414,143 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       </size>
      </property>
     </widget>
+    <widget class="QPushButton" name="btn_csv">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>270</y>
+       <width>100</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton{
+
+background-color: rgb(154, 148, 238);
+border-left-color: rgb(195, 190, 239);
+border-top-color: rgb(195, 190, 239);
+border-bottom-color: rgb(154, 148, 238);
+border-right-color: rgb(154, 148, 238);
+border-radius: 25px;
+
+}
+QPushButton:hover{
+background-color: rgb(160, 155, 245);
+}
+QPushButton:pressed{
+background-color: rgb(150, 140, 230);
+border-left-color: rgb(140, 135, 220);
+border-top-color: rgb(140, 135, 220);
+border-bottom-color: rgb(195, 190, 239);
+border-right-color: rgb(195, 190, 239);
+
+}</string>
+     </property>
+     <property name="text">
+      <string>CSV</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_tsv">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>270</y>
+       <width>100</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+QPushButton{
+background-color: rgb(154, 148, 238);
+border-left-color: rgb(195, 190, 239);
+border-top-color: rgb(195, 190, 239);
+border-bottom-color: rgb(154, 148, 238);
+border-right-color: rgb(154, 148, 238);
+border-radius: 25px;
+
+
+}
+QPushButton:hover{
+background-color: rgb(160, 155, 245);
+}
+QPushButton:pressed{
+background-color: rgb(150, 140, 230);
+border-left-color: rgb(140, 135, 220);
+border-top-color: rgb(140, 135, 220);
+border-bottom-color: rgb(195, 190, 239);
+border-right-color: rgb(195, 190, 239);
+
+}</string>
+     </property>
+     <property name="text">
+      <string>TSV</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_background">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>270</y>
+       <width>190</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="statusTip">
+      <string notr="true"/>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(220, 211, 230);
+color: rgb(135, 135, 135);
+border-radius: 25px;
+border: none;</string>
+     </property>
+     <property name="text">
+      <string>     TSV          CSV</string>
+     </property>
+    </widget>
+    <zorder>lbl_background</zorder>
+    <zorder>lbl_description</zorder>
+    <zorder>btn_next</zorder>
+    <zorder>btn_info_data_type</zorder>
+    <zorder>btn_back</zorder>
+    <zorder>btn_csv</zorder>
+    <zorder>btn_tsv</zorder>
    </widget>
    <zorder>up_bar</zorder>
    <zorder>left_bar</zorder>
@@ -424,5 +561,70 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
  <resources>
   <include location="Images_voor.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btn_tsv</sender>
+   <signal>clicked()</signal>
+   <receiver>btn_csv</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>859</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>959</x>
+     <y>464</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_csv</sender>
+   <signal>clicked()</signal>
+   <receiver>btn_tsv</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>959</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>859</x>
+     <y>464</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_tsv</sender>
+   <signal>clicked()</signal>
+   <receiver>btn_tsv</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>859</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>859</x>
+     <y>464</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_csv</sender>
+   <signal>clicked()</signal>
+   <receiver>btn_csv</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>959</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>959</x>
+     <y>464</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

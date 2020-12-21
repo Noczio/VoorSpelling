@@ -276,6 +276,9 @@ border-radius: 10px;</string>
        <pointsize>14</pointsize>
       </font>
      </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::PreventContextMenu</enum>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(105, 105, 105);
 border: none;</string>
@@ -475,7 +478,7 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
      </property>
      <property name="text">
       <string> Utilizar un método de selección de
- características (features)</string>
+ características</string>
      </property>
      <property name="iconSize">
       <size>
@@ -484,6 +487,9 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       </size>
      </property>
      <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
       <bool>true</bool>
      </property>
     </widget>
@@ -499,6 +505,7 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
      <property name="font">
       <font>
        <pointsize>16</pointsize>
+       <kerning>true</kerning>
       </font>
      </property>
      <property name="styleSheet">
@@ -506,7 +513,7 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
      </property>
      <property name="text">
       <string> No utilizar un método de selección
- de características (features)</string>
+ de características</string>
      </property>
     </widget>
    </widget>
