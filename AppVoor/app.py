@@ -1,99 +1,29 @@
-import sys
 import datetime
+import sys
 
-from PyQt5 import QtWidgets, uic
+import numpy as np
+import pandas as pd
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import QRect
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QPushButton, QWidget, QLineEdit
+from PyQt5.QtWidgets import QApplication, QFileDialog, QPushButton
 
-from pop_up import PopUp, InfoPopUp, WarningPopUp, CriticalPopUp
-from jsonInfo.welcome import WelcomeMessenger
-from jsonInfo.help import HelpMessage
-from load_data import LoaderCreator
-from model_creation import SBSModelCreator
+from auto_ml import JarAutoML, AutoExecutioner
 from estimator_creation import EstimatorCreator
 from feature_selection import FeatureSelectorCreator
-from parameter_search import ParameterSearchCreator
-from auto_ml import JarAutoML, AutoExecutioner
-from split_data import SplitterReturner
 from global_vars import GlobalVariables
-import forms.resources
+from jsonInfo.welcome import WelcomeMessenger
+from load_data import LoaderCreator
+from model_creation import SBSModelCreator
+from parameter_search import ParameterSearchCreator
+from pop_up import PopUp, WarningPopUp, CriticalPopUp
+from modified_widgets import QDragAndDropButton
+from view import Window
+from forms import resources
 
-import pandas as pd
-
+DataFrame = pd.DataFrame
+NpArray = np.ndarray
 DateTime = datetime
-
-
-class QDragAndDropButton(QPushButton):
-
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.setAcceptDrops(True)
-        self._file_path: str = ""
-        self._time_loaded: DateTime = None
-
-    def dragEnterEvent(self, event):
-        if event.mimeData().hasUrls:
-            event.accept()
-        else:
-            event.ignore()
-
-    def dragMoveEvent(self, event):
-        if event.mimeData().hasUrls:
-            event.accept()
-        else:
-            event.ignore()
-
-    def dropEvent(self, event):
-        if event.mimeData().hasUrls:
-            event.setDropAction(Qt.CopyAction)
-            file_path = event.mimeData().urls()[0].toLocalFile()
-            self.file_path = file_path
-            self.time_loaded = datetime.datetime.now()
-            event.accept()
-        else:
-            event.ignore()
-
-    @property
-    def file_path(self):
-        return self._file_path
-
-    @file_path.setter
-    def file_path(self, value: str):
-        self._file_path = value
-
-    @property
-    def time_loaded(self):
-        return self._time_loaded
-
-    @time_loaded.setter
-    def time_loaded(self, value: DateTime):
-        self._time_loaded = value
-
-
-class Window(QMainWindow):
-
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__()
-        uic.loadUi(window, self)
-        self._help_message = HelpMessage(file_path=help_message_path)
-
-    def useful_info_pop_up(self, key: str) -> None:
-        # get help message info from HelpMessage object
-        title, body, example, url = self._help_message[key]
-        if example is not "":
-            body = body + "\n\n" + "Ejemplo:" + "\n\n" + example
-        if url is not "":
-            url = "Para más información vistiar:" + " " + url
-        # call general_info_pop_up with useful_info_pop_up info
-        pop_up: PopUp = InfoPopUp()
-        pop_up.open_pop_up(title, body, url)
-
-    def next(self, *args, **kwargs) -> None:
-        pass
-
-    def back(self, *args, **kwargs) -> None:
-        pass
 
 
 class HomeWindow(Window):
@@ -131,24 +61,6 @@ class DataSetWindow(Window):
         self.time_loaded: DateTime = None
 
         self.btn_drag_file = QDragAndDropButton(self.main_area)
-        self.btn_load_file = QPushButton(self.main_area)
-        self.initialize_load_and_drag_file_buttons()
-
-        self.btn_back.clicked.connect(self.back)
-        self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
-        # by default is CSV, so tsv button should not be visible
-        self.btn_tsv.hide()
-        # change selected type to the other when clicked
-        self.btn_csv.clicked.connect(lambda: self.select_file_type("TSV"))
-        self.btn_tsv.clicked.connect(lambda: self.select_file_type("CSV"))
-
-        self.btn_load_file.clicked.connect(self.load_dataset)
-        self.btn_next.clicked.connect(self.next)
-
-    def select_file_type(self, event):
-        self.file_type = event
-
-    def initialize_load_and_drag_file_buttons(self):
         self.btn_drag_file.setObjectName(u"btn_drag_file")
         self.btn_drag_file.setGeometry(QRect(360, 350, 331, 191))
         self.btn_drag_file.setStyleSheet(u"image: url(:/file/bx-file 1.svg);\n"
@@ -159,6 +71,7 @@ class DataSetWindow(Window):
         self.btn_drag_file.setText("")
         self.btn_drag_file.raise_()
 
+        self.btn_load_file = QPushButton(self.main_area)
         self.btn_load_file.setObjectName(u"btn_load_file")
         self.btn_load_file.setGeometry(QRect(410, 490, 230, 40))
         font = QFont()
@@ -176,6 +89,20 @@ class DataSetWindow(Window):
                                          "}")
         self.btn_load_file.setText("Buscar archivo")
         self.btn_load_file.raise_()
+
+        self.btn_back.clicked.connect(self.back)
+        self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
+        # by default is CSV, so tsv button should not be visible
+        self.btn_tsv.hide()
+        # change selected type to the other when clicked
+        self.btn_csv.clicked.connect(lambda: self.select_file_type("TSV"))
+        self.btn_tsv.clicked.connect(lambda: self.select_file_type("CSV"))
+
+        self.btn_load_file.clicked.connect(self.load_dataset)
+        self.btn_next.clicked.connect(self.next)
+
+    def select_file_type(self, event):
+        self.file_type = event
 
     def next(self) -> None:
         pop_up: PopUp = CriticalPopUp()
@@ -209,7 +136,7 @@ class DataSetWindow(Window):
                              "predicción. Además, es importante seleccionar correctamente si el archivo está " \
                              "separado por coma (CSV) o tabulación (TSV)"
                 pop_up.open_pop_up("Error", body, additional)
-            except Exception as e:
+            except():
                 body = "El archivo seleccionado no cumple con los requerimientos para ser utilizado para entrenar un " \
                        "modelo de inteligencia artificial "
                 additional = "Debe ser un archivo con extensión .txt .csv o .tsv"
@@ -265,7 +192,28 @@ class AutoLoad(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
+
         self.lbl_cancel.mouseReleaseEvent = self.back
+
+        self.next()
+
+    def next(self):
+        try:
+            automl_ml = JarAutoML(10, False, 5000)
+            model = AutoExecutioner(automl_ml)
+            data_frame = global_var.data_frame
+            model.train_model(data_frame)
+        except():
+            pop_up: PopUp = CriticalPopUp()
+            body = "Ocurrió un error durante el proceso de entrenamiento automatizado con Jar AutoMl." \
+                   " Será redirigido a la página de inicio"
+            additional = "Por favor verificar los datos suministrados para futuros entrenamientos"
+            pop_up.open_pop_up("Error", body, additional)
+            global_var.reset()
+            last_form = HomeWindow(ui_window["home"])
+            widget.addWidget(last_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
 
     def back(self, event):
         pop_up: PopUp = WarningPopUp()
@@ -538,7 +486,6 @@ class HiperparameterMethod(Window):
 
 
 if __name__ == "__main__":
-
     # global_var instance to store program important variables across all forms
     global_var = GlobalVariables.get_instance()
     # create a var for each singleton creator

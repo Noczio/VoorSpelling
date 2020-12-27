@@ -1,0 +1,288 @@
+{
+    "uid": "850aa2fd-5f97-49c4-8db6-d3fb9d37c2e2",
+    "name": "27_LightGBM",
+    "preprocessing": [
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        }
+    ],
+    "learners": [
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "04aeb471-4004-4de7-abf8-74a27bb2a769",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "1cd979ab-d841-434f-8e44-d08f4edd2e98",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "1b119449-f4a1-4f16-9d1a-7480a78e1d4a",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "9498a6e8-14df-48fb-80fe-6a15e3d9a496",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "dd98ef43-b4b2-4b24-a393-cb8d796b92a4",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "b58b07b8-6221-40a6-9b22-449791563d0d",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "7f3e2244-4f05-4db3-a685-fd9e1f6a800a",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "4fc568de-aab4-4738-9f2c-1fadd7155e0e",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "1a34a2bd-7e75-4db6-b732-16462e310b3e",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "3.0.0",
+            "algorithm_name": "LightGBM",
+            "algorithm_short_name": "LightGBM",
+            "uid": "75f6dd81-84a3-4336-a858-34b33b667106",
+            "params": {
+                "model_type": "LightGBM",
+                "ml_task": "binary_classification",
+                "seed": 3419,
+                "objective": "binary",
+                "metric": "binary_logloss",
+                "num_leaves": 15,
+                "learning_rate": 0.1,
+                "feature_fraction": 1.0,
+                "bagging_fraction": 0.8,
+                "min_data_in_leaf": 30,
+                "explain_level": 0
+            }
+        }
+    ],
+    "params": {
+        "additional": {
+            "max_rounds": 10000,
+            "early_stopping_rounds": 50,
+            "max_rows_limit": null,
+            "max_cols_limit": null
+        },
+        "preprocessing": {
+            "columns_preprocessing": {},
+            "target_preprocessing": [
+                "na_exclude"
+            ],
+            "ml_task": "binary_classification"
+        },
+        "validation_strategy": {
+            "validation_type": "kfold",
+            "k_folds": 10,
+            "shuffle": false,
+            "X_path": "AutoML_1\\X.parquet",
+            "y_path": "AutoML_1\\y.parquet",
+            "results_path": "AutoML_1"
+        },
+        "learner": {
+            "model_type": "LightGBM",
+            "ml_task": "binary_classification",
+            "seed": 3419,
+            "objective": "binary",
+            "metric": "binary_logloss",
+            "num_leaves": 15,
+            "learning_rate": 0.1,
+            "feature_fraction": 1.0,
+            "bagging_fraction": 0.8,
+            "min_data_in_leaf": 30,
+            "explain_level": 0
+        },
+        "ml_task": "binary_classification",
+        "explain_level": 0,
+        "name": "27_LightGBM",
+        "status": "initialized",
+        "final_loss": null,
+        "train_time": null
+    },
+    "saved": [
+        "AutoML_1\\27_LightGBM\\learner_1.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_2.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_3.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_4.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_5.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_6.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_7.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_8.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_9.lightgbm",
+        "AutoML_1\\27_LightGBM\\learner_10.lightgbm"
+    ],
+    "predictions_fname": "AutoML_1\\27_LightGBM\\predictions_out_of_folds.csv",
+    "metric_name": "logloss",
+    "final_loss": 0.47582106985754735,
+    "train_time": 1.5161006450653076,
+    "is_stacked": false,
+    "threshold": 0.2840175986561383
+}

@@ -1,0 +1,256 @@
+{
+    "uid": "02c3528c-4e7c-4925-95a4-123ce31a75fb",
+    "name": "6_Default_ExtraTrees",
+    "preprocessing": [
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        }
+    ],
+    "learners": [
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "67611c31-8994-4ddd-8097-982ec5758e36",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "c2deb256-de7e-4c24-a96c-71ae3cfeb6cf",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "8757a015-8b4c-4696-a206-7f40ccba0a9b",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "3345876b-5e32-404c-9aa0-6dc74f8e2d15",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "0037b6bf-ac24-400e-af35-f4bf0a11cbfe",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "6d892b3b-51b7-4bcb-90a2-60781d7b9cc0",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "790f090c-3d0c-4300-b5fc-7ca6618e3d03",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "f44476d3-7e2b-47eb-8560-5785ef468b7e",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "6b53571d-374b-48de-b629-05fed5f62f56",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Extra Trees Classifier",
+            "algorithm_short_name": "Extra Trees",
+            "uid": "02494725-bff5-4cbf-a155-f40e43b3a6f8",
+            "params": {
+                "model_type": "Extra Trees",
+                "ml_task": "binary_classification",
+                "criterion": "gini",
+                "max_features": 0.6,
+                "min_samples_split": 30,
+                "max_depth": 6,
+                "seed": 6,
+                "explain_level": 0
+            }
+        }
+    ],
+    "params": {
+        "additional": {
+            "trees_in_step": 100,
+            "max_steps": 50,
+            "early_stopping_rounds": 50,
+            "max_rows_limit": null,
+            "max_cols_limit": null
+        },
+        "preprocessing": {
+            "columns_preprocessing": {},
+            "target_preprocessing": [
+                "na_exclude"
+            ],
+            "ml_task": "binary_classification"
+        },
+        "validation_strategy": {
+            "validation_type": "kfold",
+            "k_folds": 10,
+            "shuffle": false,
+            "X_path": "AutoML_1\\X.parquet",
+            "y_path": "AutoML_1\\y.parquet",
+            "results_path": "AutoML_1"
+        },
+        "learner": {
+            "model_type": "Extra Trees",
+            "ml_task": "binary_classification",
+            "criterion": "gini",
+            "max_features": 0.6,
+            "min_samples_split": 30,
+            "max_depth": 6,
+            "seed": 6,
+            "explain_level": 0
+        },
+        "ml_task": "binary_classification",
+        "explain_level": 0,
+        "name": "6_Default_ExtraTrees",
+        "status": "initialized",
+        "final_loss": null,
+        "train_time": null
+    },
+    "saved": [
+        "AutoML_1\\6_Default_ExtraTrees\\learner_1.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_2.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_3.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_4.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_5.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_6.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_7.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_8.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_9.extra_trees",
+        "AutoML_1\\6_Default_ExtraTrees\\learner_10.extra_trees"
+    ],
+    "predictions_fname": "AutoML_1\\6_Default_ExtraTrees\\predictions_out_of_folds.csv",
+    "metric_name": "logloss",
+    "final_loss": 0.4849518506597883,
+    "train_time": 12.456733703613281,
+    "is_stacked": false,
+    "threshold": 0.34318703930691796
+}

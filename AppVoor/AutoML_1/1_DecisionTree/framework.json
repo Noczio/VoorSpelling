@@ -1,0 +1,234 @@
+{
+    "uid": "32f31734-b050-47a0-a842-7c0e3c47fcbe",
+    "name": "1_DecisionTree",
+    "preprocessing": [
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        },
+        {
+            "ml_task": "binary_classification"
+        }
+    ],
+    "learners": [
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "c13ca967-9a45-4bf5-9b74-2058fadedbae",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "3284ec0b-9772-4cb9-8978-3c598666dfff",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "ea20264e-b3de-4bb8-8d6e-dff5bda9be09",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "c81dbc70-60ae-4711-b036-0e1dd3b82362",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "8442ece9-6c8e-4c14-9970-2c609addedb3",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "ab3c82ba-b12e-45c0-a0f0-3dceeb9a9e37",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "be6cb30b-7883-404d-bf69-257035c12065",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "9b744e83-c451-411b-afa5-1e0524472138",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "4899c263-2019-4d45-9561-f414da2caf5b",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        },
+        {
+            "library_version": "0.23.2",
+            "algorithm_name": "Decision Tree",
+            "algorithm_short_name": "Decision Tree",
+            "uid": "041a7cd9-a75f-43b1-9ab1-db8ad7a2ccff",
+            "params": {
+                "model_type": "Decision Tree",
+                "ml_task": "binary_classification",
+                "seed": 84,
+                "criterion": "entropy",
+                "max_depth": 2,
+                "explain_level": 0
+            }
+        }
+    ],
+    "params": {
+        "additional": {
+            "trees_in_step": 1,
+            "train_cant_improve_limit": 0,
+            "max_steps": 1,
+            "max_rows_limit": null,
+            "max_cols_limit": null
+        },
+        "preprocessing": {
+            "columns_preprocessing": {},
+            "target_preprocessing": [
+                "na_exclude"
+            ],
+            "ml_task": "binary_classification"
+        },
+        "validation_strategy": {
+            "validation_type": "kfold",
+            "k_folds": 10,
+            "shuffle": false,
+            "X_path": "AutoML_1\\X.parquet",
+            "y_path": "AutoML_1\\y.parquet",
+            "results_path": "AutoML_1"
+        },
+        "learner": {
+            "model_type": "Decision Tree",
+            "ml_task": "binary_classification",
+            "seed": 84,
+            "criterion": "entropy",
+            "max_depth": 2,
+            "explain_level": 0
+        },
+        "ml_task": "binary_classification",
+        "explain_level": 0,
+        "name": "1_DecisionTree",
+        "status": "initialized",
+        "final_loss": null,
+        "train_time": null
+    },
+    "saved": [
+        "AutoML_1\\1_DecisionTree\\learner_1.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_2.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_3.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_4.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_5.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_6.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_7.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_8.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_9.decision_tree",
+        "AutoML_1\\1_DecisionTree\\learner_10.decision_tree"
+    ],
+    "predictions_fname": "AutoML_1\\1_DecisionTree\\predictions_out_of_folds.csv",
+    "metric_name": "logloss",
+    "final_loss": 0.5423690426643609,
+    "train_time": 1.6140573024749756,
+    "is_stacked": false,
+    "threshold": 0.25617283950617287
+}
