@@ -1,4 +1,0 @@
-name,model_type,metric_type,metric_value,train_time
-1_DecisionTree,Decision Tree,logloss,0.5423690426643609,2.29
-2_DecisionTree,Decision Tree,logloss,0.8182290889938729,2.32
-3_DecisionTree,Decision Tree,logloss,0.576603150188094,3.14

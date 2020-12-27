@@ -1,9 +1,0 @@
-{
-    "ml_task": "binary_classification",
-    "eval_metric": "logloss",
-    "saved": [
-        "AutoML_1\\1_DecisionTree",
-        "AutoML_1\\2_DecisionTree",
-        "AutoML_1\\3_DecisionTree"
-    ]
-}
