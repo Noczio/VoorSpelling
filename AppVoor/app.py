@@ -1,12 +1,11 @@
-import datetime
 import sys
 
 import numpy as np
 import pandas as pd
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QRect
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QRect, QThreadPool
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QApplication, QFileDialog, QPushButton
+from PyQt5.QtWidgets import QApplication
 
 from auto_ml import JarAutoML, AutoExecutioner
 from estimator_creation import EstimatorCreator
@@ -17,13 +16,13 @@ from load_data import LoaderCreator
 from model_creation import SBSModelCreator
 from parameter_search import ParameterSearchCreator
 from pop_up import PopUp, WarningPopUp, CriticalPopUp
-from modified_widgets import QDragAndDropButton
+from modified_widgets import QDragAndDropButton, QLoadButton
+from parallel import Worker
 from view import Window
 from forms import resources
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray
-DateTime = datetime
 
 
 class HomeWindow(Window):
@@ -57,8 +56,7 @@ class DataSetWindow(Window):
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
         self.file_type: str = "CSV"
-        self.file_path: str = ""
-        self.time_loaded: DateTime = None
+        self.last = "any"
 
         self.btn_drag_file = QDragAndDropButton(self.main_area)
         self.btn_drag_file.setObjectName(u"btn_drag_file")
@@ -71,7 +69,7 @@ class DataSetWindow(Window):
         self.btn_drag_file.setText("")
         self.btn_drag_file.raise_()
 
-        self.btn_load_file = QPushButton(self.main_area)
+        self.btn_load_file = QLoadButton(self.main_area)
         self.btn_load_file.setObjectName(u"btn_load_file")
         self.btn_load_file.setGeometry(QRect(410, 490, 230, 40))
         font = QFont()
@@ -98,29 +96,64 @@ class DataSetWindow(Window):
         self.btn_csv.clicked.connect(lambda: self.select_file_type("TSV"))
         self.btn_tsv.clicked.connect(lambda: self.select_file_type("CSV"))
 
-        self.btn_load_file.clicked.connect(self.load_dataset)
+        self.btn_load_file.loaded.connect(lambda: self.set_last_emitted("load_file"))
+        self.btn_drag_file.loaded.connect(lambda: self.set_last_emitted("drag_file"))
         self.btn_next.clicked.connect(self.next)
 
     def select_file_type(self, event):
         self.file_type = event
 
+    def set_last_emitted(self, event):
+        if event == "load_file":
+            self.last = "loaded"
+            self.btn_load_file.setStyleSheet(u"QPushButton{\n"
+                                             "border-color: rgb(60,179,113);\n"
+                                             "}\n"
+                                             u"QPushButton:hover{\n"
+                                             "background-color: rgb(235, 225, 240);\n"
+                                             "}\n"
+                                             "QPushButton:pressed{\n"
+                                             "background-color: rgb(220, 211, 230);\n"
+                                             "border-left-color: rgb(60,179,113);\n"
+                                             "border-top-color: rgb(60,179,113);\n"
+                                             "border-bottom-color: rgb(85, 194, 132);\n"
+                                             "border-right-color: rgb(85, 194, 132);\n"
+                                             "}")
+            self.btn_drag_file.setStyleSheet(u"image: url(:/file/bx-file 1.svg);\n"
+                                             "padding-top: 20px;\n"
+                                             "padding-bottom: 80px;\n"
+                                             "border-color: rgb(220, 220, 220);\n"
+                                             "")
+        else:
+            self.last = "dropped"
+            self.btn_drag_file.setStyleSheet(u"image: url(:/file/bx-file 1.svg);\n"
+                                             "padding-top: 20px;\n"
+                                             "padding-bottom: 80px;\n"
+                                             "border-color: rgb(60,179,113);\n"
+                                             "")
+            self.btn_load_file.setStyleSheet(u"QPushButton:hover{\n"
+                                             "background-color: rgb(235, 225, 240);\n"
+                                             "}\n"
+                                             "QPushButton:pressed{\n"
+                                             "background-color: rgb(220, 211, 230);\n"
+                                             "border-left-color: rgb(190, 185, 220);\n"
+                                             "border-top-color: rgb(190, 185, 220);\n"
+                                             "border-bottom-color: rgb(215, 200, 239);\n"
+                                             "border-right-color: rgb(215, 200, 239);\n"
+                                             "}")
+
     def next(self) -> None:
         pop_up: PopUp = CriticalPopUp()
-        if self.file_path == "" and self.btn_drag_file.file_path == "":
+        if self.last == "any":
             body = "Ningun archivo ha sido seleccionado. Por favor subir un archivo y seleccionar la separación del " \
                    "mismo, ya sea TSV o CSV "
             pop_up.open_pop_up("Error", body, "")
         else:
             try:
-                if self.btn_drag_file.file_path is not "" and self.file_path == "":
-                    loader = loader_creator.create_loader(self.btn_drag_file.file_path, self.file_type)
-                elif self.btn_drag_file.file_path == "" and self.file_path is not "":
-                    loader = loader_creator.create_loader(self.file_path, self.file_type)
+                if self.last == "loaded":
+                    loader = loader_creator.create_loader(self.btn_load_file.file_path, self.file_type)
                 else:
-                    if self.btn_drag_file.time_loaded < self.time_loaded:
-                        loader = loader_creator.create_loader(self.file_path, self.file_type)
-                    else:
-                        loader = loader_creator.create_loader(self.btn_drag_file.file_path, self.file_type)
+                    loader = loader_creator.create_loader(self.btn_drag_file.file_path, self.file_type)
                 file = loader.get_file_transformed()
                 global_var.data_frame = file
                 next_form = MLTypeWindow(ui_window["model"])
@@ -136,12 +169,20 @@ class DataSetWindow(Window):
                              "predicción. Además, es importante seleccionar correctamente si el archivo está " \
                              "separado por coma (CSV) o tabulación (TSV)"
                 pop_up.open_pop_up("Error", body, additional)
-            except():
-                body = "El archivo seleccionado no cumple con los requerimientos para ser utilizado para entrenar un " \
-                       "modelo de inteligencia artificial "
-                additional = "Debe ser un archivo con extensión .txt .csv o .tsv"
+            except ValueError:
+                body = "El archivo seleccionado no cumple con los requerimientos" \
+                       " para ser considerado un archivo de texto con las extensiones permitidas"
+                pop_up.open_pop_up("Error", body, "")
+            except OSError:
+                body = "El archivo seleccionado no cumple con los requerimientos" \
+                       " para ser considerado un archivo de texto"
+                additional = "No debe tener una extensión diferente a .txt .csv o .tsv"
                 pop_up.open_pop_up("Error", body, additional)
-                print(e)
+            except Exception as e:
+                body = "El archivo seleccionado no cumple con los requerimientos para ser utilizado para entrenar un " \
+                       "modelo de inteligencia artificial"
+                additional = "Información detallada:" + " " + str(e)
+                pop_up.open_pop_up("Error", body, additional)
 
     def back(self) -> None:
         global_var.reset(data_frame=pd.DataFrame())
@@ -149,12 +190,6 @@ class DataSetWindow(Window):
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
-
-    def load_dataset(self):
-        file_name = QFileDialog.getOpenFileName(self, 'Seleccionar archivo', 'C:',
-                                                'Text files (*.txt *.csv *.tsv)')
-        self.file_path = file_name[0]
-        self.time_loaded = datetime.datetime.now()
 
 
 class MLTypeWindow(Window):
@@ -192,22 +227,33 @@ class AutoLoad(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
+        self.thread_pool = QThreadPool()
+
+        self.worker = Worker(self.train_model)
+        self.worker.signals.result.connect(self.add_info)
+        self.worker.signals.finished.connect(self.next)
+        self.thread_pool.start(self.worker)
 
         self.lbl_cancel.mouseReleaseEvent = self.back
 
-        self.next()
+    def add_info(self, text: any) -> None:
+        self.ted_info.append(str(text))
 
-    def next(self):
+    def train_model(self):
         try:
+            self.add_info("Inicio de proceso")
             automl_ml = JarAutoML(10, False, 5000)
             model = AutoExecutioner(automl_ml)
             data_frame = global_var.data_frame
+            self.add_info("Datos cargados")
             model.train_model(data_frame)
-        except():
+        except Exception as e:
+            self.add_info("Error durante el proceso")
             pop_up: PopUp = CriticalPopUp()
             body = "Ocurrió un error durante el proceso de entrenamiento automatizado con Jar AutoMl." \
                    " Será redirigido a la página de inicio"
-            additional = "Por favor verificar los datos suministrados para futuros entrenamientos"
+            additional = "Por favor verificar los datos suministrados para futuros entrenamientos" + \
+                         "\n\nInformación detallada:" + " " + str(e)
             pop_up.open_pop_up("Error", body, additional)
             global_var.reset()
             last_form = HomeWindow(ui_window["home"])
@@ -215,12 +261,17 @@ class AutoLoad(Window):
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
+    def next(self):
+        # to do, final result form
+        self.add_info("Proceso completado")
+
     def back(self, event):
         pop_up: PopUp = WarningPopUp()
         title = "Cancelar entrenamiento"
         body = "¿Estas seguro que deseas cancelar el entrenamiento?. Toda la información será eliminada."
         answer = pop_up.open_pop_up(title, body, "")
         if answer:
+            self.thread_pool.cancel(self.worker)
             global_var.reset()
             last_form = HomeWindow(ui_window["home"])
             widget.addWidget(last_form)

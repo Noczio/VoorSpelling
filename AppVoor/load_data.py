@@ -50,8 +50,12 @@ class JSONDataLoader(DataLoader[Union[list, dict]]):
                 return self.data
         except FileNotFoundError:
             raise FileNotFoundError("Path to JSON file was not found")
-        except Exception:
-            raise Exception
+        except ValueError:
+            raise ValueError("Data does not meet requirements to be considered a json file")
+        except OSError:
+            raise OSError("Invalid file. It needs a text extension")
+        except Exception as e:
+            raise Exception(str(e))
 
 
 class CSVDataLoader(DataLoader[DataFrame]):
@@ -72,8 +76,12 @@ class CSVDataLoader(DataLoader[DataFrame]):
             raise FileNotFoundError("Path to CSV file was not found")
         except TypeError:
             raise TypeError("Data does not meet sample or column requirements to train a model")
-        except Exception:
-            raise Exception
+        except ValueError:
+            raise ValueError("Data does not meet requirements to be considered a csv file")
+        except OSError:
+            raise OSError("Invalid file. It needs a text extension")
+        except Exception as e:
+            raise Exception(str(e))
 
 
 class SCSVDataLoader(DataLoader[DataFrame]):
@@ -94,8 +102,12 @@ class SCSVDataLoader(DataLoader[DataFrame]):
             raise FileNotFoundError("Path to SCSV file was not found")
         except TypeError:
             raise TypeError("Data does not meet sample or column requirements to train a model")
-        except Exception:
-            raise Exception
+        except ValueError:
+            raise ValueError("Data does not meet requirements to be considered a scsv file")
+        except OSError:
+            raise OSError("Invalid file. It needs a text extension")
+        except Exception as e:
+            raise Exception(str(e))
 
 
 class TSVDataLoader(DataLoader[DataFrame]):
@@ -116,8 +128,12 @@ class TSVDataLoader(DataLoader[DataFrame]):
             raise FileNotFoundError("Path to TSV file was not found")
         except TypeError:
             raise TypeError("Data does not meet sample or column requirements to train a model")
-        except Exception:
-            raise Exception
+        except ValueError:
+            raise ValueError("Data does not meet requirements to be considered a tsv file")
+        except OSError:
+            raise OSError("Invalid file. It needs a text extension")
+        except Exception as e:
+            raise Exception(str(e))
 
 
 class LoaderCreator:

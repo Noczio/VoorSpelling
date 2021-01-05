@@ -464,7 +464,7 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       <rect>
        <x>300</x>
        <y>260</y>
-       <width>455</width>
+       <width>440</width>
        <height>80</height>
       </rect>
      </property>
@@ -477,8 +477,7 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       <string notr="true">border: none;</string>
      </property>
      <property name="text">
-      <string> Utilizar un método de selección de
- características</string>
+      <string/>
      </property>
      <property name="iconSize">
       <size>
@@ -498,7 +497,7 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       <rect>
        <x>300</x>
        <y>380</y>
-       <width>455</width>
+       <width>440</width>
        <height>80</height>
       </rect>
      </property>
@@ -512,8 +511,57 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       <string notr="true">border: none;</string>
      </property>
      <property name="text">
-      <string> No utilizar un método de selección
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_FSM">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>270</y>
+       <width>431</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
+     </property>
+     <property name="text">
+      <string>Utilizar un método de selección de
+ características</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_No_FSM">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>390</y>
+       <width>431</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
+     </property>
+     <property name="text">
+      <string>No utilizar un método de selección
  de características</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>

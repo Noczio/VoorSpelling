@@ -75,7 +75,6 @@ class JarAutoML(AutoMachineLearning):
 class AutoExecutioner:
 
     def __init__(self, auto_ml: AutoMachineLearning) -> None:
-        # uses AutoMachineLearning and SplitterReturner(NormalSplitter())
         self._auto_ml = auto_ml
 
     def get_model(self) -> str:
