@@ -185,7 +185,7 @@ class DataSetWindow(Window):
                 pop_up.open_pop_up("Error", body, additional)
 
     def back(self) -> None:
-        global_var.reset(data_frame=pd.DataFrame())
+        global_var.reset()
         last_form = HomeWindow(ui_window["home"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -216,7 +216,7 @@ class MLTypeWindow(Window):
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset()
+        global_var.reset("data_set")
         last_form = DataSetWindow(ui_window["dataset"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -229,10 +229,68 @@ class AutoLoad(Window):
         super().__init__(window, help_message_path)
         self.thread_pool = QThreadPool()
 
-        self.worker = Worker(self.train_model)
-        self.worker.signals.result.connect(self.add_info)
-        self.worker.signals.finished.connect(self.next)
-        self.thread_pool.start(self.worker)
+        self.ml_worker = Worker(self.train_model)
+        self.ml_worker.signals.result.connect(self.add_info)
+        self.ml_worker.signals.finished.connect(self.next)
+
+        self.thread_pool.start(self.ml_worker)
+
+        self.lbl_cancel.mouseReleaseEvent = self.back
+
+    def add_info(self, text: any) -> None:
+        self.ted_info.append(str(text))
+
+    def train_model(self, progress_callback):
+        try:
+            self.add_info("Inicio de proceso")
+            automl_ml = JarAutoML(10, False, 5000)
+            model = AutoExecutioner(automl_ml)
+            data_frame = global_var.data_frame
+            self.add_info("Datos cargados")
+            model.train_model(data_frame)
+        except Exception as e:
+            self.add_info("Error durante el proceso")
+            pop_up: PopUp = CriticalPopUp()
+            body = "Ocurrió un error durante el proceso de entrenamiento automatizado con Jar AutoMl." \
+                   " Será redirigido a la página de inicio"
+            additional = "Por favor verificar los datos suministrados para futuros entrenamientos" + \
+                         "\n\nInformación detallada:" + " " + str(e)
+            pop_up.open_pop_up("Error", body, additional)
+            global_var.reset()
+            last_form = HomeWindow(ui_window["home"])
+            widget.addWidget(last_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
+
+    def next(self):
+        # to do, final result form
+        self.add_info("Proceso completado")
+
+    def back(self, event):
+        pop_up: PopUp = WarningPopUp()
+        title = "Cancelar entrenamiento"
+        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Toda la información será eliminada."
+        answer = pop_up.open_pop_up(title, body, "")
+        if answer:
+            self.thread_pool.cancel(self.ml_worker)
+            global_var.reset()
+            last_form = HomeWindow(ui_window["home"])
+            widget.addWidget(last_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
+
+
+class StepByStepLoad(Window):
+
+    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
+        super().__init__(window, help_message_path)
+        self.thread_pool = QThreadPool()
+
+        self.ml_worker = Worker(self.train_model)
+        self.ml_worker.signals.result.connect(self.add_info)
+        self.ml_worker.signals.finished.connect(self.next)
+
+        self.thread_pool.start(self.ml_worker)
 
         self.lbl_cancel.mouseReleaseEvent = self.back
 
@@ -271,26 +329,7 @@ class AutoLoad(Window):
         body = "¿Estas seguro que deseas cancelar el entrenamiento?. Toda la información será eliminada."
         answer = pop_up.open_pop_up(title, body, "")
         if answer:
-            self.thread_pool.cancel(self.worker)
-            global_var.reset()
-            last_form = HomeWindow(ui_window["home"])
-            widget.addWidget(last_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
-
-
-class StepByStepLoad(Window):
-
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
-        self.lbl_cancel.mouseReleaseEvent = self.back
-
-    def back(self, event):
-        pop_up: PopUp = WarningPopUp()
-        title = "Cancelar entrenamiento"
-        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Toda la información será eliminada."
-        answer = pop_up.open_pop_up(title, body, "")
-        if answer:
+            self.thread_pool.cancel(self.ml_worker)
             global_var.reset()
             last_form = HomeWindow(ui_window["home"])
             widget.addWidget(last_form)
@@ -323,8 +362,6 @@ class PredictionType(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset(uses_feature_selection=False, uses_parameter_search=False, estimator=None,
-                         feature_selection_method=None, parameter_search_method=None)
         last_form = MLTypeWindow(ui_window["model"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -481,7 +518,7 @@ class FeatureSelectionMethod(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self):
-        global_var.reset(uses_feature_selection=False, uses_parameter_search=False, feature_selection_method=None)
+        global_var.reset("uses_feature_selection", "feature_selection_method")
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -512,7 +549,7 @@ class WantHiperparameterSearch(Window):
             # to do form implementation depending on estimator and if user wants or not hiperparameter search
 
     def back(self):
-        global_var.reset(uses_parameter_search=False, uses_feature_selection=False, feature_selection_method=None)
+        global_var.reset("uses_feature_selection", "uses_parameter_search")
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -529,7 +566,7 @@ class HiperparameterMethod(Window):
         self.btn_info_Grid_Search.clicked.connect(lambda: self.useful_info_pop_up("grid_search"))
 
     def back(self):
-        global_var.reset(uses_parameter_search=False, parameter_search_method=None)
+        global_var.reset("uses_parameter_search", "parameter_search_method")
         last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())

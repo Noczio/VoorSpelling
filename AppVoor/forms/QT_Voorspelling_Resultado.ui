@@ -364,6 +364,11 @@ QLabel:hover
        <height>341</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
      <property name="readOnly">
       <bool>true</bool>
      </property>

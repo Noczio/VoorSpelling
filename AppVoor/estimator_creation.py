@@ -9,12 +9,12 @@ from sklearn.cluster import AffinityPropagation, KMeans, MiniBatchKMeans, MeanSh
 
 class EstimatorCreator:
     __instance = None
-    _types: dict = {"LSVC": LinearSVC(), "SVC": SVC(),
+    _types: dict = {"LSVC": LinearSVC(verbose=1), "SVC": SVC(verbose=1),
                     "KNN": KNeighborsClassifier(), "GNB": GaussianNB(),
-                    "LSVR": LinearSVR(), "SVR": SVR(),
-                    "LASSO": Lasso(), "SGD": SGDClassifier(),
-                    "APROPAGATION": AffinityPropagation(), "KMEANS": KMeans(),
-                    "MINIKMEANS": MiniBatchKMeans(), "MEANSHIFT": MeanShift()}
+                    "LSVR": LinearSVR(verbose=1), "SVR": SVR(verbose=1),
+                    "LASSO": Lasso(), "SGD": SGDClassifier(verbose=1),
+                    "APROPAGATION": AffinityPropagation(verbose=1), "KMEANS": KMeans(verbose=1),
+                    "MINIKMEANS": MiniBatchKMeans(verbose=1), "MEANSHIFT": MeanShift()}
 
     @staticmethod
     def get_instance() -> "EstimatorCreator":
