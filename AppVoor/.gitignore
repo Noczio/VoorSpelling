@@ -2,3 +2,6 @@ venv/
 __pycache__/
 build/
 dist/
+**AutoML_[1-100]/
+**AutoML_*/
+

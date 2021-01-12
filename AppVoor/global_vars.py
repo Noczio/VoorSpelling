@@ -1,6 +1,7 @@
-import pandas as pd
-import numpy as np
 from typing import Any
+
+import numpy as np
+import pandas as pd
 
 from feature_selection import FeatureSelection
 from parameter_search import ParameterSearch
@@ -10,13 +11,19 @@ NpArray = np.ndarray
 
 
 class GlobalVariables:
-
     _df: DataFrame = pd.DataFrame()
     _fs: bool = False
     _ps: bool = False
     _fsm: FeatureSelection = None
     _psm: ParameterSearch = None
     _clf: Any = None
+    _initial_value = {"data_frame": pd.DataFrame(),
+                      "uses_feature_selection": False,
+                      "uses_parameter_search": False,
+                      "feature_selection_method": None,
+                      "parameter_search_method": None,
+                      "estimator": None
+                      }
     __instance = None
 
     @staticmethod
@@ -82,15 +89,26 @@ class GlobalVariables:
         self._clf = value
 
     @classmethod
-    def reset(cls, **kwargs):
-        if len(kwargs) == 0:
-            cls.data_frame = pd.DataFrame()
-            cls.uses_feature_selection = False
-            cls.uses_parameter_search = False
-            cls.feature_selection_method = None
-            cls.parameter_search_method = None
-            cls.estimator = None
-        elif len(kwargs) > 0:
+    def reset(cls, *args, **kwargs):
+        if len(kwargs) == 0 and len(args) == 0:
+            cls.data_frame = cls._initial_value["data_frame"]
+            cls.uses_feature_selection = cls._initial_value["uses_feature_selection"]
+            cls.uses_parameter_search = cls._initial_value["uses_parameter_search"]
+            cls.feature_selection_method = cls._initial_value["feature_selection_method"]
+            cls.parameter_search_method = cls._initial_value["parameter_search_method"]
+            cls.estimator = cls._initial_value["estimator"]
+        elif len(kwargs) > 0 and len(args) == 0:
+            for key, value in kwargs.items():
+                if hasattr(cls, key):
+                    setattr(cls, key, value)
+        elif len(kwargs) == 0 and len(args) > 0:
+            for key in args:
+                if hasattr(cls, key):
+                    setattr(cls, key, cls._initial_value[key])
+        else:
+            for key in args:
+                if hasattr(cls, key):
+                    setattr(cls, key, cls._initial_value[key])
             for key, value in kwargs.items():
                 if hasattr(cls, key):
                     setattr(cls, key, value)
