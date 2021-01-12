@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-import pandas as pd
 import numpy as np
-
+import pandas as pd
 from sklearn.metrics import accuracy_score
 from supervised import AutoML
 
@@ -24,7 +23,7 @@ class AutoMachineLearning(ABC):
         elif max_rand < 0:
             raise ValueError("Random number must be a positive integer from zero to infinity")
         else:
-            self._random_state: int = Randomizer.get_random_number_range_int(0, max_rand+1, 1)
+            self._random_state: int = Randomizer.get_random_number_range_int(0, max_rand + 1, 1)
             self._n_folds_validation: int = n_folds_validation
             self._shuffle_data: bool = shuffle_data
 
@@ -82,7 +81,7 @@ class AutoExecutioner:
         return str(model)
 
     def train_model(self, df: DataFrame, size: float = 0.0) -> None:
-        x, y = SplitterReturner.split_x_y_from_df(df)
+        x, y = SplitterReturner.split_x_y_from_df(df, ravel_data=False)
         if size == 0.0:
             self._auto_ml.fit_model(x, y)
         elif 0.0 < size < 1.0:

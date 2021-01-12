@@ -1,41 +1,13 @@
-import traceback
 import sys
+from typing import Callable
 
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
 
 class WorkerSignals(QObject):
-    """
-    Defines the signals available from a running worker thread.
-
-    Supported signals are:
-
-    finished
-        No data
-
-    error
-        tuple (exc_type, value, traceback.format_exc() )
-
-    result
-        object data returned from processing, anything
-
-    progress
-        str of std output
-
-    """
     finished = pyqtSignal()
-    error = pyqtSignal(tuple)
+    error = pyqtSignal(object)
     result = pyqtSignal(object)
-    progress = pyqtSignal(str)
-
-    def __init__(self):
-        super().__init__()
-        try:
-            self.kwargs['progress_callback'] = self.signals.progress
-        except():
-            pass
 
 
 class Worker(QRunnable):
@@ -52,11 +24,10 @@ class Worker(QRunnable):
 
     """
 
-    def __init__(self, fn, *args, **kwargs):
+    def __init__(self, func: Callable, *args, **kwargs):
         super().__init__()
-
         # Store constructor arguments (re-used for processing)
-        self.fn = fn
+        self.func = func
         self.args = args
         self.kwargs = kwargs
         self.signals = WorkerSignals()
@@ -66,16 +37,26 @@ class Worker(QRunnable):
         """
         Initialise the runner function with passed args, kwargs.
         """
-
         # Retrieve args/kwargs here; and fire processing using them
+        finished: bool
         try:
-            result = self.fn(*self.args, **self.kwargs)
-        except():
-            traceback.print_exc()
-            exc_type, value = sys.exc_info()[:2]
-            self.signals.error.emit((exc_type, value, traceback.format_exc()))
+            output = self.func(*self.args, **self.kwargs)
+            self.signals.result.emit(output)  # Return the result of the processing
+        except Exception as e:
+            self.signals.error.emit(str(e))
         else:
-            self.signals.result.emit(result)  # Return the result of the processing
-        finally:
-            self.signals.finished.emit()  # Done
+            self.signals.finished.emit()
 
+
+class EmittingStream(QObject):
+    textWritten = pyqtSignal(str)
+
+    def __init__(self, text_destiny):
+        super().__init__()
+        self.textWritten = text_destiny
+
+    def write(self, text):
+        self.textWritten.emit(str(text))
+
+    def __del__(self):
+        sys.stdout = sys.__stdout__

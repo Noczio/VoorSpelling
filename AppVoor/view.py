@@ -28,3 +28,6 @@ class Window(QMainWindow):
 
     def back(self, *args, **kwargs) -> None:
         pass
+
+    def close_window(self):
+        self.close()

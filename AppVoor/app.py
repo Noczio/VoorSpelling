@@ -2,9 +2,9 @@ import sys
 
 import numpy as np
 import pandas as pd
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QRect, QThreadPool
-from PyQt5.QtGui import QFont
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import QRect, QThread, QThreadPool
+from PyQt5.QtGui import QFont, QTextCursor
 from PyQt5.QtWidgets import QApplication
 
 from auto_ml import JarAutoML, AutoExecutioner
@@ -14,10 +14,10 @@ from global_vars import GlobalVariables
 from jsonInfo.welcome import WelcomeMessenger
 from load_data import LoaderCreator
 from model_creation import SBSModelCreator
+from modified_widgets import QDragAndDropButton, QLoadButton
+from parallel import Worker, EmittingStream
 from parameter_search import ParameterSearchCreator
 from pop_up import PopUp, WarningPopUp, CriticalPopUp
-from modified_widgets import QDragAndDropButton, QLoadButton
-from parallel import Worker
 from view import Window
 from forms import resources
 
@@ -227,114 +227,107 @@ class AutoLoad(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
+        sys.stdout = EmittingStream(self.add_info)
+
         self.thread_pool = QThreadPool()
+        self.thread_pool.setMaxThreadCount(2)
 
         self.ml_worker = Worker(self.train_model)
+        self.ml_worker.autoDelete()
         self.ml_worker.signals.result.connect(self.add_info)
+        self.ml_worker.signals.error.connect(self.handle_error)
         self.ml_worker.signals.finished.connect(self.next)
 
-        self.thread_pool.start(self.ml_worker)
+        self.thread_pool.start(self.ml_worker, priority=1)
 
-        self.lbl_cancel.mouseReleaseEvent = self.back
+        self.lbl_cancel.mouseReleaseEvent = self.cancel_training
 
-    def add_info(self, text: any) -> None:
-        self.ted_info.append(str(text))
+    def close_window(self):
+        global_var.reset()
+        QThread.sleep(1)
+        widget.close()
+        sys.exit()
 
-    def train_model(self, progress_callback):
-        try:
-            self.add_info("Inicio de proceso")
-            automl_ml = JarAutoML(10, False, 5000)
-            model = AutoExecutioner(automl_ml)
-            data_frame = global_var.data_frame
-            self.add_info("Datos cargados")
-            model.train_model(data_frame)
-        except Exception as e:
-            self.add_info("Error durante el proceso")
-            pop_up: PopUp = CriticalPopUp()
-            body = "Ocurrió un error durante el proceso de entrenamiento automatizado con Jar AutoMl." \
-                   " Será redirigido a la página de inicio"
-            additional = "Por favor verificar los datos suministrados para futuros entrenamientos" + \
-                         "\n\nInformación detallada:" + " " + str(e)
-            pop_up.open_pop_up("Error", body, additional)
-            global_var.reset()
-            last_form = HomeWindow(ui_window["home"])
-            widget.addWidget(last_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
-
-    def next(self):
+    def next(self) -> None:
         # to do, final result form
-        self.add_info("Proceso completado")
+        self.thread_pool.waitForDone()
+        self.add_info("\nProceso terminado")
+        QThread.sleep(3)
 
-    def back(self, event):
+    def back(self):
+        global_var.reset()
+        last_form = HomeWindow(ui_window["home"])
+        widget.addWidget(last_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
+    def train_model(self) -> None:
+        automl_ml = JarAutoML(10, False, 5000)
+        model = AutoExecutioner(automl_ml)
+        data_frame = global_var.data_frame
+        model.train_model(data_frame)
+        self.add_info(model.get_model())
+
+    def cancel_training(self, event) -> None:
+
+        def write_cancel_info():
+            self.add_info(info)
+            del sys.stdout
+
         pop_up: PopUp = WarningPopUp()
         title = "Cancelar entrenamiento"
-        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Toda la información será eliminada."
-        answer = pop_up.open_pop_up(title, body, "")
+        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
+        additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento"
+        answer = pop_up.open_pop_up(title, body, additional)
         if answer:
-            self.thread_pool.cancel(self.ml_worker)
-            global_var.reset()
-            last_form = HomeWindow(ui_window["home"])
-            widget.addWidget(last_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
+            info = "Cerrando aplicación y liberando memoria"
+            temp_worker = Worker(write_cancel_info)
+            temp_worker.signals.finished.connect(self.close_window)
+            self.thread_pool.start(temp_worker, priority=2)
+
+    def handle_error(self, event) -> None:
+
+        def write_error():
+            for i in info:
+                self.add_info(i)
+                QThread.sleep(1)
+
+        def go_home():
+            del sys.stdout
+            QThread.sleep(1)
+            self.back()
+
+        self.thread_pool.waitForDone()
+        self.lbl_cancel.mouseReleaseEvent = None
+        self.lbl_cancel.setStyleSheet(u"QLabel\n"
+                                      "{\n"
+                                      "   border: none;\n"
+                                      "	color: rgb(105, 105, 105);\n"
+                                      "}")
+        info = ("Error\n", str(event), "\nRegresando a la página de inicio", " ", ".", ".", ".")
+        temp_worker = Worker(write_error)
+        temp_worker.signals.finished.connect(go_home)
+        self.thread_pool.start(temp_worker, priority=2)
+
+    def add_info(self, info: any) -> None:
+        """Append text to the QTextEdit."""
+        message: str = ""
+        try:
+            message = str(info)
+        except Exception as e:
+            message = str(e)
+        finally:
+            cursor = self.ted_info.textCursor()
+            cursor.movePosition(QTextCursor.End)
+            cursor.insertText(message)
+            self.ted_info.setTextCursor(cursor)
+            self.ted_info.ensureCursorVisible()
 
 
 class StepByStepLoad(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
-        self.thread_pool = QThreadPool()
-
-        self.ml_worker = Worker(self.train_model)
-        self.ml_worker.signals.result.connect(self.add_info)
-        self.ml_worker.signals.finished.connect(self.next)
-
-        self.thread_pool.start(self.ml_worker)
-
-        self.lbl_cancel.mouseReleaseEvent = self.back
-
-    def add_info(self, text: any) -> None:
-        self.ted_info.append(str(text))
-
-    def train_model(self):
-        try:
-            self.add_info("Inicio de proceso")
-            automl_ml = JarAutoML(10, False, 5000)
-            model = AutoExecutioner(automl_ml)
-            data_frame = global_var.data_frame
-            self.add_info("Datos cargados")
-            model.train_model(data_frame)
-        except Exception as e:
-            self.add_info("Error durante el proceso")
-            pop_up: PopUp = CriticalPopUp()
-            body = "Ocurrió un error durante el proceso de entrenamiento automatizado con Jar AutoMl." \
-                   " Será redirigido a la página de inicio"
-            additional = "Por favor verificar los datos suministrados para futuros entrenamientos" + \
-                         "\n\nInformación detallada:" + " " + str(e)
-            pop_up.open_pop_up("Error", body, additional)
-            global_var.reset()
-            last_form = HomeWindow(ui_window["home"])
-            widget.addWidget(last_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
-
-    def next(self):
-        # to do, final result form
-        self.add_info("Proceso completado")
-
-    def back(self, event):
-        pop_up: PopUp = WarningPopUp()
-        title = "Cancelar entrenamiento"
-        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Toda la información será eliminada."
-        answer = pop_up.open_pop_up(title, body, "")
-        if answer:
-            self.thread_pool.cancel(self.ml_worker)
-            global_var.reset()
-            last_form = HomeWindow(ui_window["home"])
-            widget.addWidget(last_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
 
 
 class PredictionType(Window):
