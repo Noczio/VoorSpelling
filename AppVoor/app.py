@@ -282,8 +282,10 @@ class AutoLoad(Window):
 
         def write_cancel_info():
             self.add_info(info)
+            QThread.sleep(1)
             del sys.stdout
 
+        event.accept()
         pop_up: PopUp = WarningPopUp()
         title = "Cancelar entrenamiento"
         body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
@@ -360,13 +362,15 @@ class PredictionType(Window):
         possibilities = {"classification": ClassificationSelection(ui_window["classification"]),
                          "regression": RegressionSelection(ui_window["regression"]),
                          "clustering": ClusteringSelection(ui_window["clustering"])}
-
-        next_form = possibilities[event]
-        widget.addWidget(next_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
+        if event in possibilities.keys():
+            global_var.prediction_type = event
+            next_form = possibilities[event]
+            widget.addWidget(next_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
+        global_var.reset("data_set", "prediction_type")
         last_form = MLTypeWindow(ui_window["model"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -398,7 +402,7 @@ class ClassificationSelection(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset(estimator=None)
+        global_var.reset("prediction_type", estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -430,7 +434,7 @@ class RegressionSelection(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset(estimator=None)
+        global_var.reset("prediction_type", estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -462,7 +466,7 @@ class ClusteringSelection(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset(estimator=None)
+        global_var.reset("prediction_type", estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -495,7 +499,7 @@ class WantFeatureSelection(Window):
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset(estimator=None)
+        global_var.reset("prediction_type", estimator=None)
         last_form = MLTypeWindow(ui_window["model"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
