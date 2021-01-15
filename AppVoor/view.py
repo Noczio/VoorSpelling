@@ -31,3 +31,9 @@ class Window(QMainWindow):
 
     def close_window(self):
         self.close()
+
+    def handle_error(self, *args, **kwargs) -> None:
+        pass
+
+    def on_load(self):
+        pass

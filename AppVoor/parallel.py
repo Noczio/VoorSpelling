@@ -1,32 +1,28 @@
 import sys
 from typing import Callable
 
-from PyQt5.QtCore import *
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, QRunnable, QObject, QThread
 
 
 class WorkerSignals(QObject):
     finished = pyqtSignal()
-    error = pyqtSignal(object)
+    program_error = pyqtSignal(object)
     result = pyqtSignal(object)
 
 
 class Worker(QRunnable):
     """
     Worker thread
-
     Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
-
     :param callback: The function callback to run on this worker thread. Supplied args and
-                     kwargs will be passed through to the runner.
+            kwargs will be passed through to the runner.
     :type callback: function
     :param args: Arguments to pass to the callback function
     :param kwargs: Keywords to pass to the callback function
-
     """
 
     def __init__(self, func: Callable, *args, **kwargs):
         super().__init__()
-        # Store constructor arguments (re-used for processing)
         self.func = func
         self.args = args
         self.kwargs = kwargs
@@ -38,12 +34,11 @@ class Worker(QRunnable):
         Initialise the runner function with passed args, kwargs.
         """
         # Retrieve args/kwargs here; and fire processing using them
-        finished: bool
         try:
             output = self.func(*self.args, **self.kwargs)
             self.signals.result.emit(output)  # Return the result of the processing
         except Exception as e:
-            self.signals.error.emit(str(e))
+            self.signals.program_error.emit(e)
         else:
             self.signals.finished.emit()
 

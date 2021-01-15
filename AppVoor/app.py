@@ -15,7 +15,7 @@ from jsonInfo.welcome import WelcomeMessenger
 from load_data import LoaderCreator
 from model_creation import SBSModelCreator
 from modified_widgets import QDragAndDropButton, QLoadButton
-from parallel import Worker, EmittingStream
+from parallel import Worker, EmittingStream, DataSetWorker
 from parameter_search import ParameterSearchCreator
 from pop_up import PopUp, WarningPopUp, CriticalPopUp
 from view import Window
@@ -29,10 +29,10 @@ class HomeWindow(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
-        self._change_message()
         self.btn_next.clicked.connect(self.next)
+        self.on_load()
 
-    def _change_message(self) -> None:
+    def on_load(self):
         messenger = WelcomeMessenger(file_path=".\\jsonInfo\\welcomeMessage.json")
         text = str(messenger)
         self.lbl_description.setText(text)
@@ -56,9 +56,28 @@ class DataSetWindow(Window):
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
         self.file_type: str = "CSV"
-        self.last = "any"
+        self.last: str = "any"
+        self.critical_pop_up: PopUp = CriticalPopUp()
 
         self.btn_drag_file = QDragAndDropButton(self.main_area)
+        self.btn_load_file = QLoadButton(self.main_area)
+        self.on_load()
+
+        self.btn_back.clicked.connect(self.back)
+        self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
+
+        # change selected type to the other when clicked
+        self.btn_csv.clicked.connect(lambda: self.select_file_type("TSV"))
+        self.btn_tsv.clicked.connect(lambda: self.select_file_type("CSV"))
+
+        self.btn_load_file.loaded.connect(lambda: self.set_last_emitted("load_file"))
+        self.btn_drag_file.loaded.connect(lambda: self.set_last_emitted("drag_file"))
+        self.btn_next.clicked.connect(self.handle_file)
+
+    def on_load(self):
+        # by default is CSV, so tsv button should not be visible
+        self.btn_tsv.hide()
+        # file buttons set geometry and style
         self.btn_drag_file.setObjectName(u"btn_drag_file")
         self.btn_drag_file.setGeometry(QRect(360, 350, 331, 191))
         self.btn_drag_file.setStyleSheet(u"image: url(:/file/bx-file 1.svg);\n"
@@ -68,8 +87,6 @@ class DataSetWindow(Window):
                                          "")
         self.btn_drag_file.setText("")
         self.btn_drag_file.raise_()
-
-        self.btn_load_file = QLoadButton(self.main_area)
         self.btn_load_file.setObjectName(u"btn_load_file")
         self.btn_load_file.setGeometry(QRect(410, 490, 230, 40))
         font = QFont()
@@ -88,24 +105,12 @@ class DataSetWindow(Window):
         self.btn_load_file.setText("Buscar archivo")
         self.btn_load_file.raise_()
 
-        self.btn_back.clicked.connect(self.back)
-        self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
-        # by default is CSV, so tsv button should not be visible
-        self.btn_tsv.hide()
-        # change selected type to the other when clicked
-        self.btn_csv.clicked.connect(lambda: self.select_file_type("TSV"))
-        self.btn_tsv.clicked.connect(lambda: self.select_file_type("CSV"))
-
-        self.btn_load_file.loaded.connect(lambda: self.set_last_emitted("load_file"))
-        self.btn_drag_file.loaded.connect(lambda: self.set_last_emitted("drag_file"))
-        self.btn_next.clicked.connect(self.next)
-
     def select_file_type(self, event):
         self.file_type = event
 
     def set_last_emitted(self, event):
-        if event == "load_file":
-            self.last = "loaded"
+        if event == "load_file" and self.btn_load_file.file_path is not "":
+            self.last = "load_file"
             self.btn_load_file.setStyleSheet(u"QPushButton{\n"
                                              "border-color: rgb(60,179,113);\n"
                                              "}\n"
@@ -124,8 +129,8 @@ class DataSetWindow(Window):
                                              "padding-bottom: 80px;\n"
                                              "border-color: rgb(220, 220, 220);\n"
                                              "")
-        else:
-            self.last = "dropped"
+        elif event == "drag_file" and self.btn_drag_file.file_path is not "":
+            self.last = "drag_file"
             self.btn_drag_file.setStyleSheet(u"image: url(:/file/bx-file 1.svg);\n"
                                              "padding-top: 20px;\n"
                                              "padding-bottom: 80px;\n"
@@ -142,50 +147,54 @@ class DataSetWindow(Window):
                                              "border-right-color: rgb(215, 200, 239);\n"
                                              "}")
 
-    def next(self) -> None:
-        pop_up: PopUp = CriticalPopUp()
-        if self.last == "any":
-            body = "Ningun archivo ha sido seleccionado. Por favor subir un archivo y seleccionar la separación del " \
-                   "mismo, ya sea TSV o CSV "
-            pop_up.open_pop_up("Error", body, "")
+    def next(self):
+        next_form = MLTypeWindow(ui_window["model"])
+        widget.addWidget(next_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
+    def handle_error(self, error) -> None:
+        body, additional = "", ""
+        if type(error) == FileNotFoundError:
+            body = "No se encontró el archivo de datos para realizar el entrenamiento"
+        elif type(error) == TypeError:
+            body = "El archivo suministrado no cumple con los requerimientos"
+            additional = "El archivo debe tener más de cien muestras y por lo menos una característica y la " \
+                         "predicción. Además, es importante seleccionar correctamente si el archivo está " \
+                         "separado por coma (CSV) o tabulación (TSV)"
+        elif type(error) == ValueError:
+            body = "El archivo seleccionado no cumple con los requerimientos" \
+                   " para ser considerado un archivo de texto con las extensiones permitidas"
+        elif type(error) == OSError:
+            body = "El archivo seleccionado no cumple con los requerimientos" \
+                   " para ser considerado un archivo de texto"
+            additional = "No debe tener una extensión diferente a .txt .csv o .tsv"
         else:
-            try:
-                if self.last == "loaded":
+            body = "El archivo seleccionado no cumple con los requerimientos para ser utilizado para entrenar un " \
+                   "modelo de inteligencia artificial"
+            additional = "Información detallada:" + " " + str(error)
+        self.critical_pop_up.open_pop_up("Error", body, additional)
+
+    def handle_file(self) -> None:
+        try:
+            if self.last == "any":
+                body = "Ningun archivo ha sido seleccionado. Por favor subir un archivo " \
+                       "y seleccionar la separación del mismo, ya sea TSV o CSV "
+                self.critical_pop_up.open_pop_up("Error", body, "")
+            else:
+                if self.last == "load_file":
                     loader = loader_creator.create_loader(self.btn_load_file.file_path, self.file_type)
                 else:
                     loader = loader_creator.create_loader(self.btn_drag_file.file_path, self.file_type)
                 file = loader.get_file_transformed()
                 global_var.data_frame = file
-                next_form = MLTypeWindow(ui_window["model"])
-                widget.addWidget(next_form)
-                widget.removeWidget(widget.currentWidget())
-                widget.setCurrentIndex(widget.currentIndex())
-            except FileNotFoundError:
-                body = "No se encontró el archivo de datos para realizar el entrenamiento"
-                pop_up.open_pop_up("Error", body, "")
-            except TypeError:
-                body = "El archivo suministrado no cumple con los requerimientos"
-                additional = "El archivo debe tener más de cien muestras y por lo menos una característica y la " \
-                             "predicción. Además, es importante seleccionar correctamente si el archivo está " \
-                             "separado por coma (CSV) o tabulación (TSV)"
-                pop_up.open_pop_up("Error", body, additional)
-            except ValueError:
-                body = "El archivo seleccionado no cumple con los requerimientos" \
-                       " para ser considerado un archivo de texto con las extensiones permitidas"
-                pop_up.open_pop_up("Error", body, "")
-            except OSError:
-                body = "El archivo seleccionado no cumple con los requerimientos" \
-                       " para ser considerado un archivo de texto"
-                additional = "No debe tener una extensión diferente a .txt .csv o .tsv"
-                pop_up.open_pop_up("Error", body, additional)
-            except Exception as e:
-                body = "El archivo seleccionado no cumple con los requerimientos para ser utilizado para entrenar un " \
-                       "modelo de inteligencia artificial"
-                additional = "Información detallada:" + " " + str(e)
-                pop_up.open_pop_up("Error", body, additional)
+        except Exception as e:
+            self.handle_error(e)
+        else:
+            self.next()
 
     def back(self) -> None:
-        global_var.reset()
+        global_var.reset("data_set")
         last_form = HomeWindow(ui_window["home"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -228,19 +237,20 @@ class AutoLoad(Window):
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
         sys.stdout = EmittingStream(self.add_info)
-
         self.thread_pool = QThreadPool()
-        self.thread_pool.setMaxThreadCount(2)
-
         self.ml_worker = Worker(self.train_model)
+
+        self.lbl_cancel.mouseReleaseEvent = self.cancel_training
+        self.on_load()
+
+    def on_load(self):
+        self.thread_pool.setMaxThreadCount(2)
         self.ml_worker.autoDelete()
         self.ml_worker.signals.result.connect(self.add_info)
-        self.ml_worker.signals.error.connect(self.handle_error)
+        self.ml_worker.signals.program_error.connect(self.handle_error)
         self.ml_worker.signals.finished.connect(self.next)
 
         self.thread_pool.start(self.ml_worker, priority=1)
-
-        self.lbl_cancel.mouseReleaseEvent = self.cancel_training
 
     def close_window(self):
         global_var.reset()
@@ -283,9 +293,10 @@ class AutoLoad(Window):
             info = "Cerrando aplicación y liberando memoria"
             temp_worker = Worker(write_cancel_info)
             temp_worker.signals.finished.connect(self.close_window)
+            temp_worker.signals.program_error.connect(self.handle_error)
             self.thread_pool.start(temp_worker, priority=2)
 
-    def handle_error(self, event) -> None:
+    def handle_error(self, error) -> None:
 
         def write_error():
             for i in info:
@@ -297,14 +308,15 @@ class AutoLoad(Window):
             QThread.sleep(1)
             self.back()
 
-        self.thread_pool.waitForDone()
+        # deactivate lbl press behaviour due to an error
         self.lbl_cancel.mouseReleaseEvent = None
         self.lbl_cancel.setStyleSheet(u"QLabel\n"
                                       "{\n"
                                       "   border: none;\n"
                                       "	color: rgb(105, 105, 105);\n"
                                       "}")
-        info = ("Error\n", str(event), "\nRegresando a la página de inicio", " ", ".", ".", ".")
+        info = ("Error\n", str(error), "\nRegresando a la página de inicio", " ", ".", ".", ".")
+        # worker to write info to ted_info
         temp_worker = Worker(write_error)
         temp_worker.signals.finished.connect(go_home)
         self.thread_pool.start(temp_worker, priority=2)
