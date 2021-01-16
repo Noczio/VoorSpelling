@@ -1,54 +1,60 @@
 import sys
-from typing import Callable
 
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QRunnable, QObject, QThread
+from PyQt5.QtCore import *
 
 
 class WorkerSignals(QObject):
-    finished = pyqtSignal()
-    program_error = pyqtSignal(object)
+    program_finished = pyqtSignal()
+    program_error = pyqtSignal(BaseException)
     result = pyqtSignal(object)
 
+    def __init__(self):
+        super().__init__()
 
-class Worker(QRunnable):
+
+class LongWorker(QRunnable):
     """
     Worker thread
     Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
     :param callback: The function callback to run on this worker thread. Supplied args and
-            kwargs will be passed through to the runner.
+                     kwargs will be passed through to the runner.
     :type callback: function
     :param args: Arguments to pass to the callback function
     :param kwargs: Keywords to pass to the callback function
     """
+    signals = WorkerSignals()
 
-    def __init__(self, func: Callable, *args, **kwargs):
+    def __init__(self, func=None, *args, **kwargs):
         super().__init__()
         self.func = func
         self.args = args
         self.kwargs = kwargs
-        self.signals = WorkerSignals()
+
+    def set_params(self, func, *args, **kwargs):
+        self.func = func
+        self.args = args
+        self.kwargs = kwargs
 
     @pyqtSlot()
     def run(self):
-        """
-        Initialise the runner function with passed args, kwargs.
-        """
-        # Retrieve args/kwargs here; and fire processing using them
         try:
-            output = self.func(*self.args, **self.kwargs)
-            self.signals.result.emit(output)  # Return the result of the processing
+            if len(self.args) > 0 and len(self.kwargs) > 0:
+                output = self.func(*self.args, **self.kwargs)
+            elif len(self.args) > 0 and len(self.kwargs) == 0:
+                output = self.func(*self.args)
+            elif len(self.args) == 0 and len(self.kwargs) > 0:
+                output = self.func(**self.kwargs)
+            else:
+                output = self.func()
+            self.signals.program_finished.emit()
         except Exception as e:
             self.signals.program_error.emit(e)
         else:
-            self.signals.finished.emit()
+            self.signals.result.emit(output)
 
 
 class EmittingStream(QObject):
     textWritten = pyqtSignal(str)
-
-    def __init__(self, text_destiny):
-        super().__init__()
-        self.textWritten = text_destiny
 
     def write(self, text):
         self.textWritten.emit(str(text))

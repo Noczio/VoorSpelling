@@ -1,9 +1,10 @@
 import sys
+import time
 
 import numpy as np
 import pandas as pd
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QRect, QThread, QThreadPool
+from PyQt5.QtCore import QRect, QThreadPool, QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QFont, QTextCursor
 from PyQt5.QtWidgets import QApplication
 
@@ -15,7 +16,7 @@ from jsonInfo.welcome import WelcomeMessenger
 from load_data import LoaderCreator
 from model_creation import SBSModelCreator
 from modified_widgets import QDragAndDropButton, QLoadButton
-from parallel import Worker, EmittingStream, DataSetWorker
+from parallel import LongWorker, EmittingStream, WorkerSignals
 from parameter_search import ParameterSearchCreator
 from pop_up import PopUp, WarningPopUp, CriticalPopUp
 from view import Window
@@ -176,6 +177,7 @@ class DataSetWindow(Window):
         self.critical_pop_up.open_pop_up("Error", body, additional)
 
     def handle_file(self) -> None:
+        all_ok: bool = False
         try:
             if self.last == "any":
                 body = "Ningun archivo ha sido seleccionado. Por favor subir un archivo " \
@@ -188,10 +190,13 @@ class DataSetWindow(Window):
                     loader = loader_creator.create_loader(self.btn_drag_file.file_path, self.file_type)
                 file = loader.get_file_transformed()
                 global_var.data_frame = file
+                all_ok = True
         except Exception as e:
             self.handle_error(e)
-        else:
-            self.next()
+            all_ok = False
+        finally:
+            if all_ok:
+                self.next()
 
     def back(self) -> None:
         global_var.reset("data_set")
@@ -236,33 +241,33 @@ class AutoLoad(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
-        sys.stdout = EmittingStream(self.add_info)
-        self.thread_pool = QThreadPool()
-        self.ml_worker = Worker(self.train_model)
+        sys.stdout = EmittingStream(textWritten=self.add_info)
 
         self.lbl_cancel.mouseReleaseEvent = self.cancel_training
-        self.on_load()
-
-    def on_load(self):
+        self.thread_pool = QThreadPool()
         self.thread_pool.setMaxThreadCount(2)
-        self.ml_worker.autoDelete()
-        self.ml_worker.signals.result.connect(self.add_info)
+        self.ml_worker = LongWorker()
+        self.ml_worker.set_params(self.train_model)
+        self.ml_worker.signals.program_finished.connect(self.next)
         self.ml_worker.signals.program_error.connect(self.handle_error)
-        self.ml_worker.signals.finished.connect(self.next)
-
+        self.ml_worker.signals.result.connect(self.add_info)
+        self.ml_worker.setAutoDelete(True)
         self.thread_pool.start(self.ml_worker, priority=1)
 
     def close_window(self):
-        global_var.reset()
-        QThread.sleep(1)
+        super(AutoLoad, self).close_window()
         widget.close()
         sys.exit()
 
     def next(self) -> None:
+
+        def go_next():
+            pass
         # to do, final result form
         self.thread_pool.waitForDone()
         self.add_info("\nProceso terminado")
         QThread.sleep(3)
+        go_next()
 
     def back(self):
         global_var.reset()
@@ -274,29 +279,25 @@ class AutoLoad(Window):
     def train_model(self) -> None:
         automl_ml = JarAutoML(10, False, 5000)
         model = AutoExecutioner(automl_ml)
+        self.add_info(str(model)+"\n\n")
         data_frame = global_var.data_frame
         model.train_model(data_frame)
-        self.add_info(model.get_model())
 
     def cancel_training(self, event) -> None:
 
-        def write_cancel_info():
-            self.add_info(info)
-            QThread.sleep(1)
-            del sys.stdout
+        def show_last_warning() -> bool:
+            pop_up: PopUp = WarningPopUp()
+            title = "Cancelar entrenamiento"
+            body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
+            additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento"
+            answer = pop_up.open_pop_up(title, body, additional)
+            return answer
 
         event.accept()
-        pop_up: PopUp = WarningPopUp()
-        title = "Cancelar entrenamiento"
-        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
-        additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento"
-        answer = pop_up.open_pop_up(title, body, additional)
-        if answer:
-            info = "Cerrando aplicación y liberando memoria"
-            temp_worker = Worker(write_cancel_info)
-            temp_worker.signals.finished.connect(self.close_window)
-            temp_worker.signals.program_error.connect(self.handle_error)
-            self.thread_pool.start(temp_worker, priority=2)
+        result = show_last_warning()
+        if result:
+            self.thread_pool.cancel(self.ml_worker)
+            self.close_window()
 
     def handle_error(self, error) -> None:
 
@@ -317,10 +318,11 @@ class AutoLoad(Window):
                                       "   border: none;\n"
                                       "	color: rgb(105, 105, 105);\n"
                                       "}")
-        info = ("Error\n", str(error), "\nRegresando a la página de inicio", " ", ".", ".", ".")
+        info = ("Error\n", str(error), "\nRegresando a la página de inicio" + " ", ".", ".", ".")
         # worker to write info to ted_info
-        temp_worker = Worker(write_error)
-        temp_worker.signals.finished.connect(go_home)
+        temp_worker = LongWorker(func=write_error)
+        temp_worker.signals.program_finished.connect(go_home)
+        temp_worker.signals.program_error.connect(self.handle_error)
         self.thread_pool.start(temp_worker, priority=2)
 
     def add_info(self, info: any) -> None:
