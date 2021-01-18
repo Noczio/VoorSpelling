@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 
 
 class WorkerSignals(QObject):
+    """PyQt signals custom class"""
     program_finished = pyqtSignal()
     program_error = pyqtSignal(BaseException)
     result = pyqtSignal(object)
@@ -37,6 +38,7 @@ class LongWorker(QRunnable):
 
     @pyqtSlot()
     def run(self):
+        """Run method of Worker class. Tries to execute a given function and emits a signal"""
         try:
             if len(self.args) > 0 and len(self.kwargs) > 0:
                 output = self.func(*self.args, **self.kwargs)
@@ -54,6 +56,7 @@ class LongWorker(QRunnable):
 
 
 class EmittingStream(QObject):
+    """Custom class that catches sys.stdout info and gives it back to a function"""
     textWritten = pyqtSignal(str)
 
     def write(self, text):

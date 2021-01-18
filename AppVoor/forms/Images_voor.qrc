@@ -2,10 +2,15 @@
   <qresource prefix="image">
     <file>voorspelling_logo.png</file>
   </qresource>
+  <qresource prefix="radio_button">
+    <file>rbtn_checked_1.svg</file>
+    <file>rbtn_checked_2.svg</file>
+    <file>rbtn_unchecked.svg</file>
+  </qresource>
   <qresource prefix="botton">
     <file>bxs-left-arrow-circle.svg</file>
   </qresource>
-  <qresource prefix="file">
+   <qresource prefix="file">
     <file>bx-file 1.svg</file>
   </qresource>
 </RCC>

@@ -244,6 +244,7 @@ class AutoLoad(Window):
         sys.stdout = EmittingStream(textWritten=self.add_info)
 
         self.lbl_cancel.mouseReleaseEvent = self.cancel_training
+        # when form opens, create a thread pool and a worker
         self.thread_pool = QThreadPool()
         self.thread_pool.setMaxThreadCount(2)
         self.ml_worker = LongWorker()
@@ -263,7 +264,7 @@ class AutoLoad(Window):
 
         def go_next():
             pass
-        # to do, final result form
+        # wait for process to finish and then go to final form after printing some info.
         self.thread_pool.waitForDone()
         self.add_info("\nProceso terminado")
         QThread.sleep(3)
@@ -284,7 +285,7 @@ class AutoLoad(Window):
         model.train_model(data_frame)
 
     def cancel_training(self, event) -> None:
-
+        """Show a Warning pop up and then if user wants to finished the app, close it"""
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Cancelar entrenamiento"
@@ -300,7 +301,7 @@ class AutoLoad(Window):
             self.close_window()
 
     def handle_error(self, error) -> None:
-
+        """Print error message to the QTextEdit"""
         def write_error():
             for i in info:
                 self.add_info(i)
