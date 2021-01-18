@@ -76,12 +76,15 @@ class AutoExecutioner:
     def __init__(self, auto_ml: AutoMachineLearning) -> None:
         self._auto_ml = auto_ml
 
+    def __str__(self):
+        return self.get_model()
+
     def get_model(self) -> str:
         model = self._auto_ml.estimator
         return str(model)
 
     def train_model(self, df: DataFrame, size: float = 0.0) -> None:
-        x, y = SplitterReturner.split_x_y_from_df(df, ravel_data=False)
+        x, y = SplitterReturner.split_x_y_from_df(df)
         if size == 0.0:
             self._auto_ml.fit_model(x, y)
         elif 0.0 < size < 1.0:

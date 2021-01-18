@@ -459,10 +459,10 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
     <widget class="QRadioButton" name="rbtn_sbsml">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>260</y>
-       <width>440</width>
-       <height>80</height>
+       <x>250</x>
+       <y>280</y>
+       <width>50</width>
+       <height>50</height>
       </rect>
      </property>
      <property name="font">
@@ -470,8 +470,34 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
        <pointsize>16</pointsize>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">border: none;</string>
+      <string notr="true">QRadioButton{
+border: none;
+
+}
+QRadioButton:indicator{
+width: 50px;
+height: 50px;
+image: url(:/radio_button/rbtn_unchecked.svg);
+
+}
+
+QRadioButton:indicator:checked{
+image: url(:/radio_button/rbtn_checked_1.svg);
+}
+
+QRadioButton:hover{
+background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(230, 230, 230, 205), stop:0.7 rgba(230, 230, 230, 205), stop:1 rgba(255, 255, 255, 0));
+
+}
+QRadioButton:pressed{
+
+background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(170, 170, 170, 205), stop:0.6 rgba(210, 210, 210, 205), stop:1 rgba(255, 255, 255, 0));
+
+}</string>
      </property>
      <property name="text">
       <string/>
@@ -492,10 +518,10 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
     <widget class="QRadioButton" name="rbtn_automl">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>380</y>
-       <width>440</width>
-       <height>80</height>
+       <x>250</x>
+       <y>400</y>
+       <width>50</width>
+       <height>50</height>
       </rect>
      </property>
      <property name="font">
@@ -503,8 +529,34 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
        <pointsize>16</pointsize>
       </font>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
-      <string notr="true">border: none;</string>
+      <string notr="true">QRadioButton{
+border: none;
+
+}
+QRadioButton:indicator{
+width: 50px;
+height: 50px;
+image: url(:/radio_button/rbtn_unchecked.svg);
+
+}
+
+QRadioButton:indicator:checked{
+image: url(:/radio_button/rbtn_checked_1.svg);
+}
+
+QRadioButton:hover{
+background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(230, 230, 230, 205), stop:0.7 rgba(230, 230, 230, 205), stop:1 rgba(255, 255, 255, 0));
+
+}
+QRadioButton:pressed{
+
+background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(170, 170, 170, 205), stop:0.6 rgba(210, 210, 210, 205), stop:1 rgba(255, 255, 255, 0));
+
+}</string>
      </property>
      <property name="text">
       <string/>
