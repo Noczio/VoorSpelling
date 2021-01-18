@@ -134,13 +134,13 @@
   "forward_feature_selection": {
     "title": "Selección de características en ascenso",
     "body": "En inglés se conoce como forward feature selection. Este algoritmo evalua el rendimiento del modelo en primera instancia individualmente por cada característica, luego extrae aquella que obtuvo el mejor resultado y se continua el proceso. Las siguientes iteraciones ya no evaluan el rendimiento de una sola característica, sino que extrae como mejores características aquellas que combinandose con las anteriores extraidas entreguen un mejor rendimiento",
-    "example": "Conjunto inicial: nombre, edad, peso, altura\nPrimera iteración: nombre = 0, edad = 0.3, peso = 0.12, altura = 0.4; ganador altura\nSegunda iteración: altura y nombre = 0.4, altura y edad = 0.42, altura y peso = 0.37; ganador altura y edad\nEl proceso continua hasta que el rendimiento no mejore con respecto a la anterior iteración.",
+    "example": "Conjunto inicial: nombre, edad, peso, altura\n\nPrimera iteración: nombre = 0, edad = 0.3, peso = 0.12, altura = 0.4; ganador altura\n\nSegunda iteración: altura y nombre = 0.4, altura y edad = 0.42, altura y peso = 0.37; ganador altura y edad\n\nEl proceso continua hasta que el rendimiento no mejore con respecto a la anterior iteración.",
     "url": ""
   },
   "backwards_feature_selection": {
     "title": "Selección de características en reversa",
     "body": "En inglés se conoce como backwards feature selection. Este algoritmo evalua el rendimiento del modelo con todas sus características y luego elimina una a una las características que al no ser utilizadas mejoran el rendimiento.",
-    "example": "Conjunto inicial: nombre, edad, peso, altura; rendimiento = 0.6\nPrimera iteración: edad, peso y altura; rendimiento = 0.65\nSegunda iteración: nombre, peso y altura; rendimiento 0.58\nTercera iteración: nombre, edad y altura; rendimiento = 0.45. El mejor rendimiento se obtiene si se limina la característica nombre, por lo tanto se continua el proceso con las características restantes hasta que no haya una mejora de rendimiento.",
+    "example": "Conjunto inicial: nombre, edad, peso, altura; rendimiento = 0.6\n\nPrimera iteración: edad, peso y altura; rendimiento = 0.65\n\nSegunda iteración: nombre, peso y altura; rendimiento 0.58\n\nTercera iteración: nombre, edad y altura; rendimiento = 0.45.\n\nEl mejor rendimiento se obtiene si se elimina la característica nombre, por lo tanto se continua el proceso con las características restantes hasta que no haya una mejora de rendimiento.",
     "url": ""
   },
   "bayesian_search": {
