@@ -4,4 +4,6 @@ build/
 dist/
 **AutoML_[1-100]/
 **AutoML_*/
+**SBS_ML_[1-100]/
+**SBS_ML_*/
 
