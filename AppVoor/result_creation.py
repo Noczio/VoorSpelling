@@ -6,7 +6,7 @@ from mdutils.mdutils import MdUtils
 
 
 class FCreator:
-    created = pyqtSignal(str)
+    folder_path: str
 
     def __init__(self, location: str, obj: str = "SBS_ML"):
         self._object = obj
@@ -23,7 +23,7 @@ class FCreator:
                     sub_value += 1
                 else:
                     os.mkdir(path)
-                    self.created.emit(path)
+                    self.folder_path = path
                     break
         except Exception as e:
             print(e)

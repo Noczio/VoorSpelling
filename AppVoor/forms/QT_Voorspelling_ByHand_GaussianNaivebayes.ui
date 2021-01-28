@@ -204,14 +204,14 @@ Licencia BSD 3</string>
       <rect>
        <x>400</x>
        <y>40</y>
-       <width>941</width>
+       <width>1001</width>
        <height>72</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>MS Shell Dlg 2</family>
-       <pointsize>30</pointsize>
+       <pointsize>34</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -222,7 +222,7 @@ Licencia BSD 3</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>PASO 5 - Tipo de Predicción - Regresión</string>
+      <string>PASO 7 - Ingreso manual - Gaussian Naive bayes</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -262,18 +262,20 @@ border-radius: 10px;</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="lbl_description">
+    <widget class="QLabel" name="lbl_variable_refinamiento">
      <property name="geometry">
       <rect>
-       <x>180</x>
-       <y>130</y>
-       <width>690</width>
+       <x>350</x>
+       <y>110</y>
+       <width>360</width>
        <height>80</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -281,7 +283,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>El tipo de predicción “Regresión” se le conoce como Regression en Inglés. Esta produce salidas númericas en el conjunto de los números reales a partir de la información suministrada</string>
+      <string>Variable de refinamiento</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -290,53 +292,41 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_SVR_rbf">
+    <widget class="QLabel" name="lbl_epsilon">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>510</y>
-       <width>330</width>
-       <height>130</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>20</pointsize>
-       <kerning>true</kerning>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background-color: rgb(154, 148, 238);
-border-left-color: rgb(195, 190, 239);
-border-top-color: rgb(195, 190, 239);
-border-bottom-color: rgb(154, 148, 238);
-border-right-color: rgb(154, 148, 238);
-border-radius: 20px;
-}
-QPushButton:hover{
-background-color: rgb(160, 155, 245);
-}
-QPushButton:pressed{
-background-color: rgb(150, 140, 230);
-border-left-color: rgb(140, 135, 220);
-border-top-color: rgb(140, 135, 220);
-border-bottom-color: rgb(195, 190, 239);
-border-right-color: rgb(195, 190, 239);
-}</string>
-     </property>
-     <property name="text">
-      <string>SVR rbf</string>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_info_SVR_Linear">
-     <property name="geometry">
-      <rect>
-       <x>910</x>
+       <x>350</x>
        <y>340</y>
+       <width>360</width>
+       <height>80</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(105, 105, 105);
+border: none;</string>
+     </property>
+     <property name="text">
+      <string>Epsilon</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_info_variable_refinamiento">
+     <property name="geometry">
+      <rect>
+       <x>710</x>
+       <y>130</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -374,11 +364,11 @@ background-color: rgb(160, 150, 240);
       <string>i</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_info_SGD">
+    <widget class="QPushButton" name="btn_info_epsilon">
      <property name="geometry">
       <rect>
-       <x>910</x>
-       <y>550</y>
+       <x>710</x>
+       <y>360</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -416,51 +406,41 @@ background-color: rgb(160, 150, 240);
       <string>i</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_back">
+    <widget class="QDoubleSpinBox" name="sb_variable_refinamiento">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>50</y>
-       <width>70</width>
-       <height>70</height>
+       <x>480</x>
+       <y>230</y>
+       <width>100</width>
+       <height>30</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background-image: url(:/botton/bxs-left-arrow-circle.svg);
-border-radius: 35px;
-border: none;
-
-
-color: #6555C6;
-}
-QPushButton:hover{
-background-color: rgb(235, 225, 250);
-
-}
-QPushButton:pressed{
-
-background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(200, 190, 250, 205), stop:0.6 rgba(200, 190, 250, 205), stop:1 rgba(255, 255, 255, 0));
-
-}
-
-</string>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
-     <property name="text">
-      <string/>
+     <property name="decimals">
+      <number>7</number>
      </property>
-     <property name="iconSize">
-      <size>
-       <width>20</width>
-       <height>20</height>
-      </size>
+     <property name="minimum">
+      <double>0.000001000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.000010000000000</double>
+     </property>
+     <property name="value">
+      <double>0.000100000000000</double>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_SGD">
+    <widget class="QPushButton" name="btn_next">
      <property name="geometry">
       <rect>
-       <x>550</x>
-       <y>510</y>
+       <x>360</x>
+       <y>560</y>
        <width>330</width>
        <height>130</height>
       </rect>
@@ -492,178 +472,40 @@ border-right-color: rgb(195, 190, 239);
 }</string>
      </property>
      <property name="text">
-      <string>SGD</string>
+      <string>Siguiente</string>
      </property>
      <property name="autoDefault">
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_SVR_Linear">
+    <widget class="QDoubleSpinBox" name="sb_epsilon">
      <property name="geometry">
       <rect>
-       <x>550</x>
-       <y>300</y>
-       <width>330</width>
-       <height>130</height>
+       <x>490</x>
+       <y>460</y>
+       <width>80</width>
+       <height>30</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
-       <kerning>true</kerning>
+       <pointsize>12</pointsize>
       </font>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background-color: rgb(154, 148, 238);
-border-left-color: rgb(195, 190, 239);
-border-top-color: rgb(195, 190, 239);
-border-bottom-color: rgb(154, 148, 238);
-border-right-color: rgb(154, 148, 238);
-border-radius: 20px;
-}
-QPushButton:hover{
-background-color: rgb(160, 155, 245);
-}
-QPushButton:pressed{
-background-color: rgb(150, 140, 230);
-border-left-color: rgb(140, 135, 220);
-border-top-color: rgb(140, 135, 220);
-border-bottom-color: rgb(195, 190, 239);
-border-right-color: rgb(195, 190, 239);
-}</string>
+     <property name="decimals">
+      <number>2</number>
      </property>
-     <property name="text">
-      <string>LinearSVR</string>
+     <property name="minimum">
+      <double>1.000000000000000</double>
      </property>
-     <property name="autoDefault">
-      <bool>false</bool>
+     <property name="maximum">
+      <double>1000.000000000000000</double>
      </property>
-    </widget>
-    <widget class="QPushButton" name="btn_info_SVR_rbf">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>550</y>
-       <width>50</width>
-       <height>50</height>
-      </rect>
+     <property name="singleStep">
+      <double>1.000000000000000</double>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background: rgba(101, 85, 198, 0.2);
-border: 2px solid #6555C6;
-box-sizing: border-box;
-border-radius: 25px;
-
-
-position: absolute;
-width: 25px;
-height: 44.55px;
-font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 30px;
-line-height: 56px;
-display: flex;
-align-items: center;
-text-align: center;
-
-color: #6555C6;
-}
-QPushButton:hover{
-background-color: rgb(190, 185, 250);
-}
-QPushButton:pressed{
-background-color: rgb(160, 150, 240);
-}</string>
-     </property>
-     <property name="text">
-      <string>i</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_Lasso">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>300</y>
-       <width>330</width>
-       <height>130</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>20</pointsize>
-       <kerning>true</kerning>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background-color: rgb(154, 148, 238);
-border-left-color: rgb(195, 190, 239);
-border-top-color: rgb(195, 190, 239);
-border-bottom-color: rgb(154, 148, 238);
-border-right-color: rgb(154, 148, 238);
-border-radius: 20px;
-}
-QPushButton:hover{
-background-color: rgb(160, 155, 245);
-}
-QPushButton:pressed{
-background-color: rgb(150, 140, 230);
-border-left-color: rgb(140, 135, 220);
-border-top-color: rgb(140, 135, 220);
-border-bottom-color: rgb(195, 190, 239);
-border-right-color: rgb(195, 190, 239);
-}</string>
-     </property>
-     <property name="text">
-      <string>Lasso</string>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_info_Lasso">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>340</y>
-       <width>50</width>
-       <height>50</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background: rgba(101, 85, 198, 0.2);
-border: 2px solid #6555C6;
-box-sizing: border-box;
-border-radius: 25px;
-
-
-position: absolute;
-width: 25px;
-height: 44.55px;
-font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 30px;
-line-height: 56px;
-display: flex;
-align-items: center;
-text-align: center;
-
-color: #6555C6;
-}
-QPushButton:hover{
-background-color: rgb(190, 185, 250);
-}
-QPushButton:pressed{
-background-color: rgb(160, 150, 240);
-}</string>
-     </property>
-     <property name="text">
-      <string>i</string>
+     <property name="value">
+      <double>1.000000000000000</double>
      </property>
     </widget>
    </widget>
