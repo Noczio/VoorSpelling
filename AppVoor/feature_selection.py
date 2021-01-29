@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from is_data import DataEnsurer
 from score import CVScore, CVModelScore
+from switcher import Switch
 
 NpArray = np.ndarray
 DataFrame = pd.DataFrame
@@ -185,9 +186,27 @@ class ForwardFeatureSelection(FeatureSelection):
                 raise TypeError("Output is not a dataframe")
 
 
+class FeatureSelectionPossibilities(Switch):
+
+    @staticmethod
+    def FFS():
+        return ForwardFeatureSelection()
+
+    @staticmethod
+    def BFS():
+        return BackwardsFeatureSelection()
+
+    @staticmethod
+    def ForwardFeatureSelection():
+        return ForwardFeatureSelection()
+
+    @staticmethod
+    def BackwardsFeatureSelection():
+        return BackwardsFeatureSelection()
+
+
 class FeatureSelectorCreator:
     __instance = None
-    _types: dict = {"FFS": ForwardFeatureSelection(), "BFS": BackwardsFeatureSelection()}
 
     @staticmethod
     def get_instance() -> "FeatureSelectorCreator":
@@ -204,14 +223,18 @@ class FeatureSelectorCreator:
             FeatureSelectorCreator.__instance = self
 
     def create_feature_selector(self, selection_type: str) -> FeatureSelection:
-        # transform param to capital letters and then replace white spaces
-        key = selection_type.upper().replace(" ", "")
-        if key in self._types.keys():
-            feature_selection_type = self._types[key]
-            return feature_selection_type
-        raise KeyError("Feature selection key value is wrong. It should be: FFS or BFS")
+        try:
+            feature_selection_name = selection_type.replace(" ", "")
+            feature_selection_method = FeatureSelectionPossibilities.case(feature_selection_name)
+            return feature_selection_method
+        except():
+            available_types = self.get_available_types()
+            types_as_string = ", ".join(available_types)
+            raise AttributeError(f"Parameter value is wrong. "
+                                 f"It should be any of the following: {types_as_string}")
 
     def get_available_types(self) -> tuple:
-        available_types = [k for k in self._types.keys()]
-        types = tuple(available_types)
-        return types
+        available_types = [func for func in dir(FeatureSelectionPossibilities)
+                           if callable(getattr(FeatureSelectionPossibilities, func)) and not
+                           (func.startswith("__") or func is "case")]
+        return tuple(available_types)

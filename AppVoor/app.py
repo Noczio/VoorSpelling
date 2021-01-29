@@ -1,10 +1,9 @@
 import sys
-import time
 
 import numpy as np
 import pandas as pd
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QRect, QThreadPool, QThread, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QRect, QThreadPool, QThread
 from PyQt5.QtGui import QFont, QTextCursor
 from PyQt5.QtWidgets import QApplication
 
@@ -16,15 +15,82 @@ from jsonInfo.welcome import WelcomeMessenger
 from load_data import LoaderCreator
 from model_creation import SBSModelCreator
 from modified_widgets import QDragAndDropButton, QLoadButton
-from parallel import LongWorker, EmittingStream, WorkerSignals
+from parallel import LongWorker, EmittingStream
 from parameter_search import ParameterSearchCreator
 from pop_up import PopUp, WarningPopUp, CriticalPopUp
 from result_creation import FCreator, SBSResult
+from switcher import Switch
 from view import Window
 from forms import resources
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray
+
+
+class PredictionTypePossibilities(Switch):
+
+    @staticmethod
+    def classification():
+        return ClassificationSelection(ui_window["classification"])
+
+    @staticmethod
+    def regression():
+        return RegressionSelection(ui_window["regression"])
+
+    @staticmethod
+    def clustering():
+        return ClusteringSelection(ui_window["clustering"])
+
+
+class EstimatorParametersPossibilities(Switch):
+
+    @staticmethod
+    def LinearSVC():
+        return LinearSVCParameters(ui_window["LinearSVC_by_hand"])
+
+    @staticmethod
+    def SVC():
+        return SVCParameters(ui_window["SVC_by_hand"])
+
+    @staticmethod
+    def KNeighborsClassifier():
+        return KNeighborsClassifierParameters(ui_window["KNeighborsClassifier_by_hand"])
+
+    @staticmethod
+    def GaussianNB():
+        return GaussianNBParameters(ui_window["GaussianNB_by_hand"])
+
+    @staticmethod
+    def LinearSVR():
+        return LinearSVRParameters(ui_window["LinearSVR_by_hand"])
+
+    @staticmethod
+    def SVR():
+        return SVRParameters(ui_window["SVR_by_hand_by_hand"])
+
+    @staticmethod
+    def Lasso():
+        return LassoParameters(ui_window["Lasso_by_hand"])
+
+    @staticmethod
+    def SGDClassifier():
+        return SGDClassifierParameters(ui_window["SGDClassifier_by_hand"])
+
+    @staticmethod
+    def AffinityPropagation():
+        return AffinityPropagationParameters(ui_window["AffinityPropagation_by_hand"])
+
+    @staticmethod
+    def KMeans():
+        return KMeansParameters(ui_window["KMeans"])
+
+    @staticmethod
+    def MiniBatchKMeans():
+        return MiniBatchKMeansParameters(ui_window["MiniBatchKMeans"])
+
+    @staticmethod
+    def MeanShift():
+        return MeanShiftParameters(ui_window["MeanShift"])
 
 
 class HomeWindow(Window):
@@ -397,13 +463,14 @@ class StepByStepLoad(Window):
         model.feature_selector = global_var.feature_selection_method
         model.parameter_selector = global_var.parameter_search_method
 
-        score_type = {"Classification": "roc_auc", "Regression": "accuracy", "Clustering": "explained_variance"}
+        score_type = {"classification": "roc_auc", "regression": "accuracy", "clustering": "explained_variance"}
         score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
+        score_text = f"Rendimiento {score_type[global_var.prediction_type]}: {score}"
 
         f_creator = FCreator(".\\")
         folder_path = f_creator.folder_path
         # App is set up to be used by spanish speakes, so prediction type must be translated for further use
-        translation = {"Classification": "Clasificación", "Regression": "Regresión", "Clustering": "Agrupamiento"}
+        translation = {"classification": "clasificación", "regression": "regresión", "clustering": "agrupamiento"}
         prediction_type_text = f"{translation[global_var.prediction_type]} ({global_var.prediction_type}) paso a paso"
         # All important info is storage in a variable to be displayed in a markdown file as a 2x5 table
         info = ["Opción", "Selección",
@@ -419,7 +486,7 @@ class StepByStepLoad(Window):
                                  list(model.best_features),
                                  model.initial_parameters,
                                  model.best_parameters,
-                                 str(score),
+                                 score_text,
                                  folder_path)
 
     def cancel_training(self, event) -> None:
@@ -496,15 +563,11 @@ class PredictionType(Window):
         self.btn_Clustering.clicked.connect(lambda: self.next("clustering"))
 
     def next(self, event) -> None:
-        possibilities = {"classification": ClassificationSelection(ui_window["classification"]),
-                         "regression": RegressionSelection(ui_window["regression"]),
-                         "clustering": ClusteringSelection(ui_window["clustering"])}
-        if event in possibilities.keys():
-            global_var.prediction_type = event
-            next_form = possibilities[event]
-            widget.addWidget(next_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
+        global_var.prediction_type = event
+        next_form = PredictionTypePossibilities.case(event)
+        widget.addWidget(next_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
         global_var.reset("data_set", "prediction_type")
@@ -525,10 +588,10 @@ class ClassificationSelection(Window):
         self.btn_info_SVC_rbf.clicked.connect(lambda: self.useful_info_pop_up("svc_rbf"))
         self.btn_info_Gaussian_Naive_Bayes.clicked.connect(lambda: self.useful_info_pop_up("gaussian_naive_bayes"))
 
-        self.btn_LinearSVC.clicked.connect(lambda: self.next("LSVC"))
+        self.btn_LinearSVC.clicked.connect(lambda: self.next("LinearSVC"))
         self.btn_SVC_rbf.clicked.connect(lambda: self.next("SVC"))
-        self.btn_KNN.clicked.connect(lambda: self.next("KNN"))
-        self.btn_Gaussian_Naive_Bayes.clicked.connect(lambda: self.next("GNB"))
+        self.btn_KNN.clicked.connect(lambda: self.next("KNeighborsClassifier"))
+        self.btn_Gaussian_Naive_Bayes.clicked.connect(lambda: self.next("GaussianNB"))
 
     def next(self, event):
         clf = estimator_creator.create_estimator(event)
@@ -557,10 +620,10 @@ class RegressionSelection(Window):
         self.btn_info_SVR_rbf.clicked.connect(lambda: self.useful_info_pop_up("svr_rbf"))
         self.btn_info_SGD.clicked.connect(lambda: self.useful_info_pop_up("sgd"))
 
-        self.btn_Lasso.clicked.connect(lambda: self.next("LASSO"))
-        self.btn_SVR_Linear.clicked.connect(lambda: self.next("LSVR"))
+        self.btn_Lasso.clicked.connect(lambda: self.next("Lasso"))
+        self.btn_SVR_Linear.clicked.connect(lambda: self.next("LinearSVR"))
         self.btn_SVR_rbf.clicked.connect(lambda: self.next("SVR"))
-        self.btn_SGD.clicked.connect(lambda: self.next("SGD"))
+        self.btn_SGD.clicked.connect(lambda: self.next("SGDClassifier"))
 
     def next(self, event):
         clf = estimator_creator.create_estimator(event)
@@ -589,10 +652,10 @@ class ClusteringSelection(Window):
         self.btn_info_Meanshift.clicked.connect(lambda: self.useful_info_pop_up("meanshift"))
         self.btn_info_Kmeans.clicked.connect(lambda: self.useful_info_pop_up("kmeans"))
 
-        self.btn_Affinity_Propagation.clicked.connect(lambda: self.next("APROPAGATION"))
-        self.btn_Minibatch_KMeans.clicked.connect(lambda: self.next("MINIKMEANS"))
-        self.btn_Meanshift.clicked.connect(lambda: self.next("MEANSHIFT"))
-        self.btn_KMeans.clicked.connect(lambda: self.next("KMEANS"))
+        self.btn_Affinity_Propagation.clicked.connect(lambda: self.next("AffinityPropagation"))
+        self.btn_Minibatch_KMeans.clicked.connect(lambda: self.next("MiniBatchKMeans"))
+        self.btn_Meanshift.clicked.connect(lambda: self.next("MeanShift"))
+        self.btn_KMeans.clicked.connect(lambda: self.next("KMeans"))
 
     def next(self, event):
         clf = estimator_creator.create_estimator(event)
@@ -692,7 +755,11 @@ class WantHiperparameterSearch(Window):
             widget.setCurrentIndex(widget.currentIndex())
         else:
             global_var.uses_parameter_search = False
-            # to do form implementation depending on estimator and if user wants or not hiperparameter search
+            user_selection = global_var.estimator.__class__.__name__
+            next_form = EstimatorParametersPossibilities.case(user_selection)
+            widget.addWidget(next_form)
+            widget.removeWidget(widget.currentWidget())
+            widget.setCurrentIndex(widget.currentIndex())
 
     def back(self):
         global_var.reset("uses_feature_selection", "uses_parameter_search")
@@ -776,7 +843,7 @@ class AffinityPropagationParameters(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
 
-class GaussianNaiveBayesParameters(Window):
+class GaussianNBParameters(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
@@ -860,7 +927,7 @@ class KMeansParameters(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
 
-class KNNParameters(Window):
+class KNeighborsClassifierParameters(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
@@ -1126,7 +1193,7 @@ class MiniBatchKMeansParameters(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
 
-class SGDParameters(Window):
+class SGDClassifierParameters(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
@@ -1281,19 +1348,19 @@ if __name__ == "__main__":
                  "hiperparameter_search": ".\\forms\\QT_Voorspelling_Hiperparametros.ui",
                  "hiperparameter_search_method": ".\\forms\\QT_Voorspelling_HiperparametrosMetodo.ui",
                  "result_screen": ".\\forms\\QT_Voorspelling_Resultado.ui",
-                 "result_final": ".\\forms\\QT_Voorspellinf_ResultadoFinal.ui",
-                 "LSVC": ".\\forms\\QT_Voorspelling_ByHand_LinearSVC.ui",
-                 "SVC": ".\\forms\\QT_Voorspelling_ByHand_SVC_rbf.ui",
-                 "KNN": ".\\forms\\QT_Voorspelling_ByHand_KNN.ui",
-                 "GNB": ".\\forms\\QT_Voorspelling_ByHand_GaussianNaiveBayes.ui",
-                 "LSVR": ".\\forms\\QT_Voorspelling_ByHand_LinearSVR.ui",
-                 "SVR": ".\\forms\\QT_Voorspelling_ByHand_SVR_rbf.ui",
-                 "LASSO": ".\\forms\\QT_Voorspelling_ByHand_Lasso.ui",
-                 "SGD": ".\\forms\\QT_Voorspelling_ByHand_SGD.ui",
-                 "APROPAGATION": ".\\forms\\QT_Voorspelling_ByHand_AffinityPropagation.ui",
-                 "KMEANS": ".\\forms\\QT_Voorspelling_ByHand_KMeans.ui",
-                 "MINIKMEANS": ".\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
-                 "MEANSHIFT": ".\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
+                 "result_final": ".\\forms\\QT_Voorspelling_ResultadoFinal.ui",
+                 "LinearSVC_by_hand": ".\\forms\\QT_Voorspelling_ByHand_LinearSVC.ui",
+                 "SVC_by_hand": ".\\forms\\QT_Voorspelling_ByHand_SVC_rbf.ui",
+                 "KNeighborsClassifier_by_hand": ".\\forms\\QT_Voorspelling_ByHand_KNN.ui",
+                 "GaussianNB_by_hand": ".\\forms\\QT_Voorspelling_ByHand_GaussianNaiveBayes.ui",
+                 "LinearSVR_by_hand": ".\\forms\\QT_Voorspelling_ByHand_LinearSVR.ui",
+                 "SVR_by_hand": ".\\forms\\QT_Voorspelling_ByHand_SVR_rbf.ui",
+                 "Lasso_by_hand": ".\\forms\\QT_Voorspelling_ByHand_Lasso.ui",
+                 "SGDClassifier_by_hand": ".\\forms\\QT_Voorspelling_ByHand_SGD.ui",
+                 "AffinityPropagation_by_hand": ".\\forms\\QT_Voorspelling_ByHand_AffinityPropagation.ui",
+                 "KMeans_by_hand": ".\\forms\\QT_Voorspelling_ByHand_KMeans.ui",
+                 "MiniBatchKMeans_by_hand": ".\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
+                 "MeanShift_by_hand": ".\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
                  }
 
     app = QApplication(sys.argv)

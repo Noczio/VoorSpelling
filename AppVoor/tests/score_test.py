@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         # create a CVScore object with its path and data type
         cv_score = CVScore()
         # create a simple linearSVC estimator
-        model = self._estimator_creator.create_estimator("LSVC")
+        model = self._estimator_creator.create_estimator("LinearSVC")
         model.set_params(dual=False, random_state=0)
         with self.assertRaises(ValueError):
             # get score from a linearSVC estimator with roc_auc score and 10 folds
@@ -40,7 +40,7 @@ class MyTestCase(unittest.TestCase):
         # create a CVScore object with its path and data type
         cv_score = CVScore()
         # create a simple linearSVC estimator
-        model = self._estimator_creator.create_estimator("LSVC")
+        model = self._estimator_creator.create_estimator("LinearSVC")
         model.set_params(dual=False, random_state=0)
         with self.assertRaises(ValueError):
             # get score from a linearSVC estimator with roc_auc score and 10 folds
@@ -58,7 +58,7 @@ class MyTestCase(unittest.TestCase):
         # create a CVScore object with its path and data type
         cv_score = CVScore()
         # create a simple linearSVC estimator
-        model = self._estimator_creator.create_estimator("LSVC")
+        model = self._estimator_creator.create_estimator("LinearSVC")
         model.set_params(dual=False, random_state=0)
         with self.assertRaises(ValueError):
             # get score from a linearSVC estimator with roc_auc score and 10 folds
@@ -77,9 +77,9 @@ class MyTestCase(unittest.TestCase):
         cv_score = CVScore()
         # create a simple a svc, knn and gnb estimator
         model_1 = self._estimator_creator.create_estimator("SVC")
-        model_2 = self._estimator_creator.create_estimator("KNN")
-        model_3 = self._estimator_creator.create_estimator("GNB")
-        model_4 = self._estimator_creator.create_estimator("LSVC")
+        model_2 = self._estimator_creator.create_estimator("KNeighborsClassifier")
+        model_3 = self._estimator_creator.create_estimator("GaussianNB")
+        model_4 = self._estimator_creator.create_estimator("LinearSVC")
         estimators = [model_1, model_2, model_3, model_4.set_params(dual=False)]
         # get score from a linearSVC estimator with accuracy score and 5folds
         bol_results = []
@@ -106,10 +106,10 @@ class MyTestCase(unittest.TestCase):
         # create a CVScore object with its path and data type
         cv_score = CVScore()
         # create a simple a svc, knn and gnb estimator
-        model_1 = self._estimator_creator.create_estimator("LSVR")
+        model_1 = self._estimator_creator.create_estimator("LinearSVR")
         model_2 = self._estimator_creator.create_estimator("SVR")
-        model_3 = self._estimator_creator.create_estimator("LASSO")
-        model_4 = self._estimator_creator.create_estimator("SGD")
+        model_3 = self._estimator_creator.create_estimator("Lasso")
+        model_4 = self._estimator_creator.create_estimator("SGDClassifier")
         estimators = [model_1, model_2, model_3, model_4]
         # get score from a linearSVC estimator with accuracy score and 5folds
         bol_results = []
@@ -134,10 +134,10 @@ class MyTestCase(unittest.TestCase):
         # create a CVScore object with its path and data type
         cv_score = CVScore()
         # create a simple a svc, knn and gnb estimator
-        model_1 = self._estimator_creator.create_estimator("LSVR")
+        model_1 = self._estimator_creator.create_estimator("LinearSVR")
         model_2 = self._estimator_creator.create_estimator("SVR")
-        model_3 = self._estimator_creator.create_estimator("LASSO")
-        model_4 = self._estimator_creator.create_estimator("SGD")
+        model_3 = self._estimator_creator.create_estimator("Lasso")
+        model_4 = self._estimator_creator.create_estimator("SGDClassifier")
         estimators = [model_1, model_2, model_3, model_4]
         # get score from a linearSVC estimator with accuracy score and 5folds
         bol_results = []
@@ -162,10 +162,10 @@ class MyTestCase(unittest.TestCase):
         # create a CVScore object with its path and data type
         cv_score = CVScore()
         # create a simple a svc, knn and gnb estimator
-        model_1 = self._estimator_creator.create_estimator("APROPAGATION")
-        model_2 = self._estimator_creator.create_estimator("KMEANS")
-        model_3 = self._estimator_creator.create_estimator("MINIKMEANS")
-        model_4 = self._estimator_creator.create_estimator("MEANSHIFT")
+        model_1 = self._estimator_creator.create_estimator("AffinityPropagation")
+        model_2 = self._estimator_creator.create_estimator("KMeans")
+        model_3 = self._estimator_creator.create_estimator("MiniBatchKMeans")
+        model_4 = self._estimator_creator.create_estimator("MeanShift")
         estimators = [model_1.set_params(random_state=0), model_2, model_3, model_4]
         # get score from a linearSVC estimator with accuracy score and 5folds
         bol_results = []

@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import Any
+
+import numpy as np
+import pandas as pd
 from sklearn.model_selection import GridSearchCV
 from skopt import BayesSearchCV
-import pandas as pd
-import numpy as np
+
+from switcher import Switch
 
 NpArray = np.ndarray
 DataFrame = pd.DataFrame
@@ -37,9 +40,27 @@ class GridSearch(ParameterSearch):
         return best_params
 
 
+class ParameterSearchPossibilities(Switch):
+
+    @staticmethod
+    def BS():
+        return BayesianSearch()
+
+    @staticmethod
+    def GS():
+        return GridSearch()
+
+    @staticmethod
+    def BayesianSearch():
+        return BayesianSearch()
+
+    @staticmethod
+    def GridSearch():
+        return GridSearch()
+
+
 class ParameterSearchCreator:
     __instance = None
-    _types: dict = {"BS": BayesianSearch(), "GS": GridSearch()}
 
     @staticmethod
     def get_instance() -> "ParameterSearchCreator":
@@ -56,14 +77,18 @@ class ParameterSearchCreator:
             ParameterSearchCreator.__instance = self
 
     def create_parameter_selector(self, selection_type: str) -> ParameterSearch:
-        # transform param to capital letters and then replace white spaces
-        key = selection_type.upper().replace(" ", "")
-        if key in self._types.keys():
-            param_search_type = self._types[key]
-            return param_search_type
-        raise KeyError("Parameter selection key value is wrong. It should be: BS or GS")
+        try:
+            parameter_search_name = selection_type.replace(" ", "")
+            parameter_search_method = ParameterSearchPossibilities.case(parameter_search_name)
+            return parameter_search_method
+        except():
+            available_types = self.get_available_types()
+            types_as_string = ", ".join(available_types)
+            raise AttributeError(f"Parameter value is wrong. "
+                                 f"It should be any of the following: {types_as_string}")
 
     def get_available_types(self) -> tuple:
-        available_types = [k for k in self._types.keys()]
-        types = tuple(available_types)
-        return types
+        available_types = [func for func in dir(ParameterSearchPossibilities)
+                           if callable(getattr(ParameterSearchPossibilities, func)) and not
+                           (func.startswith("__") or func is "case")]
+        return tuple(available_types)

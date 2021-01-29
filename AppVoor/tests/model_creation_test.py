@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         # create a prm variable to store params grid
         initial_prm = {'C': 2, 'random_state': 0, 'tol': 0.01, "dual": False}
         # create an estimator using EstimatorCreator
-        estimator = self._estimator_creator.create_estimator("LSVC")
+        estimator = self._estimator_creator.create_estimator("LinearSVC")
         # set object best params and base estimator
         model_instance.initial_parameters = initial_prm
         model_instance.estimator = estimator
@@ -55,7 +55,7 @@ class MyTestCase(unittest.TestCase):
         # create a prm variable to store params grid
         initial_prm = {'C': 2, 'random_state': 0, 'tol': 0.01, "dual": False}
         # create an estimator using EstimatorCreator
-        estimator = self._estimator_creator.create_estimator("LSVC")
+        estimator = self._estimator_creator.create_estimator("LinearSVC")
         # set object best params and base estimator
         model_instance.initial_parameters = initial_prm
         model_instance.estimator = estimator
@@ -235,7 +235,7 @@ class MyTestCase(unittest.TestCase):
                        'random_state': Integer(0, 10),
                        "selection": Categorical(["cyclic", "random"])}
         # create an estimator using EstimatorCreator
-        estimator = self._estimator_creator.create_estimator("lasso")
+        estimator = self._estimator_creator.create_estimator("Lasso")
         # create a feature selector variable to store a FeatureSelection instance
         feature_selector = self._feature_selection_creator.create_feature_selector("BFS")
         # create a parameter selector variable to store a ParameterSearch instance

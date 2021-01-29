@@ -24,7 +24,7 @@ class MyTestCase(unittest.TestCase):
         splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)
         # create a simple linearSVC estimator
-        model = self._estimator_creator.create_estimator("LSVC")
+        model = self._estimator_creator.create_estimator("LinearSVC")
         # create a prm variable that stores the param grid to search
         prm = {'C': Integer(1, 10, prior='log-uniform'),
                'tol': Real(1e-4, 1e+1, prior='log-uniform'),
@@ -52,7 +52,7 @@ class MyTestCase(unittest.TestCase):
         splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)
         # create a simple linearSVC estimator
-        model = self._estimator_creator.create_estimator("LSVC")
+        model = self._estimator_creator.create_estimator("LinearSVC")
         # create a prm variable that stores the param grid to search
         prm = {'C': np.arange(1, 5, 1),
                'tol': np.arange(0.01, 1, 0.1),
@@ -133,7 +133,7 @@ class MyTestCase(unittest.TestCase):
                        'random_state': Integer(0, 10),
                        "selection": Categorical(["cyclic", "random"])}
         # create an estimator using EstimatorCreator
-        estimator = self._estimator_creator.create_estimator("lasso")
+        estimator = self._estimator_creator.create_estimator("Lasso")
         # split df into x and y
         splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)
@@ -159,7 +159,7 @@ class MyTestCase(unittest.TestCase):
                        'random_state': np.arange(0, 10, 1),
                        "selection": ("cyclic", "random")}
         # create an estimator using EstimatorCreator
-        estimator = self._estimator_creator.create_estimator("lasso")
+        estimator = self._estimator_creator.create_estimator("Lasso")
         # split df into x and y
         splitter = SplitterReturner()
         x, y = splitter.split_x_y_from_df(df)

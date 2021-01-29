@@ -266,7 +266,7 @@ border-radius: 10px;</string>
      <property name="geometry">
       <rect>
        <x>130</x>
-       <y>110</y>
+       <y>170</y>
        <width>360</width>
        <height>80</height>
       </rect>
@@ -296,7 +296,7 @@ border: none;</string>
      <property name="geometry">
       <rect>
        <x>540</x>
-       <y>340</y>
+       <y>350</y>
        <width>360</width>
        <height>80</height>
       </rect>
@@ -326,7 +326,7 @@ border: none;</string>
      <property name="geometry">
       <rect>
        <x>130</x>
-       <y>340</y>
+       <y>350</y>
        <width>360</width>
        <height>80</height>
       </rect>
@@ -356,7 +356,7 @@ border: none;</string>
      <property name="geometry">
       <rect>
        <x>540</x>
-       <y>110</y>
+       <y>170</y>
        <width>360</width>
        <height>80</height>
       </rect>
@@ -386,7 +386,7 @@ border: none;</string>
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>130</y>
+       <y>190</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -428,7 +428,7 @@ background-color: rgb(160, 150, 240);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>360</y>
+       <y>370</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -470,7 +470,7 @@ background-color: rgb(160, 150, 240);
      <property name="geometry">
       <rect>
        <x>900</x>
-       <y>360</y>
+       <y>370</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -512,7 +512,7 @@ background-color: rgb(160, 150, 240);
      <property name="geometry">
       <rect>
        <x>900</x>
-       <y>130</y>
+       <y>190</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -554,7 +554,7 @@ background-color: rgb(160, 150, 240);
      <property name="geometry">
       <rect>
        <x>270</x>
-       <y>460</y>
+       <y>450</y>
        <width>70</width>
        <height>30</height>
       </rect>
@@ -578,7 +578,7 @@ background-color: rgb(160, 150, 240);
      <property name="geometry">
       <rect>
        <x>670</x>
-       <y>460</y>
+       <y>450</y>
        <width>100</width>
        <height>30</height>
       </rect>
@@ -592,7 +592,7 @@ background-color: rgb(160, 150, 240);
       <number>7</number>
      </property>
      <property name="minimum">
-      <double>0.000000000000000</double>
+      <double>0.000001000000000</double>
      </property>
      <property name="maximum">
       <double>10.000000000000000</double>
@@ -601,14 +601,14 @@ background-color: rgb(160, 150, 240);
       <double>0.000010000000000</double>
      </property>
      <property name="value">
-      <double>0.000000000000000</double>
+      <double>0.000100000000000</double>
      </property>
     </widget>
     <widget class="QSpinBox" name="sb_clusters">
      <property name="geometry">
       <rect>
        <x>260</x>
-       <y>230</y>
+       <y>270</y>
        <width>80</width>
        <height>30</height>
       </rect>
@@ -674,7 +674,7 @@ border-right-color: rgb(195, 190, 239);
      <property name="geometry">
       <rect>
        <x>680</x>
-       <y>230</y>
+       <y>270</y>
        <width>80</width>
        <height>30</height>
       </rect>
@@ -692,6 +692,46 @@ border-right-color: rgb(195, 190, 239);
      </property>
      <property name="value">
       <number>100</number>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_back">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>50</y>
+       <width>70</width>
+       <height>70</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+background-image: url(:/botton/bxs-left-arrow-circle.svg);
+border-radius: 35px;
+border: none;
+
+
+color: #6555C6;
+}
+QPushButton:hover{
+background-color: rgb(235, 225, 250);
+
+}
+QPushButton:pressed{
+
+background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(200, 190, 250, 205), stop:0.6 rgba(200, 190, 250, 205), stop:1 rgba(255, 255, 255, 0));
+
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
      </property>
     </widget>
    </widget>

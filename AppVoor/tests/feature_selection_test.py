@@ -25,7 +25,7 @@ class MyTestCase(unittest.TestCase):
         # create a feature selector
         fs = self._feature_selector_creator.create_feature_selector("FFS")
         # create a simple LinearSVC estimator
-        clf = self._estimator_creator.create_estimator("LSVC")
+        clf = self._estimator_creator.create_estimator("LinearSVC")
         clf.set_params(dual=False, random_state=0)
         # get new_x with new features
         new_x = fs.select_features(x, y, clf, "roc_auc", 10)
@@ -50,7 +50,7 @@ class MyTestCase(unittest.TestCase):
         # create a feature selector
         fs = self._feature_selector_creator.create_feature_selector("BFS")
         # create a simple LinearSVC estimator
-        clf = self._estimator_creator.create_estimator("LSVC")
+        clf = self._estimator_creator.create_estimator("LinearSVC")
         clf.set_params(dual=False, random_state=0)
         # get new_x with new features
         new_x = fs.select_features(x, y, clf, "roc_auc", 10)
@@ -126,7 +126,7 @@ class MyTestCase(unittest.TestCase):
         # create a feature selector
         fs = self._feature_selector_creator.create_feature_selector("FFS")
         # create a simple LSVR estimator
-        clf = self._estimator_creator.create_estimator("LSVR")
+        clf = self._estimator_creator.create_estimator("LinearSVR")
         clf.set_params(max_iter=20000, dual=False, loss="squared_epsilon_insensitive")
         # get new_x with new features
         new_x = fs.select_features(x, y, clf, "r2", 10)
@@ -176,7 +176,7 @@ class MyTestCase(unittest.TestCase):
         # create a feature selector
         fs = self._feature_selector_creator.create_feature_selector("FFS")
         # create a simple Lasso estimator
-        clf = self._estimator_creator.create_estimator("lasso")
+        clf = self._estimator_creator.create_estimator("Lasso")
         prm = {'alpha': 1.0, 'random_state': 8, 'selection': 'cyclic', 'tol': 0.0001}
         clf.set_params(**prm)
         # get new_x with new features
@@ -201,7 +201,7 @@ class MyTestCase(unittest.TestCase):
         # create a feature selector
         fs = self._feature_selector_creator.create_feature_selector("FFS")
         # create a simple Lasso estimator
-        clf = self._estimator_creator.create_estimator("lasso")
+        clf = self._estimator_creator.create_estimator("Lasso")
         prm = {'alpha': 1.0, 'random_state': 8, 'selection': 'cyclic', 'tol': 0.0001}
         clf.set_params(**prm)
         # get new_x with new features
@@ -226,7 +226,7 @@ class MyTestCase(unittest.TestCase):
         # create a feature selector
         fs = self._feature_selector_creator.create_feature_selector("FFS")
         # create a simple Kmeans estimator
-        clf = self._estimator_creator.create_estimator("KMEANS")
+        clf = self._estimator_creator.create_estimator("KMeans")
         # get new_x with new features
         new_x = fs.select_features(x, y, clf, "mutual_info_score", 5)
         print(new_x)
@@ -249,8 +249,8 @@ class MyTestCase(unittest.TestCase):
         _, len_original_y = x.shape
         # create a feature selector
         fs = self._feature_selector_creator.create_feature_selector("BFS")
-        # create a simple Meanshift estimator
-        clf = self._estimator_creator.create_estimator("MEANSHIFT")
+        # create a simple MeanShift estimator
+        clf = self._estimator_creator.create_estimator("MeanShift")
         # get new_x with new features
         new_x = fs.select_features(x, y, clf, "mutual_info_score", 10)
         print(new_x)

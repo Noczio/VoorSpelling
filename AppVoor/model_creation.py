@@ -1,8 +1,8 @@
 from abc import abstractmethod, ABC
 from typing import Any
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from sklearn.base import clone
 
 from feature_selection import FeatureSelection
@@ -10,6 +10,7 @@ from is_data import DataEnsurer
 from parameter_search import ParameterSearch
 from score import CVScore, CVModelScore
 from split_data import SplitterReturner
+from switcher import Switch
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray
@@ -177,10 +178,43 @@ class FeatureAndParameterSearchSBS(SBSMachineLearning):
             raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
 
 
+class ModelPossibilities(Switch):
+
+    @staticmethod
+    def SM():
+        return SimpleSBS()
+
+    @staticmethod
+    def FSM():
+        return OnlyFeatureSelectionSBS()
+
+    @staticmethod
+    def PSM():
+        return OnlyParameterSearchSBS()
+
+    @staticmethod
+    def AM():
+        return FeatureAndParameterSearchSBS()
+
+    @staticmethod
+    def Simple():
+        return SimpleSBS()
+
+    @staticmethod
+    def OnlyFeatureSelection():
+        return OnlyFeatureSelectionSBS()
+
+    @staticmethod
+    def OnlyParameterSearch():
+        return OnlyParameterSearchSBS()
+
+    @staticmethod
+    def FeatureAndParameterSearch():
+        return FeatureAndParameterSearchSBS()
+
+
 class SBSModelCreator:
     __instance = None
-    _types: dict = {"SM": SimpleSBS(), "FSM": OnlyFeatureSelectionSBS(),
-                    "PSM": OnlyParameterSearchSBS(), "AM": FeatureAndParameterSearchSBS()}
 
     @staticmethod
     def get_instance() -> "SBSModelCreator":
@@ -200,16 +234,21 @@ class SBSModelCreator:
         if DataEnsurer.validate_py_data(feature_selection, bool) and DataEnsurer.validate_py_data(parameter_search,
                                                                                                   bool):
             if not feature_selection and not parameter_search:
-                return self._types["SM"]
+                simple_model = ModelPossibilities.case("SM")
+                return simple_model
             elif feature_selection and not parameter_search:
-                return self._types["FSM"]
+                only_feature_selection_model = ModelPossibilities.case("FSM")
+                return only_feature_selection_model
             elif not feature_selection and parameter_search:
-                return self._types["PSM"]
+                only_parameter_search_model = ModelPossibilities.case("PSM")
+                return only_parameter_search_model
             else:
-                return self._types["AM"]
+                all_model = ModelPossibilities.case("AM")
+                return all_model
         raise TypeError("Both parameters should be Boolean type")
 
     def get_available_types(self) -> tuple:
-        available_types = [k for k in self._types.keys()]
-        types = tuple(available_types)
-        return types
+        available_types = [func for func in dir(ModelPossibilities)
+                           if callable(getattr(ModelPossibilities, func)) and not
+                           (func.startswith("__") or func is "case")]
+        return tuple(available_types)

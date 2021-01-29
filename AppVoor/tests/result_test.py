@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_markdown_file_creates_estimator_info(self):
         try:
-            estimator = self.estimator_creator.create_estimator("KNN")
+            estimator = self.estimator_creator.create_estimator("KNeighborsClassifier")
             initial_params = {"k": 1, "p": 1}
             final_params = {"k": 3, "p": 5}
             performance = "rendimiento promedio ROC_AUC:" + " " + str(0.7886)

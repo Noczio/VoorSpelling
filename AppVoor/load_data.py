@@ -5,6 +5,7 @@ from typing import Union, TypeVar, Generic
 import pandas as pd
 
 from is_data import DataEnsurer
+from switcher import Switch
 
 T = TypeVar('T')
 DataFrame = pd.DataFrame
@@ -136,10 +137,27 @@ class TSVDataLoader(DataLoader[DataFrame]):
             raise Exception(str(e))
 
 
+class LoaderPossibilities(Switch):
+
+    @staticmethod
+    def CSV():
+        return CSVDataLoader("")
+
+    @staticmethod
+    def TSV():
+        return TSVDataLoader("")
+
+    @staticmethod
+    def JSON():
+        return JSONDataLoader("")
+
+    @staticmethod
+    def SCSV():
+        return SCSVDataLoader("")
+
+
 class LoaderCreator:
     __instance = None
-    _types: dict = {"CSV": CSVDataLoader(""), "TSV": TSVDataLoader(""), "JSON": JSONDataLoader(""),
-                    "SCSV": SCSVDataLoader("")}
 
     @staticmethod
     def get_instance() -> "LoaderCreator":
@@ -157,14 +175,19 @@ class LoaderCreator:
 
     def create_loader(self, file_path: str, loader_type: str) -> DataLoader:
         # transform param to capital letters and then replace white spaces
-        key = loader_type.upper().replace(" ", "")
-        if key in self._types.keys():
-            loader = self._types[key]
+        try:
+            loader_name = loader_type.upper().replace(" ", "")
+            loader = LoaderPossibilities.case(loader_name)
             loader.file_path = file_path
             return loader
-        raise ValueError("Loader key value is wrong. It should be: CSV, TSV, SCSV or JSON")
+        except():
+            available_types = self.get_available_types()
+            types_as_string = ", ".join(available_types)
+            raise AttributeError(f"Parameter loader type value is wrong. "
+                                 f"It should be any of the following: {types_as_string}")
 
     def get_available_types(self) -> tuple:
-        available_types = [k for k in self._types.keys()]
-        types = tuple(available_types)
-        return types
+        available_types = [func for func in dir(LoaderPossibilities)
+                           if callable(getattr(LoaderPossibilities, func)) and not
+                           (func.startswith("__") or func is "case")]
+        return tuple(available_types)

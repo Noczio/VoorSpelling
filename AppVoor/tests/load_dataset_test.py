@@ -113,7 +113,7 @@ class MyTestCase(unittest.TestCase):
         folder_name = "datasets"
         file_name = "molecules.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
-        with self.assertRaises(ValueError):
+        with self.assertRaises(AttributeError):
             # get dataframe using LoaderCreator. This should raise a ValueError
             _ = self._loader_creator.create_loader(test_full_path, "txt")
 
@@ -145,7 +145,8 @@ class MyTestCase(unittest.TestCase):
         # check for available types
         loader_types = self._loader_creator.get_available_types()
         expected_types = ("CSV", "TSV", "JSON", "SCSV")
-        bol_answer = expected_types == loader_types
+        results = [True for i in loader_types if i in expected_types]
+        bol_answer = all(results)
         # this should assert true
         self.assertTrue(bol_answer)
 
