@@ -109,7 +109,7 @@ class GlobalVariables:
         self._prm = value
 
     @classmethod
-    def reset(cls, *args, **kwargs):
+    def reset(cls, *args, **kwargs) -> None:
         if len(kwargs) == 0 and len(args) == 0:
             cls.data_frame = cls._initial_value["data_frame"]
             cls.uses_feature_selection = cls._initial_value["uses_feature_selection"]

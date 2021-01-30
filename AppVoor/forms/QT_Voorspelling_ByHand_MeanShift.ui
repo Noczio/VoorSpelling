@@ -343,7 +343,7 @@ border: none;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Frecuencia de contenedor</string>
+      <string>Frecuencia mínima del contenedor</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

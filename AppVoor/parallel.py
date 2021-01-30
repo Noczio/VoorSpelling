@@ -9,7 +9,7 @@ class WorkerSignals(QObject):
     program_error = pyqtSignal(BaseException)
     result = pyqtSignal(object)
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
 
@@ -25,19 +25,19 @@ class LongWorker(QRunnable):
     """
     signals = WorkerSignals()
 
-    def __init__(self, func=None, *args, **kwargs):
+    def __init__(self, func=None, *args, **kwargs) -> None:
         super().__init__()
         self.func = func
         self.args = args
         self.kwargs = kwargs
 
-    def set_params(self, func, *args, **kwargs):
+    def set_params(self, func, *args, **kwargs) -> None:
         self.func = func
         self.args = args
         self.kwargs = kwargs
 
     @pyqtSlot()
-    def run(self):
+    def run(self) -> None:
         """Run method of Worker class. Tries to execute a given function and emits a signal"""
         try:
             if len(self.args) > 0 and len(self.kwargs) > 0:
@@ -59,8 +59,8 @@ class EmittingStream(QObject):
     """Custom class that catches sys.stdout info and gives it back to a function"""
     textWritten = pyqtSignal(str)
 
-    def write(self, text):
+    def write(self, text) -> None:
         self.textWritten.emit(str(text))
 
-    def __del__(self):
+    def __del__(self) -> None:
         sys.stdout = sys.__stdout__

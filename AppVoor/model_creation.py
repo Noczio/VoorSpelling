@@ -181,35 +181,35 @@ class FeatureAndParameterSearchSBS(SBSMachineLearning):
 class ModelPossibilities(Switch):
 
     @staticmethod
-    def SM():
+    def SM() -> SBSMachineLearning:
         return SimpleSBS()
 
     @staticmethod
-    def FSM():
+    def FSM() -> SBSMachineLearning:
         return OnlyFeatureSelectionSBS()
 
     @staticmethod
-    def PSM():
+    def PSM() -> SBSMachineLearning:
         return OnlyParameterSearchSBS()
 
     @staticmethod
-    def AM():
+    def AM() -> SBSMachineLearning:
         return FeatureAndParameterSearchSBS()
 
     @staticmethod
-    def Simple():
+    def Simple() -> SBSMachineLearning:
         return SimpleSBS()
 
     @staticmethod
-    def OnlyFeatureSelection():
+    def OnlyFeatureSelection() -> SBSMachineLearning:
         return OnlyFeatureSelectionSBS()
 
     @staticmethod
-    def OnlyParameterSearch():
+    def OnlyParameterSearch() -> SBSMachineLearning:
         return OnlyParameterSearchSBS()
 
     @staticmethod
-    def FeatureAndParameterSearch():
+    def FeatureAndParameterSearch() -> SBSMachineLearning:
         return FeatureAndParameterSearchSBS()
 
 

@@ -189,19 +189,19 @@ class ForwardFeatureSelection(FeatureSelection):
 class FeatureSelectionPossibilities(Switch):
 
     @staticmethod
-    def FFS():
+    def FFS() -> FeatureSelection:
         return ForwardFeatureSelection()
 
     @staticmethod
-    def BFS():
+    def BFS() -> FeatureSelection:
         return BackwardsFeatureSelection()
 
     @staticmethod
-    def ForwardFeatureSelection():
+    def ForwardFeatureSelection() -> FeatureSelection:
         return ForwardFeatureSelection()
 
     @staticmethod
-    def BackwardsFeatureSelection():
+    def BackwardsFeatureSelection() -> FeatureSelection:
         return BackwardsFeatureSelection()
 
 

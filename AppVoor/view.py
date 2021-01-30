@@ -33,7 +33,7 @@ class Window(QMainWindow):
         """Go to last form"""
         pass
 
-    def close_window(self):
+    def close_window(self) -> None:
         """Close actual form"""
         self.close()
 
@@ -41,6 +41,6 @@ class Window(QMainWindow):
         """Handle error arguments and the use them to display a custom message"""
         pass
 
-    def on_load(self):
+    def on_load(self) -> None:
         """Additional behaviour on load. This can be added to the main logic or not"""
         pass

@@ -1,19 +1,18 @@
 import json
 import os
 
-from PyQt5.QtCore import pyqtSignal
 from mdutils.mdutils import MdUtils
 
 
 class FCreator:
     folder_path: str
 
-    def __init__(self, location: str, obj: str = "SBS_ML"):
+    def __init__(self, location: str, obj: str = "SBS_ML") -> None:
         self._object = obj
         self._location = location
         self.create_folder()
 
-    def create_folder(self):
+    def create_folder(self) -> None:
         try:
             sub_value = 1
             while True:
@@ -33,7 +32,7 @@ class SBSResult:
 
     @staticmethod
     def estimator_info(options: dict, features: list, initial_params: dict, final_params: dict,
-                       performance: str, path: str):
+                       performance: str, path: str) -> None:
         f_name = "Estimador_paso_a_paso"
         f_title = 'Resultados del estimador paso a paso'
         try:
@@ -74,7 +73,7 @@ class SBSResult:
                 os.remove(not_wanted)
 
     @staticmethod
-    def console_info(info: str, path: str):
+    def console_info(info: str, path: str) -> None:
         f_name = "Logs_paso_a_paso"
         f_title = 'Logs del estimador paso a paso'
         try:

@@ -140,19 +140,19 @@ class TSVDataLoader(DataLoader[DataFrame]):
 class LoaderPossibilities(Switch):
 
     @staticmethod
-    def CSV():
+    def CSV() -> DataLoader:
         return CSVDataLoader("")
 
     @staticmethod
-    def TSV():
+    def TSV() -> DataLoader:
         return TSVDataLoader("")
 
     @staticmethod
-    def JSON():
+    def JSON() -> DataLoader:
         return JSONDataLoader("")
 
     @staticmethod
-    def SCSV():
+    def SCSV() -> DataLoader:
         return SCSVDataLoader("")
 
 

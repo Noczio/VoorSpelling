@@ -43,20 +43,122 @@ class GridSearch(ParameterSearch):
 class ParameterSearchPossibilities(Switch):
 
     @staticmethod
-    def BS():
+    def BS() -> BayesianSearch:
         return BayesianSearch()
 
     @staticmethod
-    def GS():
+    def GS() -> GridSearch:
         return GridSearch()
 
     @staticmethod
-    def BayesianSearch():
+    def BayesianSearch() -> BayesianSearch:
         return BayesianSearch()
 
     @staticmethod
-    def GridSearch():
+    def GridSearch() -> GridSearch:
         return GridSearch()
+
+
+class BayesianSearchParametersPossibilities(Switch):
+
+    @staticmethod
+    def LinearSVC() -> dict:
+        return {}
+
+    @staticmethod
+    def SVC() -> dict:
+        return {}
+
+    @staticmethod
+    def KNeighborsClassifier() -> dict:
+        return {}
+
+    @staticmethod
+    def GaussianNB() -> dict:
+        return {}
+
+    @staticmethod
+    def LinearSVR() -> dict:
+        return {}
+
+    @staticmethod
+    def SVR() -> dict:
+        return {}
+
+    @staticmethod
+    def Lasso() -> dict:
+        return {}
+
+    @staticmethod
+    def SGDClassifier() -> dict:
+        return {}
+
+    @staticmethod
+    def AffinityPropagation() -> dict:
+        return {}
+
+    @staticmethod
+    def KMeans() -> dict:
+        return {}
+
+    @staticmethod
+    def MiniBatchKMeans() -> dict:
+        return {}
+
+    @staticmethod
+    def MeanShift() -> dict:
+        return {}
+
+
+class GridSearchParametersPossibilities(Switch):
+
+    @staticmethod
+    def LinearSVC() -> dict:
+        return {}
+
+    @staticmethod
+    def SVC() -> dict:
+        return {}
+
+    @staticmethod
+    def KNeighborsClassifier() -> dict:
+        return {}
+
+    @staticmethod
+    def GaussianNB() -> dict:
+        return {}
+
+    @staticmethod
+    def LinearSVR() -> dict:
+        return {}
+
+    @staticmethod
+    def SVR() -> dict:
+        return {}
+
+    @staticmethod
+    def Lasso() -> dict:
+        return {}
+
+    @staticmethod
+    def SGDClassifier() -> dict:
+        return {}
+
+    @staticmethod
+    def AffinityPropagation() -> dict:
+        return {}
+
+    @staticmethod
+    def KMeans() -> dict:
+        return {}
+
+    @staticmethod
+    def MiniBatchKMeans() -> dict:
+        return {}
+
+    @staticmethod
+    def MeanShift() -> dict:
+        return {}
 
 
 class ParameterSearchCreator:

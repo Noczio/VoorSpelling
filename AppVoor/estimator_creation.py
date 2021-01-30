@@ -12,51 +12,51 @@ from switcher import Switch
 class EstimatorPossibilities(Switch):
 
     @staticmethod
-    def LinearSVC():
+    def LinearSVC() -> LinearSVC:
         return LinearSVC(verbose=1, dual=False)
 
     @staticmethod
-    def SVC():
+    def SVC() -> SVC:
         return SVC(verbose=1)
 
     @staticmethod
-    def KNeighborsClassifier():
+    def KNeighborsClassifier() -> KNeighborsClassifier:
         return KNeighborsClassifier()
 
     @staticmethod
-    def GaussianNB():
+    def GaussianNB() -> GaussianNB:
         return GaussianNB()
 
     @staticmethod
-    def LinearSVR():
+    def LinearSVR() -> LinearSVR:
         return LinearSVR(verbose=1, dual=False)
 
     @staticmethod
-    def SVR():
+    def SVR() -> SVR:
         return SVR(verbose=1)
 
     @staticmethod
-    def Lasso():
+    def Lasso() -> Lasso:
         return Lasso()
 
     @staticmethod
-    def SGDClassifier():
+    def SGDClassifier() -> SGDClassifier:
         return SGDClassifier(verbose=1)
 
     @staticmethod
-    def AffinityPropagation():
+    def AffinityPropagation() -> AffinityPropagation:
         return AffinityPropagation(verbose=1)
 
     @staticmethod
-    def KMeans():
+    def KMeans() -> KMeans:
         return KMeans(verbose=1)
 
     @staticmethod
-    def MiniBatchKMeans():
+    def MiniBatchKMeans() -> MiniBatchKMeans:
         return MiniBatchKMeans(verbose=1)
 
     @staticmethod
-    def MeanShift():
+    def MeanShift() -> MeanShift:
         return MeanShift()
 
 

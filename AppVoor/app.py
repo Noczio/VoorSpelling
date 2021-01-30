@@ -17,6 +17,7 @@ from model_creation import SBSModelCreator
 from modified_widgets import QDragAndDropButton, QLoadButton
 from parallel import LongWorker, EmittingStream
 from parameter_search import ParameterSearchCreator
+from parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
 from pop_up import PopUp, WarningPopUp, CriticalPopUp
 from result_creation import FCreator, SBSResult
 from switcher import Switch
@@ -30,66 +31,66 @@ NpArray = np.ndarray
 class PredictionTypePossibilities(Switch):
 
     @staticmethod
-    def classification():
+    def classification() -> Window:
         return ClassificationSelection(ui_window["classification"])
 
     @staticmethod
-    def regression():
+    def regression() -> Window:
         return RegressionSelection(ui_window["regression"])
 
     @staticmethod
-    def clustering():
+    def clustering() -> Window:
         return ClusteringSelection(ui_window["clustering"])
 
 
 class EstimatorParametersPossibilities(Switch):
 
     @staticmethod
-    def LinearSVC():
+    def LinearSVC() -> Window:
         return LinearSVCParameters(ui_window["LinearSVC_by_hand"])
 
     @staticmethod
-    def SVC():
+    def SVC() -> Window:
         return SVCParameters(ui_window["SVC_by_hand"])
 
     @staticmethod
-    def KNeighborsClassifier():
+    def KNeighborsClassifier() -> Window:
         return KNeighborsClassifierParameters(ui_window["KNeighborsClassifier_by_hand"])
 
     @staticmethod
-    def GaussianNB():
+    def GaussianNB() -> Window:
         return GaussianNBParameters(ui_window["GaussianNB_by_hand"])
 
     @staticmethod
-    def LinearSVR():
+    def LinearSVR() -> Window:
         return LinearSVRParameters(ui_window["LinearSVR_by_hand"])
 
     @staticmethod
-    def SVR():
+    def SVR() -> Window:
         return SVRParameters(ui_window["SVR_by_hand_by_hand"])
 
     @staticmethod
-    def Lasso():
+    def Lasso() -> Window:
         return LassoParameters(ui_window["Lasso_by_hand"])
 
     @staticmethod
-    def SGDClassifier():
+    def SGDClassifier() -> Window:
         return SGDClassifierParameters(ui_window["SGDClassifier_by_hand"])
 
     @staticmethod
-    def AffinityPropagation():
+    def AffinityPropagation() -> Window:
         return AffinityPropagationParameters(ui_window["AffinityPropagation_by_hand"])
 
     @staticmethod
-    def KMeans():
+    def KMeans() -> Window:
         return KMeansParameters(ui_window["KMeans"])
 
     @staticmethod
-    def MiniBatchKMeans():
+    def MiniBatchKMeans() -> Window:
         return MiniBatchKMeansParameters(ui_window["MiniBatchKMeans"])
 
     @staticmethod
-    def MeanShift():
+    def MeanShift() -> Window:
         return MeanShiftParameters(ui_window["MeanShift"])
 
 
@@ -775,8 +776,39 @@ class HiperparameterMethod(Window):
         super().__init__(window, help_message_path)
         self.btn_back.clicked.connect(self.back)
 
+        self.btn_Bayesian_Search.clicked.connect(lambda: self.handle_input("Bayesian"))
+        self.btn_Gird_Search.clicked.connect(lambda: self.handle_input("Greed"))
+
         self.btn_info_Bayesian_Search.clicked.connect(lambda: self.useful_info_pop_up("bayesian_search"))
         self.btn_info_Grid_Search.clicked.connect(lambda: self.useful_info_pop_up("grid_search"))
+
+    def next(self):
+        next_form = StepByStepLoad(ui_window["result_final"])
+        widget.addWidget(next_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
+    def handle_input(self, event):
+
+        def show_last_warning() -> bool:
+            pop_up: PopUp = WarningPopUp()
+            title = "Listo para entrenar"
+            body = "¿Estas seguro que deseas continuar?"
+            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
+            answer = pop_up.open_pop_up(title, body, additional)
+            return answer
+
+        result = show_last_warning()
+        if result:
+            user_selection = global_var.estimator.__class__.__name__
+            if event is "Bayesian":
+                parameters = BayesianSearchParametersPossibilities.case(user_selection)
+                global_var.parameters = parameters
+                self.next()
+            else:
+                parameters = GridSearchParametersPossibilities.case(user_selection)
+                global_var.parameters = parameters
+                self.next()
 
     def back(self):
         global_var.reset("uses_parameter_search", "parameter_search_method")
