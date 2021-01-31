@@ -16,7 +16,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_markdown_file_creates_console_info(self):
         try:
-            lots_of_info = "test info first paragraph\nthis comes after a jump line\n\nthis comes after two jump lines"
+            lots_of_info = ["test info first paragraph", "this comes after a jump line", "",
+                            "this comes after two jump lines "]
             SBSResult.console_info(lots_of_info, ".\\SBS_ML_1")
             self.assertTrue(True)
         except():
@@ -24,8 +25,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_markdown_file_creates_console_info_overwrite(self):
         try:
-            lots_of_info = "test info first paragraph\n\nthis comes after a jump line\n\nthis comes after two jump " \
-                           "lines "
+            lots_of_info = ["test info first paragraph", "this comes after a jump line", "",
+                            "this comes after two jump lines", "this is new text for overwriting purposes"]
             SBSResult.console_info(lots_of_info, ".\\SBS_ML_1")
             self.assertTrue(True)
         except():

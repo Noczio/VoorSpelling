@@ -322,7 +322,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_semilla_random">
+    <widget class="QLabel" name="lbl_perdida">
      <property name="geometry">
       <rect>
        <x>130</x>
@@ -343,7 +343,7 @@ border: none;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Semilla random</string>
+      <string>Pérdida</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -373,7 +373,7 @@ border: none;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Epsilon</string>
+      <string>Épsilon</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -424,7 +424,7 @@ background-color: rgb(160, 150, 240);
       <string>i</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_info_semilla_random">
+    <widget class="QPushButton" name="btn_info_perdida">
      <property name="geometry">
       <rect>
        <x>80</x>
@@ -548,30 +548,6 @@ background-color: rgb(160, 150, 240);
      </property>
      <property name="text">
       <string>i</string>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="sb_semilla_random">
-     <property name="geometry">
-      <rect>
-       <x>270</x>
-       <y>450</y>
-       <width>70</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="minimum">
-      <number>0</number>
-     </property>
-     <property name="maximum">
-      <number>10000</number>
-     </property>
-     <property name="value">
-      <number>0</number>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="sb_tolerancia">
@@ -736,6 +712,34 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
        <height>20</height>
       </size>
      </property>
+    </widget>
+    <widget class="QComboBox" name="cb_perdida">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>450</y>
+       <width>221</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>epsilon_insensitive</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>squared_epsilon_insensitive</string>
+      </property>
+     </item>
     </widget>
    </widget>
    <zorder>up_bar</zorder>

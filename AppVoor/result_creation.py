@@ -73,13 +73,14 @@ class SBSResult:
                 os.remove(not_wanted)
 
     @staticmethod
-    def console_info(info: str, path: str) -> None:
+    def console_info(info: list, path: str) -> None:
         f_name = "Logs_paso_a_paso"
         f_title = 'Logs del estimador paso a paso'
         try:
             md_file = MdUtils(file_name=f_name, title=f_title)
             md_file.new_header(level=1, title='Logs')
-            md_file.new_paragraph(info)
+            for line in info:
+                md_file.new_line(line)
             final_path = path + "\\" + f_title + ".md"
             with open(final_path, 'w+', encoding='utf-8') as f:
                 markdown_result = md_file.create_md_file()

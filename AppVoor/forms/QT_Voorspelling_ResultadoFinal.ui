@@ -329,7 +329,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_cancel">
+    <widget class="QLabel" name="lbl_home">
      <property name="geometry">
       <rect>
        <x>390</x>

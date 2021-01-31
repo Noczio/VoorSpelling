@@ -191,9 +191,9 @@
     "example": "",
     "url": ""
   },
-  "SVC_semilla_random": {
-    "title": "Semilla random",
-    "body": "Valor entero que controla la generación de números pseudoaleatorios, el cual mezcla los datos para obtener resultados basados en la probabilidad",
+  "SVC_kernel": {
+    "title": "Kernel",
+    "body": "Especifica el tipo de kernel que se utilizará en el algoritmo. Debe ser \"poly\", \"rbf\" o \"sigmoid\"",
     "example": "",
     "url": ""
   },
@@ -215,9 +215,9 @@
     "example": "",
     "url": ""
   },
-  "LSVR_semilla_random": {
-    "title": "Semilla random",
-    "body": "Valor entero que controla la generación de números pseudoaleatorios, el cual mezcla los datos para obtener resultados basados en la probabilidad",
+  "LSVR_perdida": {
+    "title": "Pérdida",
+    "body": "Especifica la función de pérdida. La pérdida insensible a épsilon (epsilon_insensitive) es la pérdida L1, mientras que la pérdida insensible a épsilon al cuadrado (\"squared_epsilon_insensitive\") es la pérdida L2.",
     "example": "",
     "url": ""
   },
@@ -239,9 +239,9 @@
     "example": "",
     "url": ""
   },
-  "LSVC_semilla_random": {
-    "title": "Semilla random",
-    "body": "Valor entero que controla la generación de números pseudoaleatorios, el cual mezcla los datos para obtener resultados basados en la probabilidad",
+  "LSVC_intercepto": {
+    "title": "Intercepción de escalado",
+    "body": "La intersección es intercept_scaling * synthetic_feature_weight. Para disminuir el efecto de la regularización en el peso de la característica sintética (y por lo tanto en la intersección), se debe aumentar la escala de intercepción",
     "example": "",
     "url": ""
   },

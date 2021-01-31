@@ -266,7 +266,7 @@ border-radius: 10px;</string>
      <property name="geometry">
       <rect>
        <x>350</x>
-       <y>170</y>
+       <y>240</y>
        <width>360</width>
        <height>80</height>
       </rect>
@@ -292,83 +292,11 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_epsilon">
-     <property name="geometry">
-      <rect>
-       <x>350</x>
-       <y>350</y>
-       <width>360</width>
-       <height>80</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(105, 105, 105);
-border: none;</string>
-     </property>
-     <property name="text">
-      <string>Epsilon</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QPushButton" name="btn_info_variable_refinamiento">
      <property name="geometry">
       <rect>
        <x>710</x>
-       <y>190</y>
-       <width>50</width>
-       <height>50</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-background: rgba(101, 85, 198, 0.2);
-border: 2px solid #6555C6;
-box-sizing: border-box;
-border-radius: 25px;
-
-
-position: absolute;
-width: 25px;
-height: 44.55px;
-font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 30px;
-line-height: 56px;
-display: flex;
-align-items: center;
-text-align: center;
-
-color: #6555C6;
-}
-QPushButton:hover{
-background-color: rgb(190, 185, 250);
-}
-QPushButton:pressed{
-background-color: rgb(160, 150, 240);
-}</string>
-     </property>
-     <property name="text">
-      <string>i</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_info_epsilon">
-     <property name="geometry">
-      <rect>
-       <x>710</x>
-       <y>370</y>
+       <y>260</y>
        <width>50</width>
        <height>50</height>
       </rect>
@@ -410,7 +338,7 @@ background-color: rgb(160, 150, 240);
      <property name="geometry">
       <rect>
        <x>480</x>
-       <y>270</y>
+       <y>340</y>
        <width>100</width>
        <height>30</height>
       </rect>
@@ -476,36 +404,6 @@ border-right-color: rgb(195, 190, 239);
      </property>
      <property name="autoDefault">
       <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QDoubleSpinBox" name="sb_epsilon">
-     <property name="geometry">
-      <rect>
-       <x>490</x>
-       <y>450</y>
-       <width>80</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="decimals">
-      <number>2</number>
-     </property>
-     <property name="minimum">
-      <double>1.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>1000.000000000000000</double>
-     </property>
-     <property name="singleStep">
-      <double>1.000000000000000</double>
-     </property>
-     <property name="value">
-      <double>1.000000000000000</double>
      </property>
     </widget>
     <widget class="QPushButton" name="btn_back">

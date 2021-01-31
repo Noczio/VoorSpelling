@@ -13,11 +13,11 @@ class EstimatorPossibilities(Switch):
 
     @staticmethod
     def LinearSVC() -> LinearSVC:
-        return LinearSVC(verbose=1, dual=False)
+        return LinearSVC(verbose=10)
 
     @staticmethod
     def SVC() -> SVC:
-        return SVC(verbose=1)
+        return SVC(verbose=10)
 
     @staticmethod
     def KNeighborsClassifier() -> KNeighborsClassifier:
@@ -29,11 +29,11 @@ class EstimatorPossibilities(Switch):
 
     @staticmethod
     def LinearSVR() -> LinearSVR:
-        return LinearSVR(verbose=1, dual=False)
+        return LinearSVR(verbose=10)
 
     @staticmethod
     def SVR() -> SVR:
-        return SVR(verbose=1)
+        return SVR(verbose=10)
 
     @staticmethod
     def Lasso() -> Lasso:
@@ -41,19 +41,19 @@ class EstimatorPossibilities(Switch):
 
     @staticmethod
     def SGDClassifier() -> SGDClassifier:
-        return SGDClassifier(verbose=1)
+        return SGDClassifier(verbose=10)
 
     @staticmethod
     def AffinityPropagation() -> AffinityPropagation:
-        return AffinityPropagation(verbose=1)
+        return AffinityPropagation(verbose=10)
 
     @staticmethod
     def KMeans() -> KMeans:
-        return KMeans(verbose=1)
+        return KMeans(verbose=10)
 
     @staticmethod
     def MiniBatchKMeans() -> MiniBatchKMeans:
-        return MiniBatchKMeans(verbose=1)
+        return MiniBatchKMeans(verbose=10)
 
     @staticmethod
     def MeanShift() -> MeanShift:

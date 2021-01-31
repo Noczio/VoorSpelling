@@ -464,14 +464,18 @@ class StepByStepLoad(Window):
         model.feature_selector = global_var.feature_selection_method
         model.parameter_selector = global_var.parameter_search_method
 
-        score_type = {"classification": "roc_auc", "regression": "accuracy", "clustering": "explained_variance"}
+        score_type = {"classification": "roc_auc",
+                      "regression": "r2",
+                      "clustering": "mutual_info_score"}
         score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
         score_text = f"Rendimiento {score_type[global_var.prediction_type]}: {score}"
 
         f_creator = FCreator(".\\")
         folder_path = f_creator.folder_path
         # App is set up to be used by spanish speakes, so prediction type must be translated for further use
-        translation = {"classification": "clasificación", "regression": "regresión", "clustering": "agrupamiento"}
+        translation = {"classification": "clasificación",
+                       "regression": "regresión",
+                       "clustering": "agrupamiento"}
         prediction_type_text = f"{translation[global_var.prediction_type]} ({global_var.prediction_type}) paso a paso"
         # All important info is storage in a variable to be displayed in a markdown file as a 2x5 table
         info = ["Opción", "Selección",
@@ -482,7 +486,9 @@ class StepByStepLoad(Window):
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
         # Finally, after all is finished write info to their markdown files
-        SBSResult.console_info(self.ted_info.toPlainText(), folder_path)
+        ted_text = self.ted_info.toPlainText()
+        fixed_ted_text = ted_text.split("\n")
+        SBSResult.console_info(fixed_ted_text, folder_path)
         SBSResult.estimator_info(table,
                                  list(model.best_features),
                                  model.initial_parameters,
@@ -824,7 +830,8 @@ class FinalResult(Window):
         super().__init__(window, help_message_path)
         self.lbl_home.mouseReleaseEvent = self.back
 
-    def back(self) -> None:
+    def back(self, event) -> None:
+        event.accept()
         global_var.reset()
         last_form = HomeWindow(ui_window["home"])
         widget.addWidget(last_form)
@@ -857,10 +864,10 @@ class AffinityPropagationParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"convergence": self.sb_convergencia.value,
-                          "damping": self.sb_amortiguacion.value,
-                          "random_state": self.sb_semilla_random.value,
-                          "affinity": self.cb_penalidad.currentText}
+            parameters = {"convergence": int(self.sb_convergencia.value()),
+                          "damping": float(self.sb_amortiguacion.value()),
+                          "random_state": int(self.sb_semilla_random.value()),
+                          "affinity": str(self.cb_penalidad.currentText())}
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
@@ -882,7 +889,6 @@ class GaussianNBParameters(Window):
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_variable_refinamiento.clicked.connect(lambda: self.useful_info_pop_up("GNB_refinamiento"))
-        self.btn_info_epsilon.clicked.connect(lambda: self.useful_info_pop_up("GNB_episilon"))
 
         self.btn_next.clicked.connect(self.next)
 
@@ -898,9 +904,7 @@ class GaussianNBParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"var_smoothing": self.sb_variable_refinamiento.value,
-                          "epsilon": self.sb_epsilon.value,
-                          }
+            parameters = {"var_smoothing": float(self.sb_variable_refinamiento.value())}
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
@@ -940,10 +944,10 @@ class KMeansParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"n_clusters": self.sb_clusters.value,
-                          "random_state": self.sb_semilla_random.value,
-                          "tol": self.sb_tolerancia.value,
-                          "algorithm": self.cb_algoritmo.currentText
+            parameters = {"n_clusters": int(self.sb_clusters.value()),
+                          "random_state": int(self.sb_semilla_random.value()),
+                          "tol": float(self.sb_tolerancia.value()),
+                          "algorithm": str(self.cb_algoritmo.currentText())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -984,10 +988,10 @@ class KNeighborsClassifierParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"n_neighbors": self.sb_numero_vecinos.value,
-                          "p": self.sb_minkowski_p.value,
-                          "leaf_size": self.sb_tamano_hoja.value,
-                          "weights": self.cb_pesos.currentText
+            parameters = {"n_neighbors": int(self.sb_numero_vecinos.value()),
+                          "p": int(self.sb_minkowski_p.value()),
+                          "leaf_size": int(self.sb_tamano_hoja.value()),
+                          "weights": str(self.cb_pesos.currentText())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -1028,10 +1032,10 @@ class LassoParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"alpha": self.sb_alfa.value,
-                          "tol": self.sb_tolerancia.value,
-                          "random_state": self.sb_semilla_random.value,
-                          "selection": self.cb_seleccion.currentText
+            parameters = {"alpha": float(self.sb_alfa.value()),
+                          "tol": float(self.sb_tolerancia.value()),
+                          "random_state": int(self.sb_semilla_random.value()),
+                          "selection": str(self.cb_seleccion.currentText())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -1055,7 +1059,7 @@ class LinearSVCParameters(Window):
 
         self.btn_info_parametro_regularizacion.clicked.connect(lambda: self.useful_info_pop_up("LSVC_C"))
         self.btn_info_tolerancia.clicked.connect(lambda: self.useful_info_pop_up("LSVC_toleracia"))
-        self.btn_info_semilla_random.clicked.connect(lambda: self.useful_info_pop_up("LSVC_semilla_random"))
+        self.btn_info_intercepto.clicked.connect(lambda: self.useful_info_pop_up("LSVC_intercepto"))
         self.btn_info_penalidad.clicked.connect(lambda: self.useful_info_pop_up("LSVC_penalidad"))
 
         self.btn_next.clicked.connect(self.next)
@@ -1072,10 +1076,10 @@ class LinearSVCParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"C": self.sb_parametro_regularizacion.value,
-                          "tol": self.sb_tolerancia.value,
-                          "random_state": self.sb_semilla_random.value,
-                          "penalty": self.cb_penalidad.currentText
+            parameters = {"C": float(self.sb_parametro_regularizacion.value()),
+                          "tol": float(self.sb_tolerancia.value()),
+                          "intercept_scaling": float(self.cb_intercepto.currentText()),
+                          "penalty": str(self.cb_penalidad.currentText())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -1099,7 +1103,7 @@ class LinearSVRParameters(Window):
 
         self.btn_info_parametro_regularizacion.clicked.connect(lambda: self.useful_info_pop_up("LSVR_C"))
         self.btn_info_tolerancia.clicked.connect(lambda: self.useful_info_pop_up("LSVR_toleracia"))
-        self.btn_info_semilla_random.clicked.connect(lambda: self.useful_info_pop_up("LSVR_semilla_random"))
+        self.btn_info_perdida.clicked.connect(lambda: self.useful_info_pop_up("LSVR_perdida"))
         self.btn_info_epsilon.clicked.connect(lambda: self.useful_info_pop_up("LSVR_epsilon"))
 
         self.btn_next.clicked.connect(self.next)
@@ -1116,10 +1120,10 @@ class LinearSVRParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"C": self.sb_parametro_regularizacion.value,
-                          "tol": self.sb_tolerancia.value,
-                          "random_state": self.sb_semilla_random.value,
-                          "epsilon": self.sb_epsilon.currentText
+            parameters = {"C": float(self.sb_parametro_regularizacion.value()),
+                          "tol": float(self.sb_tolerancia.value()),
+                          "loss": str(self.cb_perdida.currentText()),
+                          "epsilon": float(self.sb_epsilon.value())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -1162,10 +1166,10 @@ class MeanShiftParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"bin_seeding": True if self.cb_contenedor_semillas.currentText == "True" else False,
-                          "cluster_all": True if self.cb_agrupar_todos.currentText == "True" else False,
-                          "bandwidth": self.sb_ancho_banda.value,
-                          "min_bin_freq": self.sb_frecuencia_contenedor.value
+            parameters = {"bin_seeding": bool(self.cb_contenedor_semillas.currentText()),
+                          "cluster_all": bool(self.cb_agrupar_todos.currentText()),
+                          "bandwidth": float(self.sb_ancho_banda.value()),
+                          "min_bin_freq": int(self.sb_frecuencia_contenedor.value())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -1206,10 +1210,10 @@ class MiniBatchKMeansParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"n_clusters": self.sb_clusters.value,
-                          "batch_size": self.sb_tamano_grupo.value,
-                          "random_state": self.sb_semilla_random.value,
-                          "tol": self.sb_tolerancia.value
+            parameters = {"n_clusters": int(self.sb_clusters.value()),
+                          "batch_size": int(self.sb_tamano_grupo.value()),
+                          "random_state": int(self.sb_semilla_random.value()),
+                          "tol": float(self.sb_tolerancia.value())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -1250,10 +1254,10 @@ class SGDClassifierParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"alpha": self.sb_alfa.value,
-                          "tol": self.sb_tolerancia.value,
-                          "random_state": self.sb_semilla_random.value,
-                          "penalty": self.cb_penalidad.currentText
+            parameters = {"alpha": float(self.sb_alfa.value()),
+                          "tol": float(self.sb_tolerancia.value()),
+                          "random_state": int(self.sb_semilla_random.value()),
+                          "penalty": str(self.cb_penalidad.currentText())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -1277,7 +1281,7 @@ class SVCParameters(Window):
 
         self.btn_info_parametro_regularizacion.clicked.connect(lambda: self.useful_info_pop_up("SVC_C"))
         self.btn_info_tolerancia.clicked.connect(lambda: self.useful_info_pop_up("SVC_tolerancia"))
-        self.btn_info_semilla_random.clicked.connect(lambda: self.useful_info_pop_up("SVC_semilla_random"))
+        self.btn_info_kernel.clicked.connect(lambda: self.useful_info_pop_up("SVC_kernel"))
         self.btn_info_gamma.clicked.connect(lambda: self.useful_info_pop_up("SVC_gamma"))
 
         self.btn_next.clicked.connect(self.next)
@@ -1294,10 +1298,10 @@ class SVCParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"C": self.sb_parametro_regularizacion.value,
-                          "tol": self.sb_tolerancia.value,
-                          "random_state": self.sb_semilla_random.value,
-                          "gamma": self.cb_gamma.currentText
+            parameters = {"C": float(self.sb_parametro_regularizacion.value()),
+                          "tol": float(self.sb_tolerancia.value()),
+                          "kernel": str(self.cb_kernel.currentText()),
+                          "gamma": str(self.cb_gamma.currentText())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
@@ -1338,10 +1342,10 @@ class SVRParameters(Window):
 
         result = show_last_warning()
         if result:
-            parameters = {"C": self.sb_parametro_regularizacion.value,
-                          "tol": self.sb_tolerancia.value,
-                          "epsilon": self.sb_epsilon.value,
-                          "gamma": self.cb_gamma.currentText
+            parameters = {"C": float(self.sb_parametro_regularizacion.value()),
+                          "tol": float(self.sb_tolerancia.value()),
+                          "epsilon": float(self.sb_epsilon.value()),
+                          "gamma": str(self.cb_gamma.currentText())
                           }
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])

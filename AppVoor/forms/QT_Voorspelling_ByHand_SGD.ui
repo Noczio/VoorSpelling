@@ -634,7 +634,7 @@ background-color: rgb(160, 150, 240);
       <double>0.000010000000000</double>
      </property>
      <property name="value">
-      <double>0.000100000000000</double>
+      <double>0.001000000000000</double>
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="sb_alfa">
