@@ -876,7 +876,7 @@ class AffinityPropagationParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -913,7 +913,7 @@ class GaussianNBParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -957,7 +957,7 @@ class KMeansParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1001,7 +1001,7 @@ class KNeighborsClassifierParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1045,7 +1045,7 @@ class LassoParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1089,7 +1089,7 @@ class LinearSVCParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1133,7 +1133,7 @@ class LinearSVRParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1179,7 +1179,7 @@ class MeanShiftParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1223,7 +1223,7 @@ class MiniBatchKMeansParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1267,7 +1267,7 @@ class SGDClassifierParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1311,7 +1311,7 @@ class SVCParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1355,7 +1355,7 @@ class SVRParameters(Window):
 
     def back(self) -> None:
         global_var.reset("parameters", "uses_parameter_search")
-        last_form = DataSetWindow(ui_window["hiperparameter_search"])
+        last_form = WantHiperparameterSearch(ui_window["hiperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -1370,7 +1370,6 @@ if __name__ == "__main__":
     estimator_creator = EstimatorCreator.get_instance()
     feature_selection_creator = FeatureSelectorCreator.get_instance()
     parameter_selection_creator = ParameterSearchCreator.get_instance()
-
     # dict with path to every view
     ui_window = {"home": ".\\forms\\QT_Voorspelling_Home.ui",
                  "dataset": ".\\forms\\QT_Voorspelling_DataSet.ui",
@@ -1398,7 +1397,6 @@ if __name__ == "__main__":
                  "MiniBatchKMeans_by_hand": ".\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
                  "MeanShift_by_hand": ".\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
                  }
-
     app = QApplication(sys.argv)
     widget = QtWidgets.QStackedWidget()
     # by default first form is home
