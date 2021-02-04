@@ -64,7 +64,7 @@ class BayesianSearchParametersPossibilities(Switch):
 
     @staticmethod
     def LinearSVC() -> dict:
-        return {'C': Real(1, 100, prior='log-uniform'),
+        return {'C': Real(1, 30, prior='log-uniform'),
                 'tol': Real(0.0001, 1, prior='log-uniform'),
                 'dual': Categorical([False]),
                 'penalty': Categorical(['l1', 'l2']),
@@ -72,14 +72,14 @@ class BayesianSearchParametersPossibilities(Switch):
 
     @staticmethod
     def SVC() -> dict:
-        return {'C': Real(1, 100, prior='log-uniform'),
+        return {'C': Real(1, 30, prior='log-uniform'),
                 'tol': Real(0.0001, 1, prior='log-uniform'),
                 'gamma': Categorical(['scale', 'auto']),
-                'kernel': Categorical(['rbf', 'poly'])}
+                'kernel': Categorical(['rbf', 'sigmoid'])}
 
     @staticmethod
     def KNeighborsClassifier() -> dict:
-        return {'n_neighbors': Integer(1, 50),
+        return {'n_neighbors': Integer(1, 40),
                 'weights': Categorical(['uniform', 'distance']),
                 'leaf_size': Integer(30, 100),
                 'p': Integer(1, 30),
@@ -91,9 +91,9 @@ class BayesianSearchParametersPossibilities(Switch):
 
     @staticmethod
     def LinearSVR() -> dict:
-        return {'epsilon': Real(0, 100, prior='log-uniform'),
+        return {'epsilon': Real(0, 30, prior='log-uniform'),
                 'tol': Real(0.0001, 1, prior='log-uniform'),
-                'C': Real(1, 100, prior='log-uniform'),
+                'C': Real(1, 30, prior='log-uniform'),
                 'loss': Categorical(['epsilon_insensitive', 'squared_epsilon_insensitive']),
                 'dual': Categorical([False])}
 
@@ -101,13 +101,13 @@ class BayesianSearchParametersPossibilities(Switch):
     def SVR() -> dict:
         return {'gamma': Categorical(['scale', 'auto']),
                 'tol': Real(0.0001, 1, prior='log-uniform'),
-                'C': Real(1, 100, prior='log-uniform'),
-                'epsilon': Real(0.1, 100, prior='log-uniform'),
-                'kernel': Categorical(['rbf', 'poly'])}
+                'C': Real(1, 30, prior='log-uniform'),
+                'epsilon': Real(0.1, 30, prior='log-uniform'),
+                'kernel': Categorical(['rbf', 'sigmoid'])}
 
     @staticmethod
     def Lasso() -> dict:
-        return {'alpha': Real(1, 100, prior='log-uniform'),
+        return {'alpha': Real(1, 40, prior='log-uniform'),
                 'tol': Real(0.0001, 1, prior='log-uniform'),
                 'selection': Categorical(['cyclic', 'random']),
                 'positive': Categorical([True, False])}
@@ -115,7 +115,7 @@ class BayesianSearchParametersPossibilities(Switch):
     @staticmethod
     def SGDClassifier() -> dict:
         return {'penalty': Categorical(['l2', 'l1', 'elasticnet']),
-                'alpha': Real(0.0001, 100, prior='log-uniform'),
+                'alpha': Real(0.0001, 40, prior='log-uniform'),
                 'tol': Real(0.0001, 1, prior='log-uniform'),
                 'random_state': Integer(0, 1000)}
 
@@ -128,14 +128,14 @@ class BayesianSearchParametersPossibilities(Switch):
 
     @staticmethod
     def KMeans() -> dict:
-        return {'n_clusters': Integer(1, 100),
+        return {'n_clusters': Integer(1, 50),
                 'tol': Real(0.0001, 1, prior='log-uniform'),
                 'random_state': Integer(0, 1000),
                 'algorithm': Categorical(['auto', 'full', 'elkan'])}
 
     @staticmethod
     def MiniBatchKMeans() -> dict:
-        return {'n_clusters': Integer(1, 100),
+        return {'n_clusters': Integer(1, 50),
                 'tol': Real(0, 1, prior='log-uniform'),
                 'batch_size': Integer(100, 512),
                 'reassignment_ratio': Real(0.01, 5, prior='log-uniform'),
@@ -161,9 +161,9 @@ class GridSearchParametersPossibilities(Switch):
     @staticmethod
     def SVC() -> dict:
         return {'C': np.arange(1, 30, 1),
-                'tol': np.arange(0.0001, 1, 0.001),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
                 'gamma': ('scale', 'auto'),
-                'kernel': ('rbf', 'poly')}
+                'kernel': ('rbf', 'sigmoid')}
 
     @staticmethod
     def KNeighborsClassifier() -> dict:
@@ -175,12 +175,13 @@ class GridSearchParametersPossibilities(Switch):
 
     @staticmethod
     def GaussianNB() -> dict:
-        return {'var_smoothing': [0.000000001, 10]}
+        return {'var_smoothing': [0.000000001, 0.00000001, 0.0000001, 0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] +
+                list(np.arange(1, 100, 1))}
 
     @staticmethod
     def LinearSVR() -> dict:
-        return {'epsilon': np.arange(0, 20, 1),
-                'tol': np.arange(0.0001, 1, 0.001),
+        return {'epsilon': np.arange(0, 30, 1),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
                 'C': np.arange(1, 30, 1),
                 'loss': ('epsilon_insensitive', 'squared_epsilon_insensitive'),
                 'dual': (False,)}
@@ -188,15 +189,15 @@ class GridSearchParametersPossibilities(Switch):
     @staticmethod
     def SVR() -> dict:
         return {'gamma': ('scale', 'auto'),
-                'tol': np.arange(0.0001, 1, 0.001),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
                 'C': np.arange(1, 30, 1),
                 'epsilon': np.arange(0.1, 5, 0.5),
-                'kernel': ('rbf', 'poly')}
+                'kernel': ('rbf', 'sigmoid')}
 
     @staticmethod
     def Lasso() -> dict:
-        return {'alpha': np.arange(1, 20, 1),
-                'tol': np.arange(0.0001, 1, 0.001),
+        return {'alpha': np.arange(1, 30, 1),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
                 'selection': ('cyclic', 'random'),
                 'positive': (True, False)}
 
@@ -204,7 +205,7 @@ class GridSearchParametersPossibilities(Switch):
     def SGDClassifier() -> dict:
         return {'penalty': ('l2', 'l1', 'elasticnet'),
                 'alpha': np.arange(0.0001, 5, 0.01),
-                'tol': np.arange(0.0001, 1, 0.001),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
                 'random_state': np.arange(0, 2000, 100)}
 
     @staticmethod
@@ -217,7 +218,7 @@ class GridSearchParametersPossibilities(Switch):
     @staticmethod
     def KMeans() -> dict:
         return {'n_clusters': np.arange(1, 30, 1),
-                'tol': np.arange(0.0001, 1, 0.001),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
                 'random_state': np.arange(0, 2000, 100),
                 'algorithm': ('auto', 'full', 'elkan')}
 

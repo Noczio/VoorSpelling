@@ -326,7 +326,7 @@ border-right-color: rgb(195, 190, 239);
 }</string>
      </property>
      <property name="text">
-      <string>SVR rbf</string>
+      <string>SVR</string>
      </property>
      <property name="autoDefault">
       <bool>false</bool>

@@ -48,8 +48,8 @@
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html"
   },
   "svc_rbf": {
-    "title": "Estimador: SVC kernel rbf",
-    "body": "La implementación de este estimador esta basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación.",
+    "title": "Estimador: SVC",
+    "body": "La implementación de este estimador esta basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación. Existen otros kernel, pero por defecto rbf es el más utilizado",
     "example": "estimator = SVC()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html"
   },
@@ -72,8 +72,8 @@
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVR.html"
   },
   "svr_rbf": {
-    "title": "Estimador: SVR kernel rbf",
-    "body": "Los parámetros más importantes en el estimador son C y epsilon. La implementación es basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades.",
+    "title": "Estimador: SVR",
+    "body": "Los parámetros más importantes en el estimador son C y epsilon. La implementación es basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades. Existen otros kernel, pero por defecto rbf es el más utilizado",
     "example": "estimator = SVR()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html"
   },
@@ -175,7 +175,7 @@
   },
   "SVR_gamma": {
     "title": "Gamma",
-    "body": "Coeficiente del kernel rbf, poly y sigmoide",
+    "body": "Coeficiente del kernel, ya sea rbf, poly o sigmoide",
     "example": "",
     "url": ""
   },
@@ -193,13 +193,13 @@
   },
   "SVC_kernel": {
     "title": "Kernel",
-    "body": "Especifica el tipo de kernel que se utilizará en el algoritmo. Debe ser \"poly\", \"rbf\" o \"sigmoid\"",
+    "body": "Especifica el tipo de kernel que se utilizará en el algoritmo. Debe ser \"rbf\" o \"sigmoid\"",
     "example": "",
     "url": ""
   },
   "SVC_gamma": {
     "title": "Gamma",
-    "body": "Coeficiente del kernel rbf, poly y sigmoide",
+    "body": "Coeficiente del kernel, ya sea linear, rbf, poly o sigmoid",
     "example": "",
     "url": ""
   },

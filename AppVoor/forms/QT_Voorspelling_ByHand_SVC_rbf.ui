@@ -738,11 +738,6 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
      </item>
      <item>
       <property name="text">
-       <string>poly</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>sigmoid</string>
       </property>
      </item>
