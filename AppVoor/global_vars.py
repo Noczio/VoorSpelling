@@ -18,13 +18,15 @@ class GlobalVariables:
     _psm: ParameterSearch = None
     _clf: Any = None
     _prd_type: str = ""
+    _prm: dict = {}
     _initial_value = {"data_frame": pd.DataFrame(),
                       "uses_feature_selection": False,
                       "uses_parameter_search": False,
                       "feature_selection_method": None,
                       "parameter_search_method": None,
                       "estimator": None,
-                      "prediction_type": ""
+                      "prediction_type": "",
+                      "parameters": {}
                       }
     __instance = None
 
@@ -98,8 +100,16 @@ class GlobalVariables:
     def prediction_type(self, value: str) -> None:
         self._prd_type = value
 
+    @property
+    def parameters(self) -> Any:
+        return self._prm
+
+    @parameters.setter
+    def parameters(self, value: dict) -> None:
+        self._prm = value
+
     @classmethod
-    def reset(cls, *args, **kwargs):
+    def reset(cls, *args, **kwargs) -> None:
         if len(kwargs) == 0 and len(args) == 0:
             cls.data_frame = cls._initial_value["data_frame"]
             cls.uses_feature_selection = cls._initial_value["uses_feature_selection"]
@@ -108,6 +118,7 @@ class GlobalVariables:
             cls.parameter_search_method = cls._initial_value["parameter_search_method"]
             cls.estimator = cls._initial_value["estimator"]
             cls.prediction_type = cls._initial_value["prediction_type"]
+            cls.parameters = cls._initial_value["parameters"]
         elif len(kwargs) > 0 and len(args) == 0:
             for key, value in kwargs.items():
                 if hasattr(cls, key):

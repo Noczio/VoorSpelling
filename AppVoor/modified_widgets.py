@@ -49,7 +49,7 @@ class QLoadButton(QPushButton):
         self._file_path: str = ""
         self.clicked.connect(self.on_click)
 
-    def on_click(self):
+    def on_click(self) -> None:
         file_name = QFileDialog.getOpenFileName(self, 'Seleccionar archivo', 'C:',
                                                 'Text files (*.txt *.csv *.tsv)')
         self.file_path = file_name[0]

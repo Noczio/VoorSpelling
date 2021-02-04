@@ -48,8 +48,8 @@
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html"
   },
   "svc_rbf": {
-    "title": "Estimador: SVC kernel rbf",
-    "body": "La implementación de este estimador esta basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación.",
+    "title": "Estimador: SVC",
+    "body": "La implementación de este estimador esta basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación. Existen otros kernel, pero por defecto rbf es el más utilizado",
     "example": "estimator = SVC()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html"
   },
@@ -72,8 +72,8 @@
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVR.html"
   },
   "svr_rbf": {
-    "title": "Estimador: SVR kernel rbf",
-    "body": "Los parámetros más importantes en el estimador son C y epsilon. La implementación es basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades.",
+    "title": "Estimador: SVR",
+    "body": "Los parámetros más importantes en el estimador son C y epsilon. La implementación es basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades. Existen otros kernel, pero por defecto rbf es el más utilizado",
     "example": "estimator = SVR()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html"
   },
@@ -154,5 +154,281 @@
     "body": "Este tipo de búsqueda es conocida como en inglés como greedy. La búsqueda exhaustiva implica realizar una exploración utilizando todos los valores posibles dada una lista de elementos S, pero en la mayoría de casos no se busca optimizar un solo hiperparámetro, sino que se requiere realizar una búsqueda para al menos dos o más listas de valores.",
     "example": "estimator = GridSearchCV(estimator=clf, param_grid=parameters, cv=n_folds_validation)\nestimator.fit(X, y)\nbest_params = estimator.best_params_",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html"
+  },
+  "SVR_C": {
+    "title": "Parametro de regularización",
+    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
+    "example": "",
+    "url": ""
+  },
+  "SVR_tolerancia": {
+    "title": "Tolerancia",
+    "body": "Valor de aceptación para criterio de parada",
+    "example": "",
+    "url": ""
+  },
+  "SVR_epsilon": {
+    "title": "Épsilon",
+    "body": "Indica el rango dentro del cual no hay penalidad asociada al entrenamiento de la función de pérdida con respecto a los valores reales",
+    "example": "",
+    "url": ""
+  },
+  "SVR_gamma": {
+    "title": "Gamma",
+    "body": "Coeficiente del kernel, ya sea rbf, poly o sigmoide",
+    "example": "",
+    "url": ""
+  },
+  "SVC_C": {
+    "title": "Parametro de regularización",
+    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
+    "example": "",
+    "url": ""
+  },
+  "SVC_tolerancia": {
+    "title": "Tolerancia",
+    "body": "Valor de aceptación para criterio de parada",
+    "example": "",
+    "url": ""
+  },
+  "SVC_kernel": {
+    "title": "Kernel",
+    "body": "Especifica el tipo de kernel que se utilizará en el algoritmo. Debe ser \"rbf\" o \"sigmoid\"",
+    "example": "",
+    "url": ""
+  },
+  "SVC_gamma": {
+    "title": "Gamma",
+    "body": "Coeficiente del kernel, ya sea linear, rbf, poly o sigmoid",
+    "example": "",
+    "url": ""
+  },
+  "LSVR_C": {
+    "title": "Parametro de regularización",
+    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
+    "example": "",
+    "url": ""
+  },
+  "LSVR_toleracia": {
+    "title": "Tolerancia",
+    "body": "Valor de aceptación para criterio de parada",
+    "example": "",
+    "url": ""
+  },
+  "LSVR_perdida": {
+    "title": "Pérdida",
+    "body": "Especifica la función de pérdida. La pérdida insensible a épsilon (epsilon_insensitive) es la pérdida L1, mientras que la pérdida insensible a épsilon al cuadrado (\"squared_epsilon_insensitive\") es la pérdida L2.",
+    "example": "",
+    "url": ""
+  },
+  "LSVR_epsilon": {
+    "title": "Épsilon",
+    "body": "Parametro en la función de pérdida insensible a épsilon",
+    "example": "",
+    "url": ""
+  },
+  "LSVC_C": {
+    "title": "Parametro de regularización",
+    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
+    "example": "",
+    "url": ""
+  },
+  "LSVC_toleracia": {
+    "title": "Tolerancia",
+    "body": "Valor de aceptación para criterio de parada",
+    "example": "",
+    "url": ""
+  },
+  "LSVC_intercepto": {
+    "title": "Intercepción de escalado",
+    "body": "La intersección es intercept_scaling * synthetic_feature_weight. Para disminuir el efecto de la regularización en el peso de la característica sintética (y por lo tanto en la intersección), se debe aumentar la escala de intercepción",
+    "example": "",
+    "url": ""
+  },
+  "LSVC_penalidad": {
+    "title": "Penalidad",
+    "body": "Indica la norma utilizada en la penalización. \"l2\" es el estándar utilizado, mientras que \"l1\" lleva a vecotres de coef_ que son dispersos",
+    "example": "",
+    "url": ""
+  },
+  "LASSO_alfa": {
+    "title": "Alfa",
+    "body": "Constante que multiplica el término \"L1\". Alfa = 0 es equivalente a un mínimo cuadrado resuelto por el regresión lineal",
+    "example": "",
+    "url": ""
+  },
+  "LASSO_toleracia": {
+    "title": "Tolerancia",
+    "body": "Valor de aceptación para criterio de parada",
+    "example": "",
+    "url": ""
+  },
+  "LASSO_semilla_random": {
+    "title": "Semilla random",
+    "body": " Semilla del generador de números pseudoaleatorios que selecciona una característica aleatoria para actualizar",
+    "example": "",
+    "url": ""
+  },
+  "LASSO_seleccion": {
+    "title": "Selección",
+    "body": "Si se establece en \"random\", un coeficiente aleatorio se actualiza en cada iteración en lugar de recorrer las características secuencialmente",
+    "example": "",
+    "url": ""
+  },
+  "KNN_n_vecinos": {
+    "title": "Número de vecinos",
+    "body": "Número de vecinos a considerar para clasificar un objeto como perteneciente a una clase",
+    "example": "",
+    "url": ""
+  },
+  "KNN_p": {
+    "title": "Métrica Minkowski",
+    "body": "Parámetro para la métrica Minkowski. Cuando p = 1 equivale a usar manhattan_distance (l1), mientras que euclidean_distance (l2) se obtiene con el valor p = 2 . Para  un p arbitrario se usa minkowski_distance (l_p)",
+    "example": "",
+    "url": ""
+  },
+  "KNN_tamano_hoja": {
+    "title": "Tamaño de hoja",
+    "body": "Algoritmo utilizado para calcular los vecinos más cercanos. \"auto\" intentará decidir el algoritmo más apropiado en función de los valores suminitrados en el método fit",
+    "example": "",
+    "url": ""
+  },
+  "KNN_pesos": {
+    "title": "Peso",
+    "body": "Función de peso utilizada en la predicción. Se puede establecer como \"uniform\" o \"distance\"",
+    "example": "",
+    "url": ""
+  },
+  "KMEANS_n_clusters": {
+    "title": "Número de conglomerados",
+    "body": "El número de conglomerados a formar, así como el número de centroides a generar.",
+    "example": "",
+    "url": ""
+  },
+  "KMEANS_toleracia": {
+    "title": "Tolerancia",
+    "body": "Tolerancia relativa con respecto a la norma de Frobenius de la diferencia en los centros de los conglomerados de dos iteraciones consecutivas para declarar convergencia",
+    "example": "",
+    "url": ""
+  },
+  "KMEANS_semilla_random": {
+    "title": "Semilla random",
+    "body": "Determina la generación de números aleatorios para la inicialización del centroide",
+    "example": "",
+    "url": ""
+  },
+  "KMEANS_algoritmo": {
+    "title": "Algoritmo",
+    "body": "Algoritmo de K-means a utilizar. Los valores que se puede utilizar son \"auto\", \"full\" y \"elkan\"",
+    "example": "",
+    "url": ""
+  },
+  "GNB_refinamiento": {
+    "title": "Variable de refinamiento",
+    "body": "Parte de la variación más grande de todas las características que se agrega a las variaciones para la estabilidad del cálculo",
+    "example": "",
+    "url": ""
+  },
+  "GNB_episilon": {
+    "title": "Épsilon",
+    "body": "Valor absoluto que se adiciona a las variaciones",
+    "example": "",
+    "url": ""
+  },
+  "APROPAGATION_convergencia": {
+    "title": "Convergencia",
+    "body": "Número de iteraciones sin cambios en el número de clústeres estimados que detiene la convergencia.",
+    "example": "",
+    "url": ""
+  },
+  "APROPAGATION_amortiguacion": {
+    "title": "Amortiguación",
+    "body": "Medida en que se mantiene el valor actual en relación con los valores entrantes.",
+    "example": "",
+    "url": ""
+  },
+  "APROPAGATION_semilla_random": {
+    "title": "Semilla random",
+    "body": "Generador de números seudoaleatorios para controlar el estado inicial",
+    "example": "",
+    "url": ""
+  },
+  "APROPAGATION_afinidad": {
+    "title": "Afinidad",
+    "body": "Tipo de afinidad a utilizar. Los valores permitidos son \"euclidian\" y \"precomputed\"",
+    "example": "",
+    "url": ""
+  },
+  "MEANSHIFT_ancho_banda": {
+    "title": "Ancho de banda",
+    "body": "Ancho de banda utilizado en el kernel RBF. Si no se proporciona, el ancho de banda se estima mediante sklearn.cluster.estimate_bandwidth",
+    "example": "",
+    "url": ""
+  },
+  "MEANSHIFT_contenedor_semilla": {
+    "title": "Contenedor de la semilla",
+    "body": "Si el valor es verdadero las ubicaciones iniciales del kernel no son ubicaciones de todos los puntos, sino más bien la ubicación de la versión discretizada de los puntos, donde los puntos se agrupan en una cuadrícula cuya rugosidad corresponde al ancho de banda",
+    "example": "",
+    "url": ""
+  },
+  "MEANSHIFT_frecuencia_contenedor": {
+    "title": "Frecuencia mínima del contenedor",
+    "body": "Valor para delimitar aquellos bins con los puntos como semillas que cumplan con min_bin_freq",
+    "example": "",
+    "url": ""
+  },
+  "MEANSHIFT_agrupar_todos": {
+    "title": "Agrupar todos",
+    "body": "Si el valor es verdadero, entonces todos los puntos están agrupados; incluso aquellos huérfanos que no están dentro de ningún kernel. Los huérfanos se asignan al núcleo más cercano. Si es falso, los huérfanos reciben la etiqueta de agrupación -1.",
+    "example": "",
+    "url": ""
+  },
+  "MINIKMEANS_n_clusters": {
+    "title": "Número de clusters",
+    "body": "Número de clústeres y centroides que se generarán",
+    "example": "",
+    "url": ""
+  },
+  "MMINIKMEANS_tamano_grupo": {
+    "title": "Tamño del grupo (lotes)",
+    "body": "Tamaño de los mini lotes. Por defecto se utiliza el valor de 100",
+    "example": "",
+    "url": ""
+  },
+  "MINIKMEANS_semilla_random": {
+    "title": "Semilla random",
+    "body": "Determina la generación de números aleatorios para la inicialización del centroide y la reasignación aleatoria.",
+    "example": "",
+    "url": ""
+  },
+  "MINIKMEANS_tolerancia": {
+    "title": "Tolerancia",
+    "body": "Valor que controla la parada temprana en función de los cambios  relativos del centro, los cuales son medidos por una variación suavizada y normalizada (variación de los cambios de posición central cuadrática media)",
+    "example": "",
+    "url": ""
+  },
+  "SGD_alfa": {
+    "title": "Alfa",
+    "body": "Constante que multiplica la variable de regularización. Cuanto mayor sea, más elevada sera la regularización",
+    "example": "",
+    "url": ""
+  },
+  "SGD_tolerancia": {
+    "title": "Tolerancia",
+    "body": "Valor de aceptación para criterio de parada. El entrenamiento se detiene cuando la pérdida es mayor que la mejor pérdida - tolerancia)",
+    "example": "",
+    "url": ""
+  },
+  "SGD_semilla_random": {
+    "title": "Semilla random",
+    "body": " Semilla del generador de números pseudoaleatorios para mezclar los datos",
+    "example": "",
+    "url": ""
+  },
+  "SGD_penalidad": {
+    "title": "Penalidad",
+    "body": "La penalización (también conocida como término de regularización) que se utilizará en el estimador. El valor predeterminado es \"l2\", que es el regularizador estándar para los modelos SVM lineales.",
+    "example": "",
+    "url": ""
   }
 }

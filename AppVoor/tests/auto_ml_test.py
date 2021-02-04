@@ -2,12 +2,9 @@ import unittest
 
 from auto_ml import JarAutoML, AutoExecutioner
 from load_data import LoaderCreator
-from parallel import LongWorker
-from PyQt5.QtCore import QRect, QThreadPool, QThread
 
 
 class MyTestCase(unittest.TestCase):
-
     loader_creator = LoaderCreator.get_instance()
 
     def test_jar_creation_n_folds_raises_error(self):
@@ -58,30 +55,6 @@ class MyTestCase(unittest.TestCase):
         loader = self.loader_creator.create_loader(".\\..\\datasets\\diabetes.csv", "csv")
         df = loader.get_file_transformed()
         auto_executioner.train_model(df)
-
-    def test_diabetes_with_thread_pool(self):
-
-        def operation():
-            print("test started")
-            max_rand = 5000
-            auto_ml = JarAutoML(10, False, max_rand)
-            # create a AutoExecutioner from the JarAutoML object
-            auto_executioner = AutoExecutioner(auto_ml)
-            loader = self.loader_creator.create_loader(".\\..\\datasets\\diabetes.csv", "csv")
-            df = loader.get_file_transformed()
-            auto_executioner.train_model(df)
-
-        def handle_error(error):
-            print(error)
-
-        def operation_finished():
-            print("test finished")
-
-        thread_pool = QThreadPool()
-        worker = LongWorker(operation)
-        worker.signals.program_error.connect(handle_error)
-        worker.signals.program_finished.connect(operation_finished)
-        thread_pool.start(worker)
 
 
 if __name__ == '__main__':

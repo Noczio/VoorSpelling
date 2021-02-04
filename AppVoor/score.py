@@ -35,7 +35,7 @@ class CVScore(CVModelScore):
         elif score_type not in self._types and n_folds_validation < 3 or n_folds_validation > 10:
             raise ValueError("Parameters n_folds_validation and score_type have wrong values")
         else:
-            cv_results = cross_validate(model, x, y, cv=n_folds_validation, scoring=score_type, verbose=1)
+            cv_results = cross_validate(model, x, y, cv=n_folds_validation, scoring=score_type)
             avg = cv_results['test_score'].mean()
             return avg
 
