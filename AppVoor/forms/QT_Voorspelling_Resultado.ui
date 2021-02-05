@@ -281,7 +281,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>El tiempo estimado depende del tamaño del conjunto de datos (dataset), si hay un proceso de selección de caracteristicas, así como otros factores según las opciones que se hayan elegido</string>
+      <string>El tiempo estimado depende del tamaño del conjunto de datos (dataset), si hay un proceso de selección de características, así como otros factores según las opciones que se hayan elegido</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -309,7 +309,7 @@ border: none;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>No desesperes si aun no recibes los resultados. </string>
+      <string>No desesperes si aún no recibes los resultados. </string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

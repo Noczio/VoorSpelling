@@ -1,7 +1,8 @@
+from abc import ABC
 from typing import Any
 
 
-class Switch(object):
+class Switch(ABC):
 
     @classmethod
     def case(cls, attr: str) -> Any:

@@ -37,7 +37,7 @@ class SBSResult:
         f_title = 'Resultados del estimador paso a paso'
         try:
             md_file = MdUtils(file_name=f_name, title=f_title)
-            md_file.new_header(level=1, title='Seleccion')
+            md_file.new_header(level=1, title='Selección')
 
             md_file.new_header(level=2, title='Opciones')
             md_file.new_table(columns=options["columns"], rows=options["rows"],
@@ -49,11 +49,11 @@ class SBSResult:
             list_to_string = ', '.join(map(str, features))
             md_file.new_paragraph(list_to_string)
 
-            md_file.new_header(level=2, title='Paramatros iniciales')
+            md_file.new_header(level=2, title='Parámetros iniciales')
             initial_params_as_string = json.dumps(initial_params)
             md_file.new_line(initial_params_as_string)
 
-            md_file.new_header(level=2, title='Paramatros finales')
+            md_file.new_header(level=2, title='Parámetros finales')
             final_params_as_string = json.dumps(final_params)
             md_file.new_line(final_params_as_string)
 

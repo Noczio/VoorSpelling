@@ -286,16 +286,27 @@ class MLTypeWindow(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self) -> None:
+
+        def show_last_warning():
+            pop_up: PopUp = WarningPopUp()
+            title = "Listo para entrenar"
+            body = "¿Estas seguro que deseas continuar?"
+            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
+            answer = pop_up.open_pop_up(title, body, additional)
+            return answer
+
         if self.rbtn_sbsml.isChecked():
             next_form = PredictionType(ui_window["prediction_type"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
         else:
-            next_form = AutoLoad(ui_window["result_screen"])
-            widget.addWidget(next_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
+            out_put = show_last_warning()
+            if out_put:
+                next_form = AutoLoad(ui_window["result_screen"])
+                widget.addWidget(next_form)
+                widget.removeWidget(widget.currentWidget())
+                widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
         global_var.reset("data_set")
