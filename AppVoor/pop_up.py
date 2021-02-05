@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QPushButton
 
 
 class PopUp(ABC):
@@ -51,6 +51,8 @@ class WarningPopUp(PopUp):
 
         msg.setIcon(QMessageBox.Warning)
         msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        button_yes = msg.button(QMessageBox.Yes)
+        button_yes.setText("Si")
         msg.setFont(font)
 
         return_value = msg.exec_()  # this will show the messagebox

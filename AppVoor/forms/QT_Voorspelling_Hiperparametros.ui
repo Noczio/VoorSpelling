@@ -281,7 +281,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Si ya se conoce de antemano los hiperparámetros a utilizar, se recomienda elegir la segúnda opción, sino realizar una busqueda es lo ideal. </string>
+      <string>Si ya se conoce de antemano los hiperparámetros a utilizar, se recomienda elegir la segunda opción, sino realizar una búsqueda es lo ideal. </string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -583,7 +583,7 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
       <string notr="true">border: none;</string>
      </property>
      <property name="text">
-      <string> Realizar busqueda de hiperparámetros</string>
+      <string> Realizar búsqueda de hiperparámetros</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
