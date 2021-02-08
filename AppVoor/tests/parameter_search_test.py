@@ -4,7 +4,6 @@ from estimator_creation import EstimatorCreator
 from load_data import LoaderCreator
 from parameter_search import ParameterSearchCreator
 from parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
-from skopt.space import Real, Integer, Categorical
 from split_data import SplitterReturner
 
 import numpy as np

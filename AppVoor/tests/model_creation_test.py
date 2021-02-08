@@ -1,7 +1,5 @@
 import unittest
 
-from skopt.space import Real, Integer, Categorical
-
 from estimator_creation import EstimatorCreator
 from feature_selection import FeatureSelectorCreator
 from is_data import DataEnsurer
