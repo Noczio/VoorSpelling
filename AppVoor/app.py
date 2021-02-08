@@ -47,39 +47,39 @@ class EstimatorParametersPossibilities(Switch):
 
     @staticmethod
     def LinearSVC() -> Window:
-        return LinearSVCParameters(ui_window["LinearSVC_by_hand"])
+        return LinearSVCParameters(ui_window["LinearSVC"])
 
     @staticmethod
     def SVC() -> Window:
-        return SVCParameters(ui_window["SVC_by_hand"])
+        return SVCParameters(ui_window["SVC"])
 
     @staticmethod
     def KNeighborsClassifier() -> Window:
-        return KNeighborsClassifierParameters(ui_window["KNeighborsClassifier_by_hand"])
+        return KNeighborsClassifierParameters(ui_window["KNeighborsClassifier"])
 
     @staticmethod
     def GaussianNB() -> Window:
-        return GaussianNBParameters(ui_window["GaussianNB_by_hand"])
+        return GaussianNBParameters(ui_window["GaussianNB"])
 
     @staticmethod
     def LinearSVR() -> Window:
-        return LinearSVRParameters(ui_window["LinearSVR_by_hand"])
+        return LinearSVRParameters(ui_window["LinearSVR"])
 
     @staticmethod
     def SVR() -> Window:
-        return SVRParameters(ui_window["SVR_by_hand_by_hand"])
+        return SVRParameters(ui_window["SVR"])
 
     @staticmethod
     def Lasso() -> Window:
-        return LassoParameters(ui_window["Lasso_by_hand"])
+        return LassoParameters(ui_window["Lasso"])
 
     @staticmethod
     def SGDClassifier() -> Window:
-        return SGDClassifierParameters(ui_window["SGDClassifier_by_hand"])
+        return SGDClassifierParameters(ui_window["SGDClassifier"])
 
     @staticmethod
     def AffinityPropagation() -> Window:
-        return AffinityPropagationParameters(ui_window["AffinityPropagation_by_hand"])
+        return AffinityPropagationParameters(ui_window["AffinityPropagation"])
 
     @staticmethod
     def KMeans() -> Window:
@@ -346,8 +346,6 @@ class AutoLoad(Window):
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
-        # wait for process to finish and then go to final form after printing some info.
-        self.thread_pool.waitForDone()
         QThread.sleep(3)
         go_next()
 
@@ -364,7 +362,6 @@ class AutoLoad(Window):
         self.add_info(str(model)+"\n\n")
         data_frame = global_var.data_frame
         model.train_model(data_frame)
-        self.add_info("\nProceso terminado")
 
     def cancel_training(self, event) -> None:
         """Show a Warning pop up and then if user wants to finished the app, close it"""
@@ -454,8 +451,6 @@ class StepByStepLoad(Window):
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
-        # wait for process to finish and then go to final form after printing some info.
-        self.thread_pool.waitForDone()
         QThread.sleep(3)
         go_next()
 
@@ -468,20 +463,24 @@ class StepByStepLoad(Window):
 
     def train_model(self) -> None:
         """Train, create and get outputs"""
+        print("Starting process")
         model = model_creator.create_model(global_var.uses_feature_selection, global_var.uses_parameter_search)
         model.estimator = global_var.estimator
         model.initial_parameters = global_var.parameters
         model.feature_selector = global_var.feature_selection_method
         model.parameter_selector = global_var.parameter_search_method
 
-        score_type = {"classification": "roc_auc",
+        score_type = {"classification": "accuracy",
                       "regression": "r2",
                       "clustering": "mutual_info_score"}
+        print("Training ...")
         score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
         score_text = f"Rendimiento {score_type[global_var.prediction_type]}: {score}"
+        print("Score result -> ", score_text)
 
         f_creator = FCreator(".\\")
         folder_path = f_creator.folder_path
+        print("Path to results: ", folder_path)
         # App is set up to be used by spanish speakes, so prediction type must be translated for further use
         translation = {"classification": "clasificación",
                        "regression": "regresión",
@@ -498,6 +497,7 @@ class StepByStepLoad(Window):
         # Finally, after all is finished write info to their markdown files
         ted_text = self.ted_info.toPlainText()
         fixed_ted_text = ted_text.split("\n")
+        print("Saving results ...")
         SBSResult.console_info(fixed_ted_text, folder_path)
         SBSResult.estimator_info(table,
                                  list(model.best_features),
@@ -505,7 +505,6 @@ class StepByStepLoad(Window):
                                  model.best_parameters,
                                  score_text,
                                  folder_path)
-        self.add_info("\nProceso terminado")
 
     def cancel_training(self, event) -> None:
         """Show a Warning pop up and then if user wants to finished the app, close it"""
@@ -1398,18 +1397,18 @@ if __name__ == "__main__":
                  "hyperparameter_search_method": ".\\forms\\QT_Voorspelling_HiperparametrosMetodo.ui",
                  "result_screen": ".\\forms\\QT_Voorspelling_Resultado.ui",
                  "result_final": ".\\forms\\QT_Voorspelling_ResultadoFinal.ui",
-                 "LinearSVC_by_hand": ".\\forms\\QT_Voorspelling_ByHand_LinearSVC.ui",
-                 "SVC_by_hand": ".\\forms\\QT_Voorspelling_ByHand_SVC_rbf.ui",
-                 "KNeighborsClassifier_by_hand": ".\\forms\\QT_Voorspelling_ByHand_KNN.ui",
-                 "GaussianNB_by_hand": ".\\forms\\QT_Voorspelling_ByHand_GaussianNaiveBayes.ui",
-                 "LinearSVR_by_hand": ".\\forms\\QT_Voorspelling_ByHand_LinearSVR.ui",
-                 "SVR_by_hand": ".\\forms\\QT_Voorspelling_ByHand_SVR_rbf.ui",
-                 "Lasso_by_hand": ".\\forms\\QT_Voorspelling_ByHand_Lasso.ui",
-                 "SGDClassifier_by_hand": ".\\forms\\QT_Voorspelling_ByHand_SGD.ui",
-                 "AffinityPropagation_by_hand": ".\\forms\\QT_Voorspelling_ByHand_AffinityPropagation.ui",
-                 "KMeans_by_hand": ".\\forms\\QT_Voorspelling_ByHand_KMeans.ui",
-                 "MiniBatchKMeans_by_hand": ".\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
-                 "MeanShift_by_hand": ".\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
+                 "LinearSVC": ".\\forms\\QT_Voorspelling_ByHand_LinearSVC.ui",
+                 "SVC": ".\\forms\\QT_Voorspelling_ByHand_SVC_rbf.ui",
+                 "KNeighborsClassifier": ".\\forms\\QT_Voorspelling_ByHand_KNN.ui",
+                 "GaussianNB": ".\\forms\\QT_Voorspelling_ByHand_GaussianNaiveBayes.ui",
+                 "LinearSVR": ".\\forms\\QT_Voorspelling_ByHand_LinearSVR.ui",
+                 "SVR": ".\\forms\\QT_Voorspelling_ByHand_SVR_rbf.ui",
+                 "Lasso": ".\\forms\\QT_Voorspelling_ByHand_Lasso.ui",
+                 "SGDClassifier": ".\\forms\\QT_Voorspelling_ByHand_SGD.ui",
+                 "AffinityPropagation": ".\\forms\\QT_Voorspelling_ByHand_AffinityPropagation.ui",
+                 "KMeans": ".\\forms\\QT_Voorspelling_ByHand_KMeans.ui",
+                 "MiniBatchKMeans": ".\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
+                 "MeanShift": ".\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
                  }
     app = QApplication(sys.argv)
     widget = QtWidgets.QStackedWidget()
