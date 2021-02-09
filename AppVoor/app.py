@@ -766,7 +766,7 @@ class WantHyperparameterSearch(Window):
     def next(self):
         if self.rbtn_Search_Hiperparameters.isChecked():
             global_var.uses_parameter_search = True
-            next_form = HiperparameterMethod(ui_window["hyperparameter_search_method"])
+            next_form = HyperparameterMethod(ui_window["hyperparameter_search_method"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
@@ -786,7 +786,7 @@ class WantHyperparameterSearch(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
 
-class HiperparameterMethod(Window):
+class HyperparameterMethod(Window):
 
     def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
         super().__init__(window, help_message_path)
