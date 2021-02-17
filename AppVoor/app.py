@@ -346,7 +346,8 @@ class AutoLoad(Window):
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
-        QThread.sleep(3)
+
+        QThread.sleep(1)
         go_next()
 
     def back(self):
@@ -451,7 +452,7 @@ class StepByStepLoad(Window):
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
-        QThread.sleep(3)
+        QThread.sleep(1)
         go_next()
 
     def back(self):
