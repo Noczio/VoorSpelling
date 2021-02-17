@@ -1401,6 +1401,9 @@ if __name__ == "__main__":
                  "MiniBatchKMeans": ".\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
                  "MeanShift": ".\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
                  }
+    # initialize qt resources
+    resources.qInitResources()
+    # create an app and widget variable to control app logic
     app = QApplication(sys.argv)
     widget = QtWidgets.QStackedWidget()
     # by default first form is home
