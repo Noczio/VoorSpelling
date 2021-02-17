@@ -1,7 +1,7 @@
 import unittest
 
-from estimator_creation import EstimatorCreator
-from result_creation import FCreator, SBSResult
+from backend_scripts.estimator_creation import EstimatorCreator
+from backend_scripts.result_creation import FCreator, SBSResult
 
 
 class MyTestCase(unittest.TestCase):

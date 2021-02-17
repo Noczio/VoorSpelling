@@ -3,9 +3,9 @@ import unittest
 import pandas as pd
 import numpy as np
 
-from is_data import DataEnsurer
-from load_data import LoaderCreator
-from split_data import SplitterReturner
+from backend_scripts.is_data import DataEnsurer
+from backend_scripts.load_data import LoaderCreator
+from backend_scripts.split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):

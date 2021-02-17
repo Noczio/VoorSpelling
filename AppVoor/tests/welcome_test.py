@@ -1,6 +1,6 @@
 import unittest
 
-from is_data import DataEnsurer
+from backend_scripts.is_data import DataEnsurer
 from jsonInfo.welcome import WelcomeMessenger, WelcomeMessage
 
 

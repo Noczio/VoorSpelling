@@ -1,12 +1,12 @@
 import unittest
 
-from estimator_creation import EstimatorCreator
-from feature_selection import FeatureSelectorCreator
-from is_data import DataEnsurer
-from load_data import LoaderCreator
-from model_creation import SBSModelCreator
-from parameter_search import ParameterSearchCreator
-from parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
+from backend_scripts.estimator_creation import EstimatorCreator
+from backend_scripts.feature_selection import FeatureSelectorCreator
+from backend_scripts.is_data import DataEnsurer
+from backend_scripts.load_data import LoaderCreator
+from backend_scripts.model_creation import SBSModelCreator
+from backend_scripts.parameter_search import ParameterSearchCreator
+from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
 
 
 class MyTestCase(unittest.TestCase):

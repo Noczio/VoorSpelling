@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 from supervised import AutoML
 
 from jsonInfo.random_generator import Randomizer
-from split_data import SplitterReturner
+from backend_scripts.split_data import SplitterReturner
 
 NpArray = np.ndarray
 DataFrame = pd.DataFrame

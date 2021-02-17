@@ -1,9 +1,9 @@
 import unittest
 
-from estimator_creation import EstimatorCreator
-from load_data import LoaderCreator
-from score import CVScore
-from split_data import SplitterReturner
+from backend_scripts.estimator_creation import EstimatorCreator
+from backend_scripts.load_data import LoaderCreator
+from backend_scripts.score import CVScore
+from backend_scripts.split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):

@@ -3,8 +3,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from feature_selection import FeatureSelection
-from parameter_search import ParameterSearch
+from backend_scripts.feature_selection import FeatureSelection
+from backend_scripts.parameter_search import ParameterSearch
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Union, Any
+from typing import Any
 
-from load_data import LoaderCreator
+from backend_scripts.load_data import LoaderCreator
 
 
 class JSONMessage(ABC):

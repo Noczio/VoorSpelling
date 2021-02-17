@@ -1,6 +1,6 @@
 import unittest
 
-from load_data import LoaderCreator
+from backend_scripts.load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):

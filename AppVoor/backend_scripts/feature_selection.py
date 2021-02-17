@@ -4,9 +4,9 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from is_data import DataEnsurer
-from score import CVScore, CVModelScore
-from switcher import Switch
+from backend_scripts.is_data import DataEnsurer
+from backend_scripts.score import CVScore, CVModelScore
+from backend_scripts.switcher import Switch
 
 NpArray = np.ndarray
 DataFrame = pd.DataFrame
