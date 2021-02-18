@@ -719,8 +719,9 @@ class WantFeatureSelection(Window):
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("prediction_type", estimator=None)
-        last_form = MLTypeWindow(ui_window["model"])
+        global_var.reset("uses_feature_selection", "estimator")
+        prediction_type = global_var.prediction_type
+        last_form = PredictionTypePossibilities.case(prediction_type)
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())

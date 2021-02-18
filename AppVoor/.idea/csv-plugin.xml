@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\setup.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\tests\help_test.py">
           <value>
             <Attribute>
