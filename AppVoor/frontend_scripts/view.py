@@ -2,7 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow
 
 from jsonInfo.help import HelpMessage
-from pop_up import PopUp, InfoPopUp
+from frontend_scripts.pop_up import PopUp, InfoPopUp
 
 
 class Window(QMainWindow):

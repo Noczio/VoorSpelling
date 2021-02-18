@@ -6,7 +6,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import LinearSVC, SVC, LinearSVR, SVR
 
-from switcher import Switch
+from backend_scripts.switcher import Switch
 
 
 class EstimatorPossibilities(Switch):

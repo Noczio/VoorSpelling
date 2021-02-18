@@ -7,21 +7,21 @@ from PyQt5.QtCore import QRect, QThreadPool, QThread
 from PyQt5.QtGui import QFont, QTextCursor
 from PyQt5.QtWidgets import QApplication
 
-from auto_ml import JarAutoML, AutoExecutioner
-from estimator_creation import EstimatorCreator
-from feature_selection import FeatureSelectorCreator
-from global_vars import GlobalVariables
+from backend_scripts.auto_ml import JarAutoML, AutoExecutioner
+from backend_scripts.estimator_creation import EstimatorCreator
+from backend_scripts.feature_selection import FeatureSelectorCreator
+from backend_scripts.global_vars import GlobalVariables
 from jsonInfo.welcome import WelcomeMessenger
-from load_data import LoaderCreator
-from model_creation import SBSModelCreator
-from modified_widgets import QDragAndDropButton, QLoadButton
-from parallel import LongWorker, EmittingStream
-from parameter_search import ParameterSearchCreator
-from parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
-from pop_up import PopUp, WarningPopUp, CriticalPopUp
-from result_creation import FCreator, SBSResult
-from switcher import Switch
-from view import Window
+from backend_scripts.load_data import LoaderCreator
+from backend_scripts.model_creation import SBSModelCreator
+from frontend_scripts.modified_widgets import QDragAndDropButton, QLoadButton
+from frontend_scripts.parallel import LongWorker, EmittingStream
+from backend_scripts.parameter_search import ParameterSearchCreator
+from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
+from frontend_scripts.pop_up import PopUp, WarningPopUp, CriticalPopUp
+from backend_scripts.result_creation import FCreator, SBSResult
+from backend_scripts.switcher import Switch
+from frontend_scripts.view import Window
 from forms import resources
 
 DataFrame = pd.DataFrame
@@ -96,13 +96,13 @@ class EstimatorParametersPossibilities(Switch):
 
 class HomeWindow(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_next.clicked.connect(self.next)
         self.on_load()
 
     def on_load(self):
-        messenger = WelcomeMessenger(file_path=".\\jsonInfo\\welcomeMessage.json")
+        messenger = WelcomeMessenger(file_path="./jsonInfo/welcomeMessage.json")
         text = str(messenger)
         self.lbl_description.setText(text)
 
@@ -122,8 +122,8 @@ class HomeWindow(Window):
 
 class DataSetWindow(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.file_type: str = "CSV"
         self.last: str = "any"
         self.critical_pop_up: PopUp = CriticalPopUp()
@@ -276,8 +276,8 @@ class DataSetWindow(Window):
 
 class MLTypeWindow(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_automl.clicked.connect(lambda: self.useful_info_pop_up("auto_machine_learning"))
@@ -318,8 +318,8 @@ class MLTypeWindow(Window):
 
 class AutoLoad(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         sys.stdout = EmittingStream(textWritten=self.add_info)
 
         self.lbl_cancel.mouseReleaseEvent = self.cancel_training
@@ -346,7 +346,8 @@ class AutoLoad(Window):
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
-        QThread.sleep(3)
+
+        QThread.sleep(1)
         go_next()
 
     def back(self):
@@ -359,12 +360,13 @@ class AutoLoad(Window):
     def train_model(self) -> None:
         automl_ml = JarAutoML(10, False, 5000)
         model = AutoExecutioner(automl_ml)
-        self.add_info(str(model)+"\n\n")
+        self.add_info(str(model) + "\n\n")
         data_frame = global_var.data_frame
         model.train_model(data_frame)
 
     def cancel_training(self, event) -> None:
         """Show a Warning pop up and then if user wants to finished the app, close it"""
+
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Cancelar entrenamiento"
@@ -381,6 +383,7 @@ class AutoLoad(Window):
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
+
         def write_error():
             for i in info:
                 self.add_info(i)
@@ -422,8 +425,8 @@ class AutoLoad(Window):
 
 class StepByStepLoad(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         sys.stdout = EmittingStream(textWritten=self.add_info)
 
         self.lbl_cancel.mouseReleaseEvent = self.cancel_training
@@ -451,7 +454,7 @@ class StepByStepLoad(Window):
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
-        QThread.sleep(3)
+        QThread.sleep(1)
         go_next()
 
     def back(self):
@@ -567,8 +570,8 @@ class StepByStepLoad(Window):
 
 class PredictionType(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_Classification.clicked.connect(lambda: self.useful_info_pop_up("classification"))
@@ -596,8 +599,8 @@ class PredictionType(Window):
 
 class ClassificationSelection(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_KNN.clicked.connect(lambda: self.useful_info_pop_up("knn"))
@@ -628,8 +631,8 @@ class ClassificationSelection(Window):
 
 class RegressionSelection(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_Lasso.clicked.connect(lambda: self.useful_info_pop_up("lasso"))
@@ -660,8 +663,8 @@ class RegressionSelection(Window):
 
 class ClusteringSelection(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_Affinity_Propagation.clicked.connect(lambda: self.useful_info_pop_up("affinity_propagation"))
@@ -692,8 +695,8 @@ class ClusteringSelection(Window):
 
 class WantFeatureSelection(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_FSM.clicked.connect(lambda: self.useful_info_pop_up("feature_selection"))
@@ -716,8 +719,9 @@ class WantFeatureSelection(Window):
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("prediction_type", estimator=None)
-        last_form = MLTypeWindow(ui_window["model"])
+        global_var.reset("uses_feature_selection", "estimator")
+        prediction_type = global_var.prediction_type
+        last_form = PredictionTypePossibilities.case(prediction_type)
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -725,8 +729,8 @@ class WantFeatureSelection(Window):
 
 class FeatureSelectionMethod(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_FS.clicked.connect(lambda: self.useful_info_pop_up("forward_feature_selection"))
@@ -753,8 +757,8 @@ class FeatureSelectionMethod(Window):
 
 class WantHyperparameterSearch(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_Search_Hiperparameters.clicked.connect(lambda: self.useful_info_pop_up("parameter_search"))
@@ -788,8 +792,8 @@ class WantHyperparameterSearch(Window):
 
 class HyperparameterMethod(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_Bayesian_Search.clicked.connect(lambda: self.handle_input("Bayesian"))
@@ -839,8 +843,8 @@ class HyperparameterMethod(Window):
 
 class FinalResult(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.lbl_home.mouseReleaseEvent = self.back
 
     def back(self, event) -> None:
@@ -854,8 +858,8 @@ class FinalResult(Window):
 
 class AffinityPropagationParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_convergencia.clicked.connect(lambda: self.useful_info_pop_up("APROPAGATION_convergencia"))
@@ -866,7 +870,6 @@ class AffinityPropagationParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -897,8 +900,8 @@ class AffinityPropagationParameters(Window):
 
 class GaussianNBParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_variable_refinamiento.clicked.connect(lambda: self.useful_info_pop_up("GNB_refinamiento"))
@@ -906,7 +909,6 @@ class GaussianNBParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -934,8 +936,8 @@ class GaussianNBParameters(Window):
 
 class KMeansParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_clusters.clicked.connect(lambda: self.useful_info_pop_up("KMEANS_n_clusters"))
@@ -946,7 +948,6 @@ class KMeansParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -978,8 +979,8 @@ class KMeansParameters(Window):
 
 class KNeighborsClassifierParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_numero_vecinos.clicked.connect(lambda: self.useful_info_pop_up("KNN_n_vecinos"))
@@ -990,7 +991,6 @@ class KNeighborsClassifierParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1022,8 +1022,8 @@ class KNeighborsClassifierParameters(Window):
 
 class LassoParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_alfa.clicked.connect(lambda: self.useful_info_pop_up("LASSO_alfa"))
@@ -1034,7 +1034,6 @@ class LassoParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1066,8 +1065,8 @@ class LassoParameters(Window):
 
 class LinearSVCParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_parametro_regularizacion.clicked.connect(lambda: self.useful_info_pop_up("LSVC_C"))
@@ -1078,7 +1077,6 @@ class LinearSVCParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1110,8 +1108,8 @@ class LinearSVCParameters(Window):
 
 class LinearSVRParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_parametro_regularizacion.clicked.connect(lambda: self.useful_info_pop_up("LSVR_C"))
@@ -1122,7 +1120,6 @@ class LinearSVRParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1154,8 +1151,8 @@ class LinearSVRParameters(Window):
 
 class MeanShiftParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_ancho_banda.clicked.connect(lambda: self.useful_info_pop_up("MEANSHIFT_ancho_banda"))
@@ -1168,7 +1165,6 @@ class MeanShiftParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1200,8 +1196,8 @@ class MeanShiftParameters(Window):
 
 class MiniBatchKMeansParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_clusters.clicked.connect(lambda: self.useful_info_pop_up("MINIKMEANS_n_clusters"))
@@ -1212,7 +1208,6 @@ class MiniBatchKMeansParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1244,8 +1239,8 @@ class MiniBatchKMeansParameters(Window):
 
 class SGDClassifierParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_alfa.clicked.connect(lambda: self.useful_info_pop_up("SGD_alfa"))
@@ -1256,7 +1251,6 @@ class SGDClassifierParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1288,8 +1282,8 @@ class SGDClassifierParameters(Window):
 
 class SVCParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_parametro_regularizacion.clicked.connect(lambda: self.useful_info_pop_up("SVC_C"))
@@ -1300,7 +1294,6 @@ class SVCParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1332,8 +1325,8 @@ class SVCParameters(Window):
 
 class SVRParameters(Window):
 
-    def __init__(self, window: str, help_message_path: str = ".\\jsonInfo\\helpMessage.json") -> None:
-        super().__init__(window, help_message_path)
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
         self.btn_back.clicked.connect(self.back)
 
         self.btn_info_parametro_regularizacion.clicked.connect(lambda: self.useful_info_pop_up("SVR_C"))
@@ -1344,7 +1337,6 @@ class SVRParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-
         def show_last_warning() -> bool:
             pop_up: PopUp = WarningPopUp()
             title = "Listo para entrenar"
@@ -1410,6 +1402,9 @@ if __name__ == "__main__":
                  "MiniBatchKMeans": ".\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
                  "MeanShift": ".\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
                  }
+    # initialize qt resources
+    resources.qInitResources()
+    # create an app and widget variable to control app logic
     app = QApplication(sys.argv)
     widget = QtWidgets.QStackedWidget()
     # by default first form is home

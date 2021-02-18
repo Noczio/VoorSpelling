@@ -1,10 +1,10 @@
 import unittest
 
-from estimator_creation import EstimatorCreator
-from load_data import LoaderCreator
-from parameter_search import ParameterSearchCreator
-from parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
-from split_data import SplitterReturner
+from backend_scripts.estimator_creation import EstimatorCreator
+from backend_scripts.load_data import LoaderCreator
+from backend_scripts.parameter_search import ParameterSearchCreator
+from backend_scripts.parameter_search import BayesianSearchParametersPossibilities
+from backend_scripts.split_data import SplitterReturner
 
 import numpy as np
 

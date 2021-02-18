@@ -6,8 +6,9 @@ Download this project a zip or clone it. Once all directories are on your system
 
 1. Install Visual Studio build tools (core libraries linked to mljar-supervised algorithm)
 2. Install Python 3.7
-3. Open cmd in the root directory and install all requirements listed (pip install -r requirements.txt)
-4. Finally, run app.py in your IDE
+3. Create a new virtual environment and activate it (optional step)
+3. Open cmd in the root directory and install all requirements listed in the requirements file (pip install -r requirements.txt)
+4. Finally, run app.py in your IDE or execute from the console (if venv was created it must be activated)
 
 ## Notes
 

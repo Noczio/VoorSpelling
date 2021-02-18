@@ -2,9 +2,9 @@ import unittest
 
 import pandas as pd
 
-from is_data import DataEnsurer
+from backend_scripts.is_data import DataEnsurer
 from jsonInfo.welcome import WelcomeMessage
-from load_data import LoaderCreator
+from backend_scripts.load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):

@@ -5,12 +5,12 @@ import numpy as np
 import pandas as pd
 from sklearn.base import clone
 
-from feature_selection import FeatureSelection
-from is_data import DataEnsurer
-from parameter_search import ParameterSearch
-from score import CVScore, CVModelScore
-from split_data import SplitterReturner
-from switcher import Switch
+from backend_scripts.feature_selection import FeatureSelection
+from backend_scripts.is_data import DataEnsurer
+from backend_scripts.parameter_search import ParameterSearch
+from backend_scripts.score import CVScore, CVModelScore
+from backend_scripts.split_data import SplitterReturner
+from backend_scripts.switcher import Switch
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray

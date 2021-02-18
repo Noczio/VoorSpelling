@@ -1,7 +1,7 @@
 import unittest
 
-from auto_ml import JarAutoML, AutoExecutioner
-from load_data import LoaderCreator
+from backend_scripts.auto_ml import JarAutoML, AutoExecutioner
+from backend_scripts.load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):
