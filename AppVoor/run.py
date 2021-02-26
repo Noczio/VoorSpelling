@@ -102,6 +102,7 @@ class HomeWindow(Window):
         self.on_load()
 
     def on_load(self):
+        super(HomeWindow, self).on_load()
         messenger = WelcomeMessenger(file_path="./jsonInfo/welcomeMessage.json")
         text = str(messenger)
         self.lbl_description.setText(text)
@@ -144,6 +145,7 @@ class DataSetWindow(Window):
         self.btn_next.clicked.connect(self.handle_file)
 
     def on_load(self):
+        super(DataSetWindow, self).on_load()
         # by default is CSV, so tsv button should not be visible
         self.btn_tsv.hide()
         # file buttons set geometry and style
@@ -1406,6 +1408,7 @@ if __name__ == "__main__":
     resources.qInitResources()
     # create an app and widget variable to control app logic
     app = QApplication(sys.argv)
+    app.setApplicationName("Voorspelling")
     widget = QtWidgets.QStackedWidget()
     # by default first form is home
     home_window = HomeWindow(ui_window["home"])

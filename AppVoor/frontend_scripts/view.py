@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow
 
 from jsonInfo.help import HelpMessage
 from frontend_scripts.pop_up import PopUp, InfoPopUp
+from version import __version__ as version
 
 
 class Window(QMainWindow):
@@ -42,5 +43,10 @@ class Window(QMainWindow):
         pass
 
     def on_load(self) -> None:
-        """Additional behaviour on load. This can be added to the main logic or not"""
-        pass
+        """Additional behaviour on load"""
+        if hasattr(self, "lbl_left_4"):
+            info = f"Version {version}\nLicencia BSD 3"
+            self.lbl_left_4.setText(info)
+
+
+

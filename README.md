@@ -4,11 +4,13 @@ Download this project a zip or clone it. Once all directories are on your system
 
 ## Run program from source code
 
-1. Install Visual Studio build tools (core libraries linked to mljar-supervised algorithm)
-2. Install Python 3.7
-3. Create a new virtual environment and activate it (optional step)
-3. Open cmd in the root directory and install all requirements listed in the requirements file (pip install -r requirements.txt)
-4. Finally, run app.py in your IDE or execute from the console (if venv was created it must be activated)
+1. First download application from the respository
+2. Open powersheel with admind privileges and then change the Execution Policy (Set-ExecutionPolicy RemoteSigned)
+3. Install Visual Studio build tools (core libraries linked to mljar-supervised algorithm)
+4. Install Python 3.7
+5. Create a new virtual environment and activate it (python -m venv voorvenv). This step is optional
+6. Open cmd in the root directory and install all requirements listed in the requirements file (pip install -r requirements.txt)
+7. Finally, run the script run.py in your console (if a venv was created it must be activated beforehand and then write in the console: python run.py)
 
 ## Notes
 
