@@ -222,7 +222,7 @@ Licencia BSD 3</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>PASO 7 - Ingreso manual - Gaussian Naive bayes</string>
+      <string>PASO 7 - Ingreso manual - Gaussian Naive Bayes</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
