@@ -13,6 +13,7 @@ class Window(QMainWindow):
         super().__init__()
         uic.loadUi(window, self)
         self._help_message = HelpMessage(file_path=help_message_path)
+        self.on_load()
 
     def useful_info_pop_up(self, key: str) -> None:
         """Show useful info in a pop. A form may use this or not"""
@@ -47,6 +48,3 @@ class Window(QMainWindow):
         if hasattr(self, "lbl_left_4"):
             info = f"Version {version}\nLicencia BSD 3"
             self.lbl_left_4.setText(info)
-
-
-

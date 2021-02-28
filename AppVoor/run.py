@@ -99,7 +99,6 @@ class HomeWindow(Window):
     def __init__(self, window: str) -> None:
         super().__init__(window)
         self.btn_next.clicked.connect(self.next)
-        self.on_load()
 
     def on_load(self):
         super(HomeWindow, self).on_load()
@@ -131,7 +130,7 @@ class DataSetWindow(Window):
 
         self.btn_drag_file = QDragAndDropButton(self.main_area)
         self.btn_load_file = QLoadButton(self.main_area)
-        self.on_load()
+        self.set_load_and_drag_buttons()
 
         self.btn_back.clicked.connect(self.back)
         self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
@@ -144,8 +143,7 @@ class DataSetWindow(Window):
         self.btn_drag_file.loaded.connect(lambda: self.set_last_emitted("drag_file"))
         self.btn_next.clicked.connect(self.handle_file)
 
-    def on_load(self):
-        super(DataSetWindow, self).on_load()
+    def set_load_and_drag_buttons(self):
         # by default is CSV, so tsv button should not be visible
         self.btn_tsv.hide()
         # file buttons set geometry and style

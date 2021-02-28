@@ -4,7 +4,7 @@ Download this project a zip or clone it. Once all directories are on your system
 
 ## Run program from source code
 
-1. First download application from the respository
+1. First, download as a zip/rar or clone the app from the respository
 2. Open powersheel with admind privileges and then change the Execution Policy (Set-ExecutionPolicy RemoteSigned)
 3. Install Visual Studio build tools (core libraries linked to mljar-supervised algorithm)
 4. Install Python 3.7
@@ -22,5 +22,5 @@ Download this project a zip or clone it. Once all directories are on your system
 
 1. User interface remake
 2. English interface version
-3. 32 bit version for Windows
+3. Executable version
 4. Support for Mac and Linux
