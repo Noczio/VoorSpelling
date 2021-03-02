@@ -3,8 +3,8 @@ import sys
 import numpy as np
 import pandas as pd
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QRect, QThreadPool, QThread
-from PyQt5.QtGui import QFont, QTextCursor
+from PyQt5.QtCore import QRect, QThreadPool, QThread, QSize
+from PyQt5.QtGui import QFont, QTextCursor, QIcon
 from PyQt5.QtWidgets import QApplication
 
 from backend_scripts.auto_ml import JarAutoML, AutoExecutioner
@@ -1406,7 +1406,17 @@ if __name__ == "__main__":
     resources.qInitResources()
     # create an app and widget variable to control app logic
     app = QApplication(sys.argv)
+    # set app name for all views
     app.setApplicationName("Voorspelling")
+    # then change app's icon. There's different sizes if needed
+    app_icon = QIcon()
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_16px.ico', QSize(16, 16))
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_32x.ico', QSize(32, 32))
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_48px.ico', QSize(48, 48))
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_54px.ico', QSize(64, 64))
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_256px.ico', QSize(256, 256))
+    app.setWindowIcon(app_icon)
+    # QStackedWidget object to control app's views
     widget = QtWidgets.QStackedWidget()
     # by default first form is home
     home_window = HomeWindow(ui_window["home"])
