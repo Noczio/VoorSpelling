@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow
 
 from jsonInfo.help import HelpMessage
 from frontend_scripts.pop_up import PopUp, InfoPopUp
+from version import __version__ as version
 
 
 class Window(QMainWindow):
@@ -12,6 +13,7 @@ class Window(QMainWindow):
         super().__init__()
         uic.loadUi(window, self)
         self._help_message = HelpMessage(file_path=help_message_path)
+        self.on_load()
 
     def useful_info_pop_up(self, key: str) -> None:
         """Show useful info in a pop. A form may use this or not"""
@@ -42,5 +44,7 @@ class Window(QMainWindow):
         pass
 
     def on_load(self) -> None:
-        """Additional behaviour on load. This can be added to the main logic or not"""
-        pass
+        """Additional behaviour on load"""
+        if hasattr(self, "lbl_left_4"):
+            info = f"Version {version}\nLicencia BSD 3"
+            self.lbl_left_4.setText(info)

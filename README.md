@@ -1,14 +1,17 @@
 # VoorSpelling, Machine Learning Desktop App
 
-Download this project a zip or clone it. Once all directories are on your system follow the instructions.
+## How to install and run app
 
-## Run program from source code
+1. First, download as a zip/rar or clone the app from the respository
+2. Open powersheel with admind privileges and then change the Execution Policy (Set-ExecutionPolicy RemoteSigned)
+3. Install Visual Studio build tools (core libraries linked to mljar-supervised algorithm)
+4. Install Python 3.7
+5. Create a new virtual environment and activate it (python -m venv voorvenv). This step is optional
+6. Open cmd in the root directory and install all requirements listed in the requirements file (pip install -r requirements.txt)
+7. Finally, run the script run.py in your console (if a venv was created it must be activated beforehand and then write in the console: python run.py)
 
-1. Install Visual Studio build tools (core libraries linked to mljar-supervised algorithm)
-2. Install Python 3.7
-3. Create a new virtual environment and activate it (optional step)
-3. Open cmd in the root directory and install all requirements listed in the requirements file (pip install -r requirements.txt)
-4. Finally, run app.py in your IDE or execute from the console (if venv was created it must be activated)
+Something went wrong? follow our video installation guide: https://youtu.be/GgfnH1oH9_g
+Turn on subtitles for non Spanish speakers
 
 ## Notes
 
@@ -18,7 +21,7 @@ Download this project a zip or clone it. Once all directories are on your system
 
 ## Future improvements
 
-1. User interface remake
+1. User interface remake. sub 1080p resolutions and improvements
 2. English interface version
-3. 32 bit version for Windows
+3. Executable version
 4. Support for Mac and Linux

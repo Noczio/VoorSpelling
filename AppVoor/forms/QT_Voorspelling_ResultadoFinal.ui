@@ -310,7 +310,7 @@ https://github.com/Noczio/VoorSpelling</string>
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>24</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>

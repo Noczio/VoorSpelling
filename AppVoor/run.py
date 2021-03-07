@@ -3,8 +3,8 @@ import sys
 import numpy as np
 import pandas as pd
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QRect, QThreadPool, QThread
-from PyQt5.QtGui import QFont, QTextCursor
+from PyQt5.QtCore import QRect, QThreadPool, QThread, QSize
+from PyQt5.QtGui import QFont, QTextCursor, QIcon
 from PyQt5.QtWidgets import QApplication
 
 from backend_scripts.auto_ml import JarAutoML, AutoExecutioner
@@ -99,9 +99,9 @@ class HomeWindow(Window):
     def __init__(self, window: str) -> None:
         super().__init__(window)
         self.btn_next.clicked.connect(self.next)
-        self.on_load()
 
     def on_load(self):
+        super(HomeWindow, self).on_load()
         messenger = WelcomeMessenger(file_path="./jsonInfo/welcomeMessage.json")
         text = str(messenger)
         self.lbl_description.setText(text)
@@ -130,7 +130,7 @@ class DataSetWindow(Window):
 
         self.btn_drag_file = QDragAndDropButton(self.main_area)
         self.btn_load_file = QLoadButton(self.main_area)
-        self.on_load()
+        self.set_load_and_drag_buttons()
 
         self.btn_back.clicked.connect(self.back)
         self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
@@ -143,7 +143,7 @@ class DataSetWindow(Window):
         self.btn_drag_file.loaded.connect(lambda: self.set_last_emitted("drag_file"))
         self.btn_next.clicked.connect(self.handle_file)
 
-    def on_load(self):
+    def set_load_and_drag_buttons(self):
         # by default is CSV, so tsv button should not be visible
         self.btn_tsv.hide()
         # file buttons set geometry and style
@@ -1406,6 +1406,17 @@ if __name__ == "__main__":
     resources.qInitResources()
     # create an app and widget variable to control app logic
     app = QApplication(sys.argv)
+    # set app name for all views
+    app.setApplicationName("Voorspelling")
+    # then change app's icon. There's different sizes if needed
+    app_icon = QIcon()
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_16px.ico', QSize(16, 16))
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_32x.ico', QSize(32, 32))
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_48px.ico', QSize(48, 48))
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_54px.ico', QSize(64, 64))
+    app_icon.addFile('.\\icos\\voorspelling_logo_ico_256px.ico', QSize(256, 256))
+    app.setWindowIcon(app_icon)
+    # QStackedWidget object to control app's views
     widget = QtWidgets.QStackedWidget()
     # by default first form is home
     home_window = HomeWindow(ui_window["home"])

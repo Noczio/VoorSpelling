@@ -192,9 +192,15 @@ Licencia BSD 3</string>
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1440</width>
+      <width>1900</width>
       <height>150</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(143, 136, 224);</string>

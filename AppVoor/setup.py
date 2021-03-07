@@ -1,8 +1,9 @@
 from setuptools import setup
+from version import __version__ as app_version
 
 setup(
     name='Voorspelling',
-    version='1.05',
+    version=app_version,
     packages=[''],
     url='https://github.com/Noczio/VoorSpelling',
     license='BSD 3-Clause',
