@@ -1,8 +1,6 @@
 # VoorSpelling, Machine Learning Desktop App
 
-Download this project a zip or clone it. Once all directories are on your system follow the instructions.
-
-## Run program from source code
+## How to install and run app
 
 1. First, download as a zip/rar or clone the app from the respository
 2. Open powersheel with admind privileges and then change the Execution Policy (Set-ExecutionPolicy RemoteSigned)
@@ -12,6 +10,9 @@ Download this project a zip or clone it. Once all directories are on your system
 6. Open cmd in the root directory and install all requirements listed in the requirements file (pip install -r requirements.txt)
 7. Finally, run the script run.py in your console (if a venv was created it must be activated beforehand and then write in the console: python run.py)
 
+Something went wrong? follow our video installation guide: https://youtu.be/GgfnH1oH9_g
+Turn on subtitles for non Spanish speakers
+
 ## Notes
 
 - Voorspelling (VS) in made in Spanish and for Windows x64 (English version coming up in late 2021).
@@ -20,7 +21,7 @@ Download this project a zip or clone it. Once all directories are on your system
 
 ## Future improvements
 
-1. User interface remake
+1. User interface remake. sub 1080p resolutions and improvements
 2. English interface version
 3. Executable version
 4. Support for Mac and Linux

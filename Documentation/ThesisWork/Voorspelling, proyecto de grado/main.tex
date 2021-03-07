@@ -6,6 +6,7 @@
 
 % figures path
 \graphicspath{{images/}}
+\usepackage{pdfpages}
 
 % figures doublespace
 \captionsetup{skip=0pt, font=doublespacing}
@@ -136,7 +137,7 @@
 \input{chapters/metodología}
 
 \clearpage
-\section{Conclusión}
+\section{Conclusiones}
 \input{chapters/resultados}
 
 \clearpage
@@ -145,13 +146,14 @@
 
 \appendix
 
-\section{Vista de estimadores disponibles}
-\input{appendix/apendix estimadores}
-
 \section{Vista de rutas alternativas}
 \input{appendix/apendix alternas}
 
 \section{Vista para ingreso de hiperparámetros}
 \input{appendix/apendix parametros a mano}
+
+\section{Documentación}
+\input{appendix/apendix formatos documentación}
+
 
 \end{document}
