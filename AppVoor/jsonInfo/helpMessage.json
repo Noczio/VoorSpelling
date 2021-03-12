@@ -1,14 +1,14 @@
 {
   "file_separation": {
     "title": "Extensión y separación de archivo",
-    "body": "Independientemente de la extensión del archivo ya sea csv, tsv o txt, lo más importante es como está separada la información internamente. Esta información puede estar separada por coma (csv), tabulación (tsv) e incluso en algúnos casos por punto y coma.",
-    "example": "Si la información está separada de esta forma: nombre, edad, género, altura. Entonces el archivo está separado por comas (csv), mientras que si la información está separada de esta forma: nombre edad  género  altura. Entonces el archivo está separado por tabulación (tsv)",
+    "body": "Independientemente de la extensión del archivo, lo más importante es como está separada la información internamente. Esta información puede estar separada por coma (csv), tabulación (tsv) e incluso en algúnos casos por punto y coma.",
+    "example": "Archivo csv (separado por comas) la información se vería así:\nnombre, edad, género, altura\nPepito, 20, M, 1.60\nJuanita, 18, F, 1.50\n\nArchivo tsv (separado por tabulación) la información se vería así:\nNombre\tedad\tgénero\taltura\nPepito\t20\tM\t1.60\nJuanita\t18\tF\t1.50\n",
     "url": ""
   },
   "step_by_step": {
     "title": "Aprendizaje paso a paso",
     "body": "Este tipo de aprendizaje es normalmente utilizado para crear un modelo de inteligencia artificial. Se puede elegir entre clasificación, regresión y agrupamiento dependiendo del tipo de datos y la predicción requerida.",
-    "example": "Si se elige este proceso se puede elegir el tipo de predicción, estimador, proceso de selección de características y parametros. Por ejemplo: clasififación, knn, forward feature selection y k=10",
+    "example": "Si se elige este proceso se puede elegir el tipo de predicción, estimador, proceso de selección de características y parámetros. Por ejemplo: clasififación, knn, forward feature selection y k=10.",
     "url": ""
   },
   "auto_machine_learning": {
@@ -26,13 +26,13 @@
   "regression": {
     "title": "Regresión",
     "body": "En este tipo de predicción el resultado se calcula a partir de un modelo que minimice la función de pérdida. Dado que la salida de estos algoritmos es un número, la regresión puede ser empleada tanto en problemas para clasificar clases, como estimar cantidad numéricas.",
-    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar la calidad de un producto como una cantidad numérica de 0 a 10. Si esas características cumplen con ciertas condiciones, el producto puede obtener un 5.7 o 9.3; aunque si es de mala calidad entonces recivirá un 0",
+    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar la calidad de un producto como una cantidad numérica de 0 a 10. Si esas características cumplen con ciertas condiciones, el producto puede obtener un 5.7 o 9.3; aunque si es de mala calidad entonces recibirá un 0.",
     "url": ""
   },
   "clustering": {
     "title": "Agrupamiento",
     "body": "A este tipo de algoritmos se les conoce en inglés como Clustering. Su principal objetivo es entrenar un algoritmo para generar las agrupaciones deseadas, dado un conjunto de datos con sus respectivos datos históricos.",
-    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar el grupo al que debe pertener una molécula. Si esas características cumplen con ciertas condición, entonces la muestra puede ser agrupada como A, B, C ,D o E.",
+    "example": "De acuerdo a un conjunto de características y datos históricos se puede estimar el grupo al que puede pertener una molécula. Si esas características cumplen con ciertas condiciónes, entonces la muestra puede ser agrupada como A, B, C ,D o E.",
     "url": ""
   },
   "knn": {
@@ -49,7 +49,7 @@
   },
   "svc_rbf": {
     "title": "Estimador: SVC",
-    "body": "La implementación de este estimador esta basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación. Existen otros kernel, pero por defecto rbf es el más utilizado",
+    "body": "La implementación de este estimador está basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento se incrementa hasta el orden cuadrático cuando el número de muestras supera las diez mil unidades, por lo tanto es recomendable usar otras opciones si se presenta tal situación. Existen otros kernel, pero por defecto rbf es el más utilizado.",
     "example": "estimator = SVC()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html"
   },
@@ -67,19 +67,19 @@
   },
   "linear_svr": {
     "title": "Estimador: LinearSVR",
-    "body": "Similar a SVR con kernel igual a lineal, pero implementado en términos de liblinear en vez de lbsvm. Permite mayor flexibilidad en la selección de penalizaciones y perdidas de función, y además escala mejor para grandes cantidades de muestras.",
+    "body": "Similar a SVR con kernel igual a lineal, pero implementado en términos de liblinear en vez de lbsvm. Permite mayor flexibilidad en la selección de penalizaciones y pérdidas de función, y además escala mejor para grandes cantidades de muestras.",
     "example": "estimator = LinearSVR()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVR.html"
   },
   "svr_rbf": {
     "title": "Estimador: SVR",
-    "body": "Los parámetros más importantes en el estimador son C y epsilon. La implementación es basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades. Existen otros kernel, pero por defecto rbf es el más utilizado",
+    "body": "Los parámetros más importantes en el estimador son C y epsilon. La implementación es basada en libsvm con kernel igual a rbf. El tiempo de entrenamiento supera el orden cuadrático, de manera que es difícil trabajar con este modelo cuando el número de muestras supera las diez mil unidades. Existen otros kernel, pero por defecto rbf es el más utilizado.",
     "example": "estimator = SVR()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html"
   },
   "sgd": {
     "title": "Estimador: Stochastic Gradient Descent (SGD)",
-    "body": "Este estimador implementa modelos lineales regulados con un gradiente aleatorio de aprendizaje en descenso. El gradiente de las pérdidas se estima en cada muestra a la vez que modelo se actualiza en paralelo con la curva de aprendizaje.",
+    "body": "Este estimador implementa modelos lineales regulados con un gradiente aleatoria de aprendizaje en descenso. El gradiente de las pérdidas se estima en cada muestra a la vez que el modelo se actualiza en paralelo con la curva de aprendizaje.",
     "example": "estimator = SGDClassifier()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html"
   },
@@ -103,13 +103,13 @@
   },
   "kmeans": {
     "title": "Estimador: Kmeans",
-    "body": "Este algoritmo agrupa información tratando de separar muestras en un numero de grupos equivalente a la varianza, minimizando un criterio conocido como la inercia o suma de los cuadrados dentro de un grupo. Kmeans requiere un número de grupos especificados desde el inicio, aunque trabaja correctamente para un gran número de muestras, a diferencia de otros modelos.",
+    "body": "Este algoritmo agrupa información tratando de separar muestras en un número de grupos equivalente a la varianza, minimizando un criterio conocido como la inercia o suma de los cuadrados dentro de un grupo. Kmeans requiere un número de grupos especificados desde el inicio, aunque trabaja correctamente para un gran número de muestras, a diferencia de otros modelos.",
     "example": "estimator = KMeans()\nestimator.fit(X,y)\nprediction = estimator.predict(X_test)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html"
   },
   "feature_selection": {
     "title": "Modelo con reducción de dimensionalidad",
-    "body": "Para conjuntos de datos con varias dimensiones, la reducción de dimensionalidad se ejecuta antes de aplicar los algoritmos de Aprendizaje de Máquina, con el propósito de evitar los problemas relacionados a la maldición de la dimensionalidad. Existen diferentes tipos de métodos con los cuales se aborda el problema de la reducción de la dimensionalidad, sin embargo, os más utilizados son los métodos de filtrado y envolventes.",
+    "body": "Para conjuntos de datos con varias dimensiones, la reducción de dimensionalidad se ejecuta antes de aplicar los algoritmos de Aprendizaje de Máquina, con el propósito de evitar los problemas relacionados a la maldición de la dimensionalidad. Existen diferentes tipos de métodos con los cuales se aborda este problema, sin embargo, los más utilizados son los métodos de filtrado y envolventes.",
     "example": "Características iniciales: nombre, edad, peso, altura, género, salario, experiencia\n\nCaracterísticas finales: edad, peso, altura, género",
     "url": "https://github.com/Noczio/VoorSpelling/blob/master/AppVoor/feature_selection.py"
   },
@@ -122,25 +122,25 @@
   "parameter_search": {
     "title": "Búsqueda de hiperparámetros",
     "body": "Los hiperparámetros son de gran importancia en el Aprendizaje de Máquina, dado que se encargan de cambiar el comportamiento de los algoritmos cuando entrenan el modelo. Las dos más utilizadas son la búsqueda bayesiana y la búsqueda exhaustiva; aunque en algúnos casos también se opta por búsqueda aleatoria.",
-    "example": "Si se quiere evaluar el hiperparámetro C para el estimador SVR entre los valores de 1 a 20, entonces utilizando una búsqueda de hiperparámetros (bayesiana, exhaustiva o aleatoría) el resultado despues de ejecutar el algoritmo es por ejemplo: C = 9",
+    "example": "Si se quiere evaluar el hiperparámetro C para el estimador SVR entre los valores de 1 a 20, entonces utilizando una búsqueda de hiperparámetros (bayesiana, exhaustiva o aleatoria) el resultado despues de ejecutar el algoritmo es por ejemplo: C = 9.",
     "url": "https://github.com/Noczio/VoorSpelling/blob/master/AppVoor/parameter_search.py"
   },
   "manually_set_parameters": {
     "title": "Ingreso manual de hiperparámetros",
-    "body": "Una vez ya se conocen los hiperparámetros que optimizan el rendimiento, ingreasarlos uno por uno no representa ningún problema. Sin embargo, si no se conocen, obtener un buen rendimiento es cuestión del azar.",
+    "body": "Una vez ya se conocen los hiperparámetros que optimizan el rendimiento, ingresarlos uno por uno no representa ningún problema. Sin embargo, si no se conocen, obtener un buen rendimiento es cuestión del azar.",
     "example": "parameters = {'C': 3, 'gamma': 'auto', 'random_state': 0, 'tol': 0.51}\nestimator = SVC()\nestimator.set_params(**parameters)",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html"
   },
   "forward_feature_selection": {
     "title": "Selección de características en ascenso",
-    "body": "En inglés se conoce como forward feature selection. Este algoritmo evalua el rendimiento del modelo en primera instancia individualmente por cada característica, luego extrae aquella que obtuvo el mejor resultado y se continua el proceso. Las siguientes iteraciones ya no evaluan el rendimiento de una sola característica, sino que extrae como mejores características aquellas que combinandose con las anteriores extraidas entreguen un mejor rendimiento",
-    "example": "Conjunto inicial: nombre, edad, peso, altura\n\nPrimera iteración: nombre = 0, edad = 0.3, peso = 0.12, altura = 0.4; ganador altura\n\nSegunda iteración: altura y nombre = 0.4, altura y edad = 0.42, altura y peso = 0.37; ganador altura y edad\n\nEl proceso continua hasta que el rendimiento no mejore con respecto a la anterior iteración.",
+    "body": "En inglés se conoce como forward feature selection. Este algoritmo evalúa el rendimiento del modelo en primera instancia individualmente por cada característica, luego extrae aquella que obtuvo el mejor resultado y se continúa el proceso. Las siguientes iteraciones ya no evalúan el rendimiento de una sola característica, sino que extrae como mejores características aquellas que combinándose con las anteriores extraídas entreguen un mejor rendimiento",
+    "example": "Conjunto inicial: nombre, edad, peso, altura\n\nPrimera iteración: nombre = 0, edad = 0.3, peso = 0.12, altura = 0.4; ganador altura\n\nSegunda iteración: altura y nombre = 0.4, altura y edad = 0.42, altura y peso = 0.37; ganador altura y edad\n\nEl proceso continúa hasta que el rendimiento no mejore con respecto a la anterior iteración.",
     "url": ""
   },
   "backwards_feature_selection": {
     "title": "Selección de características en reversa",
-    "body": "En inglés se conoce como backwards feature selection. Este algoritmo evalua el rendimiento del modelo con todas sus características y luego elimina una a una las características que al no ser utilizadas mejoran el rendimiento.",
-    "example": "Conjunto inicial: nombre, edad, peso, altura; rendimiento = 0.6\n\nPrimera iteración: edad, peso y altura; rendimiento = 0.65\n\nSegunda iteración: nombre, peso y altura; rendimiento 0.58\n\nTercera iteración: nombre, edad y altura; rendimiento = 0.45.\n\nEl mejor rendimiento se obtiene si se elimina la característica nombre, por lo tanto se continua el proceso con las características restantes hasta que no haya una mejora de rendimiento.",
+    "body": "En inglés se conoce como backwards feature selection. Este algoritmo evalúa el rendimiento del modelo con todas sus características y luego elimina una a una las características que al no ser utilizadas mejoran el rendimiento.",
+    "example": "Conjunto inicial: nombre, edad, peso, altura; rendimiento = 0.6\n\nPrimera iteración: edad, peso y altura; rendimiento = 0.65\n\nSegunda iteración: nombre, peso y altura; rendimiento 0.58\n\nTercera iteración: nombre, edad y altura; rendimiento = 0.45.\n\nEl mejor rendimiento se obtiene si se elimina la característica nombre, por lo tanto se continúa el proceso con las características restantes hasta que no haya una mejora de rendimiento.",
     "url": ""
   },
   "bayesian_search": {
@@ -151,67 +151,67 @@
   },
   "grid_search": {
     "title": "Búsqueda Exhaustiva",
-    "body": "Este tipo de búsqueda es conocida como en inglés como greedy. La búsqueda exhaustiva implica realizar una exploración utilizando todos los valores posibles dada una lista de elementos S, pero en la mayoría de casos no se busca optimizar un solo hiperparámetro, sino que se requiere realizar una búsqueda para al menos dos o más listas de valores.",
+    "body": "Este tipo de búsqueda es conocida en inglés como greedy. La búsqueda exhaustiva implica realizar una exploración utilizando todos los valores posibles dada una lista de elementos S, pero en la mayoría de casos no se busca optimizar un solo hiperparámetro, sino que se requiere realizar una búsqueda para al menos dos o más listas de valores.",
     "example": "estimator = GridSearchCV(estimator=clf, param_grid=parameters, cv=n_folds_validation)\nestimator.fit(X, y)\nbest_params = estimator.best_params_",
     "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html"
   },
   "SVR_C": {
-    "title": "Parametro de regularización",
-    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
+    "title": "Parámetro de regularización",
+    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos.",
     "example": "",
     "url": ""
   },
   "SVR_tolerancia": {
     "title": "Tolerancia",
-    "body": "Valor de aceptación para criterio de parada",
+    "body": "Valor de aceptación para criterio de parada.",
     "example": "",
     "url": ""
   },
   "SVR_epsilon": {
     "title": "Épsilon",
-    "body": "Indica el rango dentro del cual no hay penalidad asociada al entrenamiento de la función de pérdida con respecto a los valores reales",
+    "body": "Indica el rango dentro del cual no hay penalidad asociada al entrenamiento de la función de pérdida con respecto a los valores reales.",
     "example": "",
     "url": ""
   },
   "SVR_gamma": {
     "title": "Gamma",
-    "body": "Coeficiente del kernel, ya sea rbf, poly o sigmoide",
+    "body": "Coeficiente del kernel, ya sea rbf, poly o sigmoide. Scale utiliza 1 / (n_features * X.var()) como valores, mientras que auto 1 / n_features.",
     "example": "",
     "url": ""
   },
   "SVC_C": {
-    "title": "Parametro de regularización",
-    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
+    "title": "Parámetro de regularización",
+    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos.",
     "example": "",
     "url": ""
   },
   "SVC_tolerancia": {
     "title": "Tolerancia",
-    "body": "Valor de aceptación para criterio de parada",
+    "body": "Valor de aceptación para criterio de parada.",
     "example": "",
     "url": ""
   },
   "SVC_kernel": {
     "title": "Kernel",
-    "body": "Especifica el tipo de kernel que se utilizará en el algoritmo. Debe ser \"rbf\" o \"sigmoid\"",
+    "body": "Especifica el tipo de kernel que se utilizará en el algoritmo. Debe ser \"rbf\" o \"sigmoid\".",
     "example": "",
     "url": ""
   },
   "SVC_gamma": {
     "title": "Gamma",
-    "body": "Coeficiente del kernel, ya sea linear, rbf, poly o sigmoid",
+    "body": "Coeficiente del kernel, ya sea linear, rbf, poly o sigmoid. Scale utiliza 1 / (n_features * X.var()) como valores, mientras que auto 1 / n_features.",
     "example": "",
     "url": ""
   },
   "LSVR_C": {
-    "title": "Parametro de regularización",
-    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
+    "title": "Parámetro de regularización",
+    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos.",
     "example": "",
     "url": ""
   },
   "LSVR_toleracia": {
     "title": "Tolerancia",
-    "body": "Valor de aceptación para criterio de parada",
+    "body": "Valor de aceptación para criterio de parada.",
     "example": "",
     "url": ""
   },
@@ -223,79 +223,79 @@
   },
   "LSVR_epsilon": {
     "title": "Épsilon",
-    "body": "Parametro en la función de pérdida insensible a épsilon",
+    "body": "Parámetro en la función de pérdida insensible a épsilon.",
     "example": "",
     "url": ""
   },
   "LSVC_C": {
-    "title": "Parametro de regularización",
+    "title": "Parámetro de regularización",
     "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
     "example": "",
     "url": ""
   },
   "LSVC_toleracia": {
     "title": "Tolerancia",
-    "body": "Valor de aceptación para criterio de parada",
+    "body": "Valor de aceptación para criterio de parada.",
     "example": "",
     "url": ""
   },
   "LSVC_intercepto": {
     "title": "Intercepción de escalado",
-    "body": "La intersección es intercept_scaling * synthetic_feature_weight. Para disminuir el efecto de la regularización en el peso de la característica sintética (y por lo tanto en la intersección), se debe aumentar la escala de intercepción",
+    "body": "La intersección es intercept_scaling * synthetic_feature_weight. Para disminuir el efecto de la regularización en el peso de la característica sintética (y por lo tanto en la intersección), se debe aumentar la escala de intercepción.",
     "example": "",
     "url": ""
   },
   "LSVC_penalidad": {
     "title": "Penalidad",
-    "body": "Indica la norma utilizada en la penalización. \"l2\" es el estándar utilizado, mientras que \"l1\" lleva a vecotres de coef_ que son dispersos",
+    "body": "Indica la norma utilizada en la penalización. \"l2\" es el estándar utilizado, mientras que \"l1\" lleva a vecotres de coeficientes que son dispersos.",
     "example": "",
     "url": ""
   },
   "LASSO_alfa": {
     "title": "Alfa",
-    "body": "Constante que multiplica el término \"L1\". Alfa = 0 es equivalente a un mínimo cuadrado resuelto por el regresión lineal",
+    "body": "Constante que multiplica el término \"L1\". Alfa = 0 es equivalente a un mínimo cuadrado resuelto por regresión lineal.",
     "example": "",
     "url": ""
   },
   "LASSO_toleracia": {
     "title": "Tolerancia",
-    "body": "Valor de aceptación para criterio de parada",
+    "body": "Valor de aceptación para criterio de parada.",
     "example": "",
     "url": ""
   },
   "LASSO_semilla_random": {
     "title": "Semilla random",
-    "body": " Semilla del generador de números pseudoaleatorios que selecciona una característica aleatoria para actualizar",
+    "body": " Semilla del generador de números pseudoaleatorios que selecciona una característica aleatoria para actualizar.",
     "example": "",
     "url": ""
   },
   "LASSO_seleccion": {
     "title": "Selección",
-    "body": "Si se establece en \"random\", un coeficiente aleatorio se actualiza en cada iteración en lugar de recorrer las características secuencialmente",
+    "body": "Si se establece en \"random\", un coeficiente aleatorio se actualiza en cada iteración en lugar de recorrer las características secuencialmente.",
     "example": "",
     "url": ""
   },
   "KNN_n_vecinos": {
     "title": "Número de vecinos",
-    "body": "Número de vecinos a considerar para clasificar un objeto como perteneciente a una clase",
+    "body": "Número de vecinos a considerar para clasificar un objeto como perteneciente a una clase.",
     "example": "",
     "url": ""
   },
   "KNN_p": {
     "title": "Métrica Minkowski",
-    "body": "Parámetro para la métrica Minkowski. Cuando p = 1 equivale a usar manhattan_distance (l1), mientras que euclidean_distance (l2) se obtiene con el valor p = 2 . Para  un p arbitrario se usa minkowski_distance (l_p)",
+    "body": "Parámetro para la métrica Minkowski. Cuando p = 1 equivale a usar manhattan_distance (l1), mientras que euclidean_distance (l2) se obtiene con el valor p = 2 . Para  un p arbitrario se usa minkowski_distance (l_p).",
     "example": "",
     "url": ""
   },
   "KNN_tamano_hoja": {
     "title": "Tamaño de hoja",
-    "body": "Algoritmo utilizado para calcular los vecinos más cercanos. \"auto\" intentará decidir el algoritmo más apropiado en función de los valores suminitrados en el método fit",
+    "body": " El valor optimo depende la naturaleza del problema. Este hiperparámetro puede afectar el uso de memoria y tiempo de entrenamiento.",
     "example": "",
     "url": ""
   },
   "KNN_pesos": {
     "title": "Peso",
-    "body": "Función de peso utilizada en la predicción. Se puede establecer como \"uniform\" o \"distance\"",
+    "body": "Función de peso utilizada en la predicción. Se puede establecer como \"uniform\" o \"distance\".",
     "example": "",
     "url": ""
   },
@@ -307,31 +307,31 @@
   },
   "KMEANS_toleracia": {
     "title": "Tolerancia",
-    "body": "Tolerancia relativa con respecto a la norma de Frobenius de la diferencia en los centros de los conglomerados de dos iteraciones consecutivas para declarar convergencia",
+    "body": "Tolerancia relativa con respecto a la norma de Frobenius de la diferencia en los centros de los conglomerados de dos iteraciones consecutivas para declarar convergencia.",
     "example": "",
     "url": ""
   },
   "KMEANS_semilla_random": {
     "title": "Semilla random",
-    "body": "Determina la generación de números aleatorios para la inicialización del centroide",
+    "body": "Determina la generación de números aleatorios para la inicialización del centroide.",
     "example": "",
     "url": ""
   },
   "KMEANS_algoritmo": {
     "title": "Algoritmo",
-    "body": "Algoritmo de K-means a utilizar. Los valores que se puede utilizar son \"auto\", \"full\" y \"elkan\"",
-    "example": "",
+    "body": "Algoritmo de K-means a utilizar. Los valores que se pueden utilizar son \"auto\", \"full\" y \"elkan\".",
+    "example": "\"Full\" es el algoritmo clásico que se utiliza para los problemas con este estimador, mientras que \"elkan\\ es una variación más eficiente para casos donde se tengan bien definidos los clusters.",
     "url": ""
   },
   "GNB_refinamiento": {
     "title": "Variable de refinamiento",
-    "body": "Parte de la variación más grande de todas las características que se agrega a las variaciones para la estabilidad del cálculo",
+    "body": "Parte de la variación más grande de todas las características que se agrega a las variaciones para la estabilidad del cálculo.",
     "example": "",
     "url": ""
   },
   "GNB_episilon": {
     "title": "Épsilon",
-    "body": "Valor absoluto que se adiciona a las variaciones",
+    "body": "Valor absoluto que se adiciona a las variaciones.",
     "example": "",
     "url": ""
   },
@@ -349,32 +349,32 @@
   },
   "APROPAGATION_semilla_random": {
     "title": "Semilla random",
-    "body": "Generador de números seudoaleatorios para controlar el estado inicial",
+    "body": "Generador de números seudoaleatorios para controlar el estado inicial.",
     "example": "",
     "url": ""
   },
   "APROPAGATION_afinidad": {
     "title": "Afinidad",
-    "body": "Tipo de afinidad a utilizar. Los valores permitidos son \"euclidian\" y \"precomputed\"",
+    "body": "Tipo de afinidad a utilizar. Los valores permitidos son \"euclidian\" y \"precomputed\".",
     "example": "",
     "url": ""
   },
   "MEANSHIFT_ancho_banda": {
     "title": "Ancho de banda",
-    "body": "Ancho de banda utilizado en el kernel RBF. Si no se proporciona, el ancho de banda se estima mediante sklearn.cluster.estimate_bandwidth",
+    "body": "Ancho de banda utilizado en el kernel RBF. Tiene un gran impacto en la escalabilidad aumentar este valor indiscriminadamente.",
     "example": "",
     "url": ""
   },
   "MEANSHIFT_contenedor_semilla": {
     "title": "Contenedor de la semilla",
-    "body": "Si el valor es verdadero las ubicaciones iniciales del kernel no son ubicaciones de todos los puntos, sino más bien la ubicación de la versión discretizada de los puntos, donde los puntos se agrupan en una cuadrícula cuya rugosidad corresponde al ancho de banda",
+    "body": "Si el valor es verdadero las ubicaciones iniciales del kernel no son de todos los puntos, sino más bien la ubicación de una versión discretizada donde los puntos se agrupan en una cuadrícula cuya rugosidad corresponde al ancho de banda.",
     "example": "",
     "url": ""
   },
   "MEANSHIFT_frecuencia_contenedor": {
     "title": "Frecuencia mínima del contenedor",
-    "body": "Valor para delimitar aquellos bins con los puntos como semillas que cumplan con min_bin_freq",
-    "example": "",
+    "body": "Valor para delimitar aquellos bins con los puntos como semillas que cumplan con min_bin_freq.",
+    "example": "Los bins son utilizados para transformar características numéricas continuas en discretas.",
     "url": ""
   },
   "MEANSHIFT_agrupar_todos": {
@@ -385,13 +385,13 @@
   },
   "MINIKMEANS_n_clusters": {
     "title": "Número de clusters",
-    "body": "Número de clústeres y centroides que se generarán",
+    "body": "Número de clústeres y centroides que se generarán.",
     "example": "",
     "url": ""
   },
   "MMINIKMEANS_tamano_grupo": {
     "title": "Tamño del grupo (lotes)",
-    "body": "Tamaño de los mini lotes. Por defecto se utiliza el valor de 100",
+    "body": "Tamaño de los mini lotes. Por defecto se utiliza el valor de 100.",
     "example": "",
     "url": ""
   },
@@ -403,25 +403,25 @@
   },
   "MINIKMEANS_tolerancia": {
     "title": "Tolerancia",
-    "body": "Valor que controla la parada temprana en función de los cambios  relativos del centro, los cuales son medidos por una variación suavizada y normalizada (variación de los cambios de posición central cuadrática media)",
+    "body": "Valor que controla la parada temprana en función de los cambios  relativos del centro, los cuales son medidos por una variación suavizada y normalizada (variación de los cambios de posición central cuadrática media).",
     "example": "",
     "url": ""
   },
   "SGD_alfa": {
     "title": "Alfa",
-    "body": "Constante que multiplica la variable de regularización. Cuanto mayor sea, más elevada sera la regularización",
+    "body": "Constante que multiplica la variable de regularización. Cuanto mayor sea, más elevada será la regularización.",
     "example": "",
     "url": ""
   },
   "SGD_tolerancia": {
     "title": "Tolerancia",
-    "body": "Valor de aceptación para criterio de parada. El entrenamiento se detiene cuando la pérdida es mayor que la mejor pérdida - tolerancia)",
+    "body": "Valor de aceptación para criterio de parada. El entrenamiento se detiene cuando la pérdida es mayor que la mejor pérdida - tolerancia.",
     "example": "",
     "url": ""
   },
   "SGD_semilla_random": {
     "title": "Semilla random",
-    "body": " Semilla del generador de números pseudoaleatorios para mezclar los datos",
+    "body": " Semilla del generador de números pseudoaleatorios para mezclar los datos.",
     "example": "",
     "url": ""
   },

@@ -2,7 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow
 
 from jsonInfo.help import HelpMessage
-from frontend_scripts.pop_up import PopUp, InfoPopUp
+from frontend_scripts.pop_up import PopUp, InfoPopUp, WarningPopUp
 from version import __version__ as version
 
 
@@ -22,10 +22,19 @@ class Window(QMainWindow):
         if example is not "":
             body = body + "\n\n" + "Ejemplo:" + "\n\n" + example
         if url is not "":
-            url = "Para más información vistiar:" + " " + url
+            url = "Para más información visitar:" + " " + url
         # call general_info_pop_up with useful_info_pop_up info
         pop_up: PopUp = InfoPopUp()
         pop_up.open_pop_up(title, body, url)
+
+    def last_warning_pop_up(self) -> bool:
+        """Show warning info in a pop. A form may use this method, overwrite it or not use it at all"""
+        pop_up: PopUp = WarningPopUp()
+        title = "Listo para entrenar"
+        body = "¿Estas seguro que deseas continuar?"
+        additional = "La aplicación iniciará inmediatamente con el proceso de entrenamiento"
+        answer = pop_up.open_pop_up(title, body, additional)
+        return answer
 
     def next(self, *args, **kwargs) -> None:
         """Go to next form"""
