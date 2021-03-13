@@ -10,6 +10,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\datasets\iris.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\datasets\molecules.csv">
           <value>
             <Attribute>

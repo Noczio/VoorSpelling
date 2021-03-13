@@ -79,8 +79,11 @@ class SBSResult:
         try:
             md_file = MdUtils(file_name=f_name, title=f_title)
             md_file.new_header(level=1, title='Logs')
-            for line in info:
+            max_num_lines = len(info)
+            print(f"Total lines to copy {max_num_lines}")
+            for counter, line in enumerate(info, start=1):
                 md_file.new_line(line)
+                print(f"{counter} out of {max_num_lines} lines")
             final_path = path + "\\" + f_title + ".md"
             with open(final_path, 'w+', encoding='utf-8') as f:
                 markdown_result = md_file.create_md_file()
