@@ -329,7 +329,7 @@ border: none;</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_home">
+    <widget class="QLabel" name="lbl_end">
      <property name="geometry">
       <rect>
        <x>390</x>
@@ -357,7 +357,7 @@ QLabel:hover
 }</string>
      </property>
      <property name="text">
-      <string>INICIO</string>
+      <string>FINALIZAR</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

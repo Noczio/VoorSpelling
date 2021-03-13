@@ -1,5 +1,6 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow
+import sys
 
 from jsonInfo.help import HelpMessage
 from frontend_scripts.pop_up import PopUp, InfoPopUp, WarningPopUp
@@ -45,8 +46,8 @@ class Window(QMainWindow):
         pass
 
     def close_window(self) -> None:
-        """Close actual form"""
-        self.close()
+        """Closes app"""
+        sys.exit()
 
     def handle_error(self, *args, **kwargs) -> None:
         """Handle error arguments and the use them to display a custom message"""
