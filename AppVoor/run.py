@@ -461,14 +461,17 @@ class StepByStepLoad(Window):
         ted_text = self.ted_info.toPlainText()
         fixed_ted_text = ted_text.split("\n")
         print("Saving console logs")
+        QThread.sleep(1)
         SBSResult.console_info(fixed_ted_text, folder_path)
         print("Saving results document")
+        QThread.sleep(1)
         SBSResult.estimator_info(table,
                                  list(model.best_features),
                                  model.initial_parameters,
                                  model.best_parameters,
                                  score_text,
                                  folder_path)
+        QThread.sleep(1)
         print("Process finished successfully")
 
     def last_warning_pop_up(self) -> bool:
