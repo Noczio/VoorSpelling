@@ -222,7 +222,7 @@ Licencia BSD 3</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>PASO 6 - Caractersiticas - Método</string>
+      <string>PASO 6 - Método de reducción de características</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>

@@ -286,23 +286,14 @@ class MLTypeWindow(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self) -> None:
-
-        def show_last_warning():
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
         if self.rbtn_sbsml.isChecked():
             next_form = PredictionType(ui_window["prediction_type"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
         else:
-            out_put = show_last_warning()
-            if out_put:
+            result = self.last_warning_pop_up()
+            if result:
                 next_form = AutoLoad(ui_window["result_screen"])
                 widget.addWidget(next_form)
                 widget.removeWidget(widget.currentWidget())
@@ -337,62 +328,44 @@ class AutoLoad(Window):
     def close_window(self):
         super(AutoLoad, self).close_window()
         widget.close()
-        sys.exit()
 
     def next(self) -> None:
-
-        def go_next():
-            next_form = FinalResult(ui_window["result_final"])
-            widget.addWidget(next_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
-
         QThread.sleep(1)
-        go_next()
-
-    def back(self):
-        global_var.reset()
-        last_form = HomeWindow(ui_window["home"])
-        widget.addWidget(last_form)
+        next_form = FinalResult(ui_window["result_final"])
+        widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
     def train_model(self) -> None:
         automl_ml = JarAutoML(10, False, 5000)
         model = AutoExecutioner(automl_ml)
-        self.add_info(str(model) + "\n\n")
+        print(str(model) + "\n\n")
         data_frame = global_var.data_frame
         model.train_model(data_frame)
+        print("Process finished successfully")
+
+    def last_warning_pop_up(self) -> bool:
+        pop_up: PopUp = WarningPopUp()
+        title = "Cancelar entrenamiento"
+        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
+        additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento."
+        answer = pop_up.open_pop_up(title, body, additional)
+        return answer
 
     def cancel_training(self, event) -> None:
         """Show a Warning pop up and then if user wants to finished the app, close it"""
-
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Cancelar entrenamiento"
-            body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
-            additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
         event.accept()
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             self.thread_pool.cancel(self.ml_worker)
             self.close_window()
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
-
         def write_error():
             for i in info:
                 self.add_info(i)
                 QThread.sleep(1)
-
-        def go_home():
-            del sys.stdout
-            QThread.sleep(1)
-            self.back()
 
         # deactivate lbl press behaviour due to an error
         self.lbl_cancel.mouseReleaseEvent = None
@@ -401,11 +374,10 @@ class AutoLoad(Window):
                                       "   border: none;\n"
                                       "	color: rgb(105, 105, 105);\n"
                                       "}")
-        info = ("Error\n", str(error), "\nRegresando a la página de inicio" + " ", ".", ".", ".")
+        info = ("Error\n", str(error), "\nCerrando aplicación para evitar conflictos de memoria" + " ", ".", ".", ".")
         # worker to write info to ted_info
         temp_worker = LongWorker(func=write_error)
-        temp_worker.signals.program_finished.connect(go_home)
-        temp_worker.signals.program_error.connect(self.handle_error)
+        temp_worker.signals.program_finished.connect(self.close_window)
         self.thread_pool.start(temp_worker, priority=2)
 
     def add_info(self, info: any) -> None:
@@ -444,23 +416,11 @@ class StepByStepLoad(Window):
     def close_window(self):
         super(StepByStepLoad, self).close_window()
         widget.close()
-        sys.exit()
 
     def next(self) -> None:
-
-        def go_next():
-            next_form = FinalResult(ui_window["result_final"])
-            widget.addWidget(next_form)
-            widget.removeWidget(widget.currentWidget())
-            widget.setCurrentIndex(widget.currentIndex())
-
         QThread.sleep(1)
-        go_next()
-
-    def back(self):
-        global_var.reset()
-        last_form = HomeWindow(ui_window["home"])
-        widget.addWidget(last_form)
+        next_form = FinalResult(ui_window["result_final"])
+        widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
@@ -500,44 +460,39 @@ class StepByStepLoad(Window):
         # Finally, after all is finished write info to their markdown files
         ted_text = self.ted_info.toPlainText()
         fixed_ted_text = ted_text.split("\n")
-        print("Saving results ...")
+        print("Saving console logs")
         SBSResult.console_info(fixed_ted_text, folder_path)
+        print("Saving results document")
         SBSResult.estimator_info(table,
                                  list(model.best_features),
                                  model.initial_parameters,
                                  model.best_parameters,
                                  score_text,
                                  folder_path)
+        print("Process finished successfully")
+
+    def last_warning_pop_up(self) -> bool:
+        pop_up: PopUp = WarningPopUp()
+        title = "Cancelar entrenamiento"
+        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
+        additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento."
+        answer = pop_up.open_pop_up(title, body, additional)
+        return answer
 
     def cancel_training(self, event) -> None:
         """Show a Warning pop up and then if user wants to finished the app, close it"""
-
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Cancelar entrenamiento"
-            body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
-            additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
         event.accept()
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             self.thread_pool.cancel(self.ml_worker)
             self.close_window()
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
-
         def write_error():
             for i in info:
                 self.add_info(i)
                 QThread.sleep(1)
-
-        def go_home():
-            del sys.stdout
-            QThread.sleep(1)
-            self.back()
 
         # deactivate lbl press behaviour due to an error
         self.lbl_cancel.mouseReleaseEvent = None
@@ -546,11 +501,10 @@ class StepByStepLoad(Window):
                                       "   border: none;\n"
                                       "	color: rgb(105, 105, 105);\n"
                                       "}")
-        info = ("Error\n", str(error), "\nRegresando a la página de inicio" + " ", ".", ".", ".")
+        info = ("Error\n", str(error), "\nCerrando aplicación para evitar conflictos de memoria" + " ", ".", ".", ".")
         # worker to write info to ted_info
         temp_worker = LongWorker(func=write_error)
-        temp_worker.signals.program_finished.connect(go_home)
-        temp_worker.signals.program_error.connect(self.handle_error)
+        temp_worker.signals.program_finished.connect(self.close_window)
         self.thread_pool.start(temp_worker, priority=2)
 
     def add_info(self, info: any) -> None:
@@ -809,16 +763,7 @@ class HyperparameterMethod(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
     def handle_input(self, event):
-
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             user_selection = global_var.estimator.__class__.__name__
             if event is "Bayesian":
@@ -845,15 +790,16 @@ class FinalResult(Window):
 
     def __init__(self, window: str) -> None:
         super().__init__(window)
-        self.lbl_home.mouseReleaseEvent = self.back
+        self.lbl_end.mouseReleaseEvent = self.next
 
-    def back(self, event) -> None:
+    def close_window(self):
+        super(FinalResult, self).close_window()
+        widget.close()
+
+    def next(self, event) -> None:
         event.accept()
         global_var.reset()
-        last_form = HomeWindow(ui_window["home"])
-        widget.addWidget(last_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
+        self.close_window()
 
 
 class AffinityPropagationParameters(Window):
@@ -870,15 +816,7 @@ class AffinityPropagationParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"convergence": int(self.sb_convergencia.value()),
                           "damping": float(self.sb_amortiguacion.value()),
@@ -909,15 +847,7 @@ class GaussianNBParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"var_smoothing": float(self.sb_variable_refinamiento.value())}
             global_var.parameters = parameters
@@ -948,15 +878,7 @@ class KMeansParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"n_clusters": int(self.sb_clusters.value()),
                           "random_state": int(self.sb_semilla_random.value()),
@@ -991,15 +913,7 @@ class KNeighborsClassifierParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"n_neighbors": int(self.sb_numero_vecinos.value()),
                           "p": int(self.sb_minkowski_p.value()),
@@ -1034,15 +948,7 @@ class LassoParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"alpha": float(self.sb_alfa.value()),
                           "tol": float(self.sb_tolerancia.value()),
@@ -1077,15 +983,7 @@ class LinearSVCParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
                           "tol": float(self.sb_tolerancia.value()),
@@ -1120,15 +1018,7 @@ class LinearSVRParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
                           "tol": float(self.sb_tolerancia.value()),
@@ -1165,15 +1055,7 @@ class MeanShiftParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"bin_seeding": bool(self.cb_contenedor_semillas.currentText()),
                           "cluster_all": bool(self.cb_agrupar_todos.currentText()),
@@ -1208,15 +1090,7 @@ class MiniBatchKMeansParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"n_clusters": int(self.sb_clusters.value()),
                           "batch_size": int(self.sb_tamano_grupo.value()),
@@ -1251,15 +1125,7 @@ class SGDClassifierParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"alpha": float(self.sb_alfa.value()),
                           "tol": float(self.sb_tolerancia.value()),
@@ -1294,15 +1160,7 @@ class SVCParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
                           "tol": float(self.sb_tolerancia.value()),
@@ -1337,15 +1195,7 @@ class SVRParameters(Window):
         self.btn_next.clicked.connect(self.next)
 
     def next(self):
-        def show_last_warning() -> bool:
-            pop_up: PopUp = WarningPopUp()
-            title = "Listo para entrenar"
-            body = "¿Estas seguro que deseas continuar?"
-            additional = "La aplicación iniciara inmediatamente con el proceso de entrenamiento"
-            answer = pop_up.open_pop_up(title, body, additional)
-            return answer
-
-        result = show_last_warning()
+        result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
                           "tol": float(self.sb_tolerancia.value()),

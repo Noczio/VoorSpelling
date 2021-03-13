@@ -283,7 +283,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Parametro de regularización (C)</string>
+      <string>Parámetro de regularización (C)</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
