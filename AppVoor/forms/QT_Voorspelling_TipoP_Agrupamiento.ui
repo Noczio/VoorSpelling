@@ -222,7 +222,7 @@ Licencia BSD 3</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>PASO 5 - Tipo de Predicción - Agrupamiento</string>
+      <string>PASO 5 - Estimadores de agrupamiento</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -281,7 +281,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>El tipo de predicción “Agrupamiento” se le conoce como Clustering en Inglés. Esta produce salidas a partir del proceso de división de la información en grupos</string>
+      <string>El tipo de predicción “Agrupamiento” se le conoce como Clustering en inglés. Este produce salidas a partir del proceso de división de la información en grupos</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

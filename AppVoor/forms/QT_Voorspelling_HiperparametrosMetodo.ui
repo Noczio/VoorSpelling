@@ -281,7 +281,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Selecione un tipo de búsqueda para hiperparámetros</string>
+      <string>Selecione un método de búsqueda de hiperparámetros</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

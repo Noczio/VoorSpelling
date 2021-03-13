@@ -222,7 +222,7 @@ Licencia BSD 3</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>PASO 5 - Tipo de Predicción - Regresión</string>
+      <string>PASO 5 - Estimadores de regresión</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -281,7 +281,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>El tipo de predicción “Regresión” se le conoce como Regression en Inglés. Esta produce salidas númericas en el conjunto de los números reales a partir de la información suministrada</string>
+      <string>El tipo de predicción “Regresión” se le conoce como Regression en inglés. Este produce salidas númericas en el conjunto de los números reales a partir de la información suministrada</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

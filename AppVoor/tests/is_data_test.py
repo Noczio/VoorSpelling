@@ -63,6 +63,26 @@ class MyTestCase(unittest.TestCase):
         # is data a list?
         self.assertTrue(bol_answer)
 
+    def test_data_is_a_corrupted_file_csv(self):
+        with self.assertRaises(TypeError):
+            # load diabetes.csv from disk
+            folder_name = "datasets"
+            file_name = "corrupted_file_test.txt"
+            test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+            csv_file = self._loader_creator.create_loader(test_full_path, "csv")
+            # get the dataframe from the data_returner
+            this_is_not_a_df = csv_file.get_file_transformed()
+
+    def test_data_is_a_corrupted_file_tsv(self):
+        with self.assertRaises(TypeError):
+            # load diabetes.csv from disk
+            folder_name = "datasets"
+            file_name = "corrupted_file_test.txt"
+            test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+            csv_file = self._loader_creator.create_loader(test_full_path, "tsv")
+            # get the dataframe from the data_returner
+            this_is_not_a_df = csv_file.get_file_transformed()
+
 
 if __name__ == '__main__':
     unittest.main()
