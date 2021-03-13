@@ -2,7 +2,7 @@
   "file_separation": {
     "title": "Extensión y separación de archivo",
     "body": "Independientemente de la extensión del archivo, lo más importante es como está separada la información internamente. Esta información puede estar separada por coma (csv), tabulación (tsv) e incluso en algúnos casos por punto y coma.",
-    "example": "Archivo csv (separado por comas) la información se vería así:\nnombre, edad, género, altura\nPepito, 20, M, 1.60\nJuanita, 18, F, 1.50\n\nArchivo tsv (separado por tabulación) la información se vería así:\nNombre\tedad\tgénero\taltura\nPepito\t20\tM\t1.60\nJuanita\t18\tF\t1.50\n",
+    "example": "Archivo csv (separado por comas) la información se vería así:\n\nnombre, edad, género, altura\nPepito, 20, M, 1.60\nJuanita, 18, F, 1.50\n\nArchivo tsv (separado por tabulación) la información se vería así:\n\nNombre\tedad\tgénero\taltura\nPepito\t20\tM\t1.60\nJuanita\t18\tF\t1.50\n",
     "url": ""
   },
   "step_by_step": {
@@ -229,7 +229,7 @@
   },
   "LSVC_C": {
     "title": "Parámetro de regularización",
-    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos",
+    "body": "Valor inversamente proporcional a la fuerza de regularización que puede ser establecido dentro de los números enteros positivos.",
     "example": "",
     "url": ""
   },

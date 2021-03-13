@@ -268,7 +268,7 @@ border-radius: 10px;</string>
        <x>190</x>
        <y>380</y>
        <width>690</width>
-       <height>150</height>
+       <height>161</height>
       </rect>
      </property>
      <property name="font">
@@ -287,7 +287,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Todos los archivos de los resultados se encuentran en la carpeta base de la aplicación. Todo lo que se encuentra en la carpeta estará en Inglés o Español dependiendo del proceso elegido. Para más información ir al repositorio en:
+      <string>Todos los archivos de los resultados se encuentran en la carpeta base de la aplicación. Buscar específcamente la carpeta &quot;AutoML&quot; o &quot;SBS_ML&quot;  dependiendo del proceso seleccionado. Para más información ir al repositorio en:
 
 https://github.com/mljar/mljar-supervised
 https://github.com/Noczio/VoorSpelling</string>

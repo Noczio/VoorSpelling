@@ -355,7 +355,7 @@ class AutoLoad(Window):
         pop_up: PopUp = WarningPopUp()
         title = "Cancelar entrenamiento"
         body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
-        additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento"
+        additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento."
         answer = pop_up.open_pop_up(title, body, additional)
         return answer
 
@@ -495,7 +495,7 @@ class StepByStepLoad(Window):
         pop_up: PopUp = WarningPopUp()
         title = "Cancelar entrenamiento"
         body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
-        additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento"
+        additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento."
         answer = pop_up.open_pop_up(title, body, additional)
         return answer
 

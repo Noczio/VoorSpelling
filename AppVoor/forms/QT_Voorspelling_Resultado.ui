@@ -302,6 +302,8 @@ border: none;</string>
      <property name="font">
       <font>
        <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -309,7 +311,7 @@ border: none;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>No desesperes si aún no recibes los resultados. </string>
+      <string>¡No desesperes si aún no termina el proceso de entrenamiento y resultados! </string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
