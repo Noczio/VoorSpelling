@@ -33,9 +33,8 @@ class SBSResult:
     @staticmethod
     def estimator_info(options: dict, features: list, initial_params: dict, final_params: dict,
                        performance: str, path: str) -> None:
-        f_name = "Estimador_paso_a_paso"
         f_title = "Resultados_del_estimador_paso_a_paso"
-        final_path = path + "\\" + f_title + ".md"
+        f_name = path + "\\" + f_title + ".md"
         try:
             md_file = MdUtils(file_name=f_name, title=f_title)
             md_file.new_header(level=1, title="Selección")
@@ -62,21 +61,14 @@ class SBSResult:
             md_file.new_line(performance)
 
             md_file.new_table_of_contents(table_title="Contenido", depth=2)
-
-            with open(final_path, 'w+', encoding="utf-8") as f:
-                markdown_result = md_file.create_md_file()
-                f.write(markdown_result.read_file(f_name))
+            _ = md_file.create_md_file()
         except Exception as e:
             print(e)
-        finally:
-            not_wanted = ".\\" + f_name + ".md"
-            if os.path.exists(not_wanted):
-                os.remove(not_wanted)
 
     @staticmethod
     def console_info(info: list, path: str) -> None:
-        f_name = "Logs_paso_a_paso"
         f_title = "Logs_del_estimador_paso_a_paso"
+        f_name = path + "\\" + f_title + ".md"
         try:
             md_file = MdUtils(file_name=f_name, title=f_title)
             md_file.new_header(level=1, title='Logs')
@@ -85,13 +77,6 @@ class SBSResult:
             for counter, line in enumerate(info, start=1):
                 md_file.new_line(line)
                 print(f"{counter} out of {max_num_lines} lines")
-            final_path = path + "\\" + f_title + ".md"
-            with open(final_path, 'w+', encoding="utf-8") as f:
-                markdown_result = md_file.create_md_file()
-                f.write(markdown_result.read_file(f_name))
+            _ = md_file.create_md_file()
         except Exception as e:
             print(e)
-        finally:
-            not_wanted = ".\\" + f_name + ".md"
-            if os.path.exists(not_wanted):
-                os.remove(not_wanted)
