@@ -39,7 +39,7 @@ class PdData(ValidData):
                             return False
                 """for every row, for every column: check if current data has a not valid info. if true 
                 return a false (not a valid data)"""
-                rows = [0, 1, min_x_data - 1, min_x_data, min_x_data + 1, x_shape - 2, x_shape - 1]
+                rows = [0, 1, (x_shape/2)-1, x_shape/2, x_shape - 1]
                 for i in rows:
                     for j in columns:
                         for row_char in str(data.at[i, j]):
