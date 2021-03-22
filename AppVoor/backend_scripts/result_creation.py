@@ -32,7 +32,7 @@ class SBSResult:
 
     @staticmethod
     def estimator_info(options: dict, features: list, initial_params: dict, final_params: dict,
-                       performance: str, path: str) -> None:
+                       performance: str, path: str) -> bool:
         f_title = "Resultados_del_estimador_paso_a_paso"
         f_name = path + "\\" + f_title + ".md"
         try:
@@ -61,22 +61,26 @@ class SBSResult:
             md_file.new_line(performance)
 
             md_file.new_table_of_contents(table_title="Contenido", depth=2)
-            _ = md_file.create_md_file()
+            md_file.create_md_file()
+            return True
         except Exception as e:
             print(e)
+            return False
 
     @staticmethod
-    def console_info(info: list, path: str) -> None:
+    def console_info(info: list, path: str) -> bool:
         f_title = "Logs_del_estimador_paso_a_paso"
         f_name = path + "\\" + f_title + ".md"
         try:
             md_file = MdUtils(file_name=f_name, title=f_title)
-            md_file.new_header(level=1, title='Logs')
+            md_file.new_header(level=1, title="Logs")
             max_num_lines = len(info)
             print(f"Total lines to copy {max_num_lines}")
             for counter, line in enumerate(info, start=1):
                 md_file.new_line(line)
                 print(f"{counter} out of {max_num_lines} lines")
-            _ = md_file.create_md_file()
+            md_file.create_md_file()
+            return True
         except Exception as e:
             print(e)
+            return False

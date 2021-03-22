@@ -29,8 +29,8 @@ class PdData(ValidData):
             # x_shape is number of rows (samples) and y_shape is number of columns (features)
             x_shape, y_shape = data.shape
             min_x_data, min_y_data = 100, 2
-            if y_shape >= min_y_data and x_shape >= min_x_data:
-                not_valid = ("", ",", ";", "\t")
+            if y_shape >= min_y_data and x_shape > min_x_data:
+                not_valid = (",", ";", "\t")
                 columns = [value for value in data]
                 # if all columns seem ok then proceed to check for rows
                 for col in columns:
@@ -39,7 +39,7 @@ class PdData(ValidData):
                             return False
                 """for every row, for every column: check if current data has a not valid info. if true 
                 return a false (not a valid data)"""
-                rows = [0, 1, (x_shape/2)-1, x_shape/2, x_shape - 1]
+                rows = [0, 1, (x_shape//2)-1, x_shape//2, x_shape - 2, x_shape - 1]
                 for i in rows:
                     for j in columns:
                         for row_char in str(data.at[i, j]):

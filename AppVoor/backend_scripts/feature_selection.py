@@ -71,7 +71,7 @@ class BackwardsFeatureSelection(FeatureSelection):
         return self._initial_x, self._initial_score
 
     def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
-                        n_folds_validation: int) -> DataFrame:
+                        n_folds_validation: int) -> tuple:
         self._initial_x = x
         _, initial_y_shape = x.shape  # original column len for evaluation
         if initial_y_shape > 1:
@@ -85,13 +85,13 @@ class BackwardsFeatureSelection(FeatureSelection):
             # data might be len 1 or wrong
             print("Feature selection process finished")
             if DataEnsurer.validate_py_data(best_x, pd.Series):
-                return best_x.to_frame()
+                return best_x.to_frame(), best_score
             elif DataEnsurer.validate_py_data(best_x, DataFrame):
-                return best_x
+                return best_x, best_score
             else:
                 raise TypeError("Output is not a dataframe")
         else:
-            return x
+            return x, None
 
 
 class ForwardFeatureSelection(FeatureSelection):
@@ -181,12 +181,10 @@ class ForwardFeatureSelection(FeatureSelection):
         return best_x, actual_score
 
     def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
-                        n_folds_validation: int) -> DataFrame:
+                        n_folds_validation: int) -> tuple:
         _, initial_y_shape = x.shape  # original column len for evaluation
         # if x only has 1 column then return original dataframe
-        if initial_y_shape == 1:
-            return x
-        else:
+        if initial_y_shape > 1:
             # else if x has more than 1 column
             print("Feature selection process started")
             f_best_x, new_x, f_score = self._first_iteration(x, y, model, score_type, n_folds_validation)
@@ -196,11 +194,13 @@ class ForwardFeatureSelection(FeatureSelection):
             # data might be len 1 or wrong
             print("Feature selection process finished")
             if DataEnsurer.validate_py_data(best_x, pd.Series):
-                return best_x.to_frame()
+                return best_x.to_frame(), best_score
             elif DataEnsurer.validate_py_data(best_x, DataFrame):
-                return best_x
+                return best_x, best_score
             else:
                 raise TypeError("Output is not a dataframe")
+        else:
+            return x, None
 
 
 class FeatureSelectionPossibilities(Switch):
