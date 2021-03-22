@@ -27,14 +27,12 @@ class MyTestCase(unittest.TestCase):
     def test_markdown_file_creates_console_info(self):
         lots_of_info = ["test info first paragraph", "this comes after a jump line", "",
                         "this comes after two jump lines "]
-        is_finished = SBSResult.console_info(lots_of_info, ".\\SBS_ML_1")
-        self.assertTrue(is_finished)
+        SBSResult.console_info(lots_of_info, ".\\SBS_ML_1")
 
     def test_markdown_file_creates_console_info_overwrite(self):
         lots_of_info = ["test info first paragraph", "this comes after a jump line", "",
                         "this comes after two jump lines", "this is new text for overwriting purposes"]
-        is_finished = SBSResult.console_info(lots_of_info, ".\\SBS_ML_1")
-        self.assertTrue(is_finished)
+        SBSResult.console_info(lots_of_info, ".\\SBS_ML_1")
 
     def test_markdown_file_creates_estimator_info(self):
         uses_parameter_search, uses_feature_selection = True, False
@@ -64,14 +62,12 @@ class MyTestCase(unittest.TestCase):
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
         folder_path = ".\\SBS_ML_1"
-        is_finished = SBSResult.estimator_info(table,
-                                               list(model_instance.best_features),
-                                               model_instance.initial_parameters,
-                                               model_instance.best_parameters,
-                                               score_text,
-                                               folder_path)
-
-        self.assertTrue(is_finished)
+        SBSResult.estimator_info(table,
+                                 list(model_instance.best_features),
+                                 model_instance.initial_parameters,
+                                 model_instance.best_parameters,
+                                 score_text,
+                                 folder_path)
 
     def test_markdown_file_creates_estimator_and_console_info(self):
         file_creator_obj = FCreator(".\\")
@@ -103,18 +99,16 @@ class MyTestCase(unittest.TestCase):
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
         folder_path = file_creator_obj.folder_path
-        is_finished_model_info = SBSResult.estimator_info(table,
-                                                          list(model_instance.best_features),
-                                                          model_instance.initial_parameters,
-                                                          model_instance.best_parameters,
-                                                          score_text,
-                                                          folder_path)
+        SBSResult.estimator_info(table,
+                                 list(model_instance.best_features),
+                                 model_instance.initial_parameters,
+                                 model_instance.best_parameters,
+                                 score_text,
+                                 folder_path)
 
         sys.stdout = sys.__stdout__
         console_output = captured_output.getvalue()  # Now works as before.
-        is_finished_console_info = SBSResult.console_info(console_output.split("\n"), folder_path)
-        all_finished = all((is_finished_console_info, is_finished_model_info))
-        self.assertTrue(all_finished)
+        SBSResult.console_info(console_output.split("\n"), folder_path)
 
 
 if __name__ == '__main__':
