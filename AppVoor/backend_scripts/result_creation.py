@@ -1,16 +1,23 @@
-import json
 import os
 
 from mdutils.mdutils import MdUtils
 
 
 class FCreator:
-    folder_path: str
+    _folder_path: str
 
     def __init__(self, location: str, obj: str = "SBS_ML") -> None:
         self._object = obj
         self._location = location
         self.create_folder()
+
+    @property
+    def folder_path(self) -> str:
+        return self._folder_path
+
+    @folder_path.setter
+    def folder_path(self, value: str) -> None:
+        self._folder_path = value
 
     def create_folder(self) -> None:
         try:
@@ -24,15 +31,15 @@ class FCreator:
                     os.mkdir(path)
                     self.folder_path = path
                     break
-        except Exception as e:
-            print(e)
+        except Exception():
+            raise Exception
 
 
 class SBSResult:
 
     @staticmethod
     def estimator_info(options: dict, features: list, initial_params: dict, final_params: dict,
-                       performance: str, path: str) -> bool:
+                       performance: str, path: str) -> None:
         f_title = "Resultados_del_estimador_paso_a_paso"
         f_name = path + "\\" + f_title + ".md"
         try:
@@ -62,13 +69,11 @@ class SBSResult:
 
             md_file.new_table_of_contents(table_title="Contenido", depth=2)
             md_file.create_md_file()
-            return True
-        except Exception as e:
-            print(e)
-            return False
+        except Exception():
+            raise Exception
 
     @staticmethod
-    def console_info(info: list, path: str) -> bool:
+    def console_info(info: list, path: str) -> None:
         f_title = "Logs_del_estimador_paso_a_paso"
         f_name = path + "\\" + f_title + ".md"
         try:
@@ -80,7 +85,5 @@ class SBSResult:
                 md_file.new_line(line)
                 print(f"{counter} out of {max_num_lines} lines")
             md_file.create_md_file()
-            return True
-        except Exception as e:
-            print(e)
-            return False
+        except Exception():
+            raise Exception

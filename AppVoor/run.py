@@ -11,18 +11,18 @@ from backend_scripts.auto_ml import JarAutoML, AutoExecutioner
 from backend_scripts.estimator_creation import EstimatorCreator
 from backend_scripts.feature_selection import FeatureSelectorCreator
 from backend_scripts.global_vars import GlobalVariables
-from jsonInfo.welcome import WelcomeMessenger
 from backend_scripts.load_data import LoaderCreator
 from backend_scripts.model_creation import SBSModelCreator
-from frontend_scripts.modified_widgets import QDragAndDropButton, QLoadButton
-from frontend_scripts.parallel import LongWorker, EmittingStream
-from backend_scripts.parameter_search import ParameterSearchCreator
 from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
-from frontend_scripts.pop_up import PopUp, WarningPopUp, CriticalPopUp
+from backend_scripts.parameter_search import ParameterSearchCreator
 from backend_scripts.result_creation import FCreator, SBSResult
 from backend_scripts.switcher import Switch
-from frontend_scripts.view import Window
 from forms import resources
+from frontend_scripts.modified_widgets import QDragAndDropButton, QLoadButton
+from frontend_scripts.parallel import LongWorker, EmittingStream
+from frontend_scripts.pop_up import PopUp, WarningPopUp, CriticalPopUp
+from frontend_scripts.view import Window
+from jsonInfo.welcome import WelcomeMessenger
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray
@@ -347,7 +347,7 @@ class AutoLoad(Window):
     def last_warning_pop_up(self) -> bool:
         pop_up: PopUp = WarningPopUp()
         title = "Cancelar entrenamiento"
-        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
+        body = "¿Estas seguro que deseas cancelar el entrenamiento?"
         additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento."
         answer = pop_up.open_pop_up(title, body, additional)
         return answer
@@ -459,24 +459,22 @@ class StepByStepLoad(Window):
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
         print("Saving results document")
-        estimator_info_created = SBSResult.estimator_info(table,
-                                                          list(model.best_features),
-                                                          model.initial_parameters,
-                                                          model.best_parameters,
-                                                          score_text,
-                                                          folder_path)
-        print(f"Estimator info created: {estimator_info_created}")
+        SBSResult.estimator_info(table,
+                                 list(model.best_features),
+                                 model.initial_parameters,
+                                 model.best_parameters,
+                                 score_text,
+                                 folder_path)
         print("Saving console logs")
         # Finally, after all is finished write info to their markdown files
         ted_text = self.ted_info.toPlainText()
         fixed_ted_text = ted_text.split("\n")
-        console_info_created = SBSResult.console_info(fixed_ted_text, folder_path)
-        print(f"Console info created: {console_info_created}")
+        SBSResult.console_info(fixed_ted_text, folder_path)
 
     def last_warning_pop_up(self) -> bool:
         pop_up: PopUp = WarningPopUp()
         title = "Cancelar entrenamiento"
-        body = "¿Estas seguro que deseas cancelar el entrenamiento?. Los resultados estarán incompletos."
+        body = "¿Estas seguro que deseas cancelar el entrenamiento?"
         additional = "La aplicación se cerrará para evitar conflictos con las variables utilizadas hasta el momento."
         answer = pop_up.open_pop_up(title, body, additional)
         return answer
