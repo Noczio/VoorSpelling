@@ -10,7 +10,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\backend_scripts\model_creation.py">
+          <value>
+            <Attribute>
+              <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\backend_scripts\parameter_search.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\backend_scripts\result_creation.py">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -91,6 +105,13 @@
           <value>
             <Attribute>
               <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\tests\other.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>

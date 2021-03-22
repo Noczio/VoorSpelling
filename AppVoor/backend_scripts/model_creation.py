@@ -136,9 +136,9 @@ class FeatureAndParameterSearchSBS(SBSMachineLearning):
         # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
         # get best features
-        best_features_dataframe = self.feature_selector.select_features(x, y, clone(self.estimator),
-                                                                        score_type, n_folds_validation)
-        self.best_features, score = best_features_dataframe.columns.values  # get features as numpy data
+        best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
+                                                                               score_type, n_folds_validation)
+        self.best_features = best_features_dataframe.columns.values  # get features as numpy data
         return score
 
 

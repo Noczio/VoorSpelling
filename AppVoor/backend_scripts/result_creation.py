@@ -50,11 +50,11 @@ class SBSResult:
             md_file.new_paragraph(list_to_string)
 
             md_file.new_header(level=2, title="Parámetros iniciales")
-            initial_params_as_string = json.dumps(initial_params)
+            initial_params_as_string = str(initial_params)
             md_file.new_line(initial_params_as_string)
 
             md_file.new_header(level=2, title="Parámetros finales")
-            final_params_as_string = json.dumps(final_params)
+            final_params_as_string = str(final_params)
             md_file.new_line(final_params_as_string)
 
             md_file.new_header(level=2, title="Rendimiento")
