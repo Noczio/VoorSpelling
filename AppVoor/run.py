@@ -248,7 +248,7 @@ class DataSetWindow(Window):
         all_ok: bool = False
         try:
             if self.last == "any":
-                body = "Ningun archivo ha sido seleccionado. Por favor subir un archivo " \
+                body = "Ningún archivo ha sido seleccionado. Por favor subir un archivo " \
                        "y seleccionar la separación del mismo, ya sea TSV o CSV "
                 self.critical_pop_up.open_pop_up("Error", body, "")
             else:
@@ -362,6 +362,7 @@ class AutoLoad(Window):
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
+
         def write_error():
             for i in info:
                 self.add_info(i)
@@ -444,7 +445,7 @@ class StepByStepLoad(Window):
         f_creator = FCreator(".\\")
         folder_path = f_creator.folder_path
         print("Path to results: ", folder_path)
-        # App is set up to be used by spanish speakes, so prediction type must be translated for further use
+        # App is set up to be used by spanish speakers, so prediction type must be translated for further use
         translation = {"classification": "clasificación",
                        "regression": "regresión",
                        "clustering": "agrupamiento"}
@@ -457,22 +458,20 @@ class StepByStepLoad(Window):
                 "Selección de hiperparámetros", str(global_var.uses_parameter_search),
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
+        print("Saving results document")
+        estimator_info_created = SBSResult.estimator_info(table,
+                                                          list(model.best_features),
+                                                          model.initial_parameters,
+                                                          model.best_parameters,
+                                                          score_text,
+                                                          folder_path)
+        print(f"Estimator info created: {estimator_info_created}")
+        print("Saving console logs")
         # Finally, after all is finished write info to their markdown files
         ted_text = self.ted_info.toPlainText()
         fixed_ted_text = ted_text.split("\n")
-        print("Saving console logs")
-        QThread.sleep(1)
-        SBSResult.console_info(fixed_ted_text, folder_path)
-        print("Saving results document")
-        QThread.sleep(1)
-        SBSResult.estimator_info(table,
-                                 list(model.best_features),
-                                 model.initial_parameters,
-                                 model.best_parameters,
-                                 score_text,
-                                 folder_path)
-        QThread.sleep(1)
-        print("Process finished successfully")
+        console_info_created = SBSResult.console_info(fixed_ted_text, folder_path)
+        print(f"Console info created: {console_info_created}")
 
     def last_warning_pop_up(self) -> bool:
         pop_up: PopUp = WarningPopUp()
@@ -492,6 +491,7 @@ class StepByStepLoad(Window):
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
+
         def write_error():
             for i in info:
                 self.add_info(i)

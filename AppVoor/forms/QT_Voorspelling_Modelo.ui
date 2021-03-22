@@ -281,7 +281,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>La primera opción da acceso a seleccionar el tipo de predicción, modelo e hiperparametros, mientras que la segúnda todo el proceso se realiza de forma automatica utilizando aprendizaje de máquina automático</string>
+      <string>La primera opción da acceso a seleccionar el tipo de predicción, modelo e hiperparametros, mientras que la segúnda todo el proceso se realiza de forma automatica utilizando AutoML</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

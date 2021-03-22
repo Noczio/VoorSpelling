@@ -74,13 +74,13 @@ class SBSMachineLearning(ABC):
         self._clf = value
 
     @abstractmethod
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
         pass
 
 
 class SimpleSBS(SBSMachineLearning):
 
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         self.best_parameters = self.initial_parameters  # they are the same in a simple model
@@ -88,94 +88,58 @@ class SimpleSBS(SBSMachineLearning):
         self.estimator.set_params(**self.best_parameters)
         self.best_features = x.columns.values  # get features as numpy data
         # return the cv score
-        if size == 0.0:
-            score = self._cv_score.get_score(x, y, self.estimator, score_type, n_folds_validation)
-            return score
-        elif 0.0 < size < 1.0:
-            x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
-            score = self._cv_score.get_score(x_train, y_train, self.estimator, score_type, n_folds_validation)
-            return score
-        else:
-            raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
+        score = self._cv_score.get_score(x, y, self.estimator, score_type, n_folds_validation)
+        return score
 
 
 class OnlyFeatureSelectionSBS(SBSMachineLearning):
 
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         self.best_parameters = self.initial_parameters  # they are the same in a only feature selection model
         # set clf params. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
         # get best features
-        best_features_dataframe = self.feature_selector.select_features(x, y, clone(self.estimator), score_type,
-                                                                        n_folds_validation)
+        best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
+                                                                               score_type, n_folds_validation)
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
-        # x now has only the best features
-        x = x[self.best_features]
-        # return the cv score
-        if size == 0.0:
-            score = self._cv_score.get_score(x, y, self.estimator, score_type, n_folds_validation)
-            return score
-        elif 0.0 < size < 1.0:
-            x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
-            score = self._cv_score.get_score(x_train, y_train, self.estimator, score_type, n_folds_validation)
-            return score
-        else:
-            raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
+        return score
 
 
 class OnlyParameterSearchSBS(SBSMachineLearning):
 
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         # transform initial params grid into a simple dict which is best_params
-        self.best_parameters = self.parameter_selector.search_parameters(x, y, self.initial_parameters,
-                                                                         n_folds_validation,
-                                                                         clone(self.estimator))
+        self.best_parameters, score = self.parameter_selector.search_parameters(x, y, self.initial_parameters,
+                                                                                n_folds_validation,
+                                                                                clone(self.estimator),
+                                                                                score_type)
         self.best_features = x.columns.values  # get features as numpy data
         # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
-        # return the cv score
-        if size == 0.0:
-            score = self._cv_score.get_score(x, y, self.estimator, score_type, n_folds_validation)
-            return score
-        elif 0.0 < size < 1.0:
-            x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
-            score = self._cv_score.get_score(x_train, y_train, self.estimator, score_type, n_folds_validation)
-            return score
-        else:
-            raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
+        return score
 
 
 class FeatureAndParameterSearchSBS(SBSMachineLearning):
 
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int, size: float = 0.0) -> float:
+    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
         # get x and y from df
         x, y = SplitterReturner.split_x_y_from_df(df)
         # transform best params grid into a simple dict
-        self.best_parameters = self.parameter_selector.search_parameters(x, y, self.initial_parameters,
-                                                                         n_folds_validation,
-                                                                         clone(self.estimator))
+        self.best_parameters, _ = self.parameter_selector.search_parameters(x, y, self.initial_parameters,
+                                                                            n_folds_validation,
+                                                                            clone(self.estimator),
+                                                                            score_type)
         # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
         # get best features
-        best_features_dataframe = self.feature_selector.select_features(x, y, clone(self.estimator), score_type,
-                                                                        n_folds_validation)
+        best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
+                                                                               score_type, n_folds_validation)
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
-        # x now has only the best features
-        x = x[self.best_features]
-        # return the cv score
-        if size == 0.0:
-            score = self._cv_score.get_score(x, y, self.estimator, score_type, n_folds_validation)
-            return score
-        elif 0.0 < size < 1.0:
-            x_train, _, y_train, _ = SplitterReturner.train_and_test_split(x, y, size)
-            score = self._cv_score.get_score(x_train, y_train, self.estimator, score_type, n_folds_validation)
-            return score
-        else:
-            raise ValueError("Size is neither 0.0 nor 0.0 < size < 1.0")
+        return score
 
 
 class ModelPossibilities(Switch):
