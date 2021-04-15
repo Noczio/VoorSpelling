@@ -91,7 +91,7 @@ class BackwardsFeatureSelection(FeatureSelection):
             else:
                 raise TypeError("Output is not a dataframe")
         else:
-            return x, None
+            raise ValueError("Not enough columns to start feature selection")
 
 
 class ForwardFeatureSelection(FeatureSelection):
@@ -200,7 +200,7 @@ class ForwardFeatureSelection(FeatureSelection):
             else:
                 raise TypeError("Output is not a dataframe")
         else:
-            return x, None
+            raise ValueError("Not enough columns to start feature selection")
 
 
 class FeatureSelectionPossibilities(Switch):
