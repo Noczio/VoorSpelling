@@ -35,6 +35,7 @@ class MyTestCase(unittest.TestCase):
         SBSResult.console_info(lots_of_info, ".\\SBS_ML_1")
 
     def test_markdown_file_creates_estimator_info(self):
+        file_creator_obj = FCreator()
         uses_parameter_search, uses_feature_selection = True, False
         model_instance = self._model_creator.create_model(uses_feature_selection, uses_parameter_search)
         # path to diabetes.csv file in project
@@ -52,25 +53,34 @@ class MyTestCase(unittest.TestCase):
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
-        score_text = "rendimiento promedio accuracy:" + " " + str(score)
+        score_text = "rendimiento promedio \"accuracy\":" + " " + str(score)
 
         info = ["Opción", "Selección",
                 "Tipo de predicción", "Classification",
                 "Estimador", model_instance.estimator.__class__.__name__,
-                "Selección de características", str(uses_feature_selection),
-                "Selección de hiperparámetros", str(uses_parameter_search),
+                "Selección de características",  "No" if model_instance.feature_selector is None
+                else model_instance.feature_selector.__class__.__name__,
+                "Selección de hiperparámetros", "No" if model_instance.parameter_selector is None
+                else model_instance.parameter_selector.__class__.__name__
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
-        folder_path = ".\\SBS_ML_1"
+        folder_path = file_creator_obj.folder_path
         SBSResult.estimator_info(table,
                                  list(model_instance.best_features),
                                  model_instance.initial_parameters,
                                  model_instance.best_parameters,
                                  score_text,
                                  folder_path)
+        """
+        score: 0.7604166666666666
+        best params OrderedDict([('algorithm', 'kd_tree'), ('leaf_size', 30), ('n_neighbors', 13), ('p', 1),
+         ('weights', 'uniform')])
+        best features ['Pregnancies' 'Glucose' 'BloodPressure' 'SkinThickness' 'Insulin' 'BMI'
+         'DiabetesPedigreeFunction' 'Age']
+        """
 
     def test_markdown_file_creates_estimator_and_console_info(self):
-        file_creator_obj = FCreator(".\\")
+        file_creator_obj = FCreator()
         captured_output = StringIO()  # Create StringIO object
         sys.stdout = captured_output  # and redirect stdout.
 
@@ -89,13 +99,15 @@ class MyTestCase(unittest.TestCase):
         model_instance.parameter_selector = self._parameter_selection_creator.create_parameter_selector("BS")
         model_instance.feature_selector = self._feature_selection_creator.create_feature_selector("BFS")
         score = model_instance.score_model(df, "accuracy", 10)
-        score_text = "rendimiento promedio accuracy:" + " " + str(score)
+        score_text = "rendimiento promedio \"accuracy\":" + " " + str(score)
 
         info = ["Opción", "Selección",
                 "Tipo de predicción", "Clasificación",
                 "Estimador", model_instance.estimator.__class__.__name__,
-                "Selección de características", str(uses_feature_selection),
-                "Selección de hiperparámetros", str(uses_parameter_search),
+                "Selección de características",  "No" if model_instance.feature_selector is None
+                else model_instance.feature_selector.__class__.__name__,
+                "Selección de hiperparámetros", "No" if model_instance.parameter_selector is None
+                else model_instance.parameter_selector.__class__.__name__
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
         folder_path = file_creator_obj.folder_path

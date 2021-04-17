@@ -156,22 +156,22 @@ class GridSearchParametersPossibilities(Switch):
 
     @staticmethod
     def LinearSVC() -> dict:
-        return {'C': np.arange(1, 31, 5),
-                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
+        return {'C': np.arange(1, 32, 5),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5.5, 0.5)),
                 'dual': (False,),
                 'penalty': ('l1', 'l2'),
-                'intercept_scaling': np.arange(1, 21, 5)}
+                'intercept_scaling': np.arange(1, 22, 5)}
 
     @staticmethod
     def SVC() -> dict:
-        return {'C': np.arange(1, 31, 5),
-                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
+        return {'C': np.arange(1, 32, 5),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5.5, 0.5)),
                 'gamma': ('scale', 'auto'),
                 'kernel': ('rbf', 'sigmoid')}
 
     @staticmethod
     def KNeighborsClassifier() -> dict:
-        return {'n_neighbors': np.arange(1, 31, 5),
+        return {'n_neighbors': np.arange(1, 32, 5),
                 'weights': ('uniform', 'distance'),
                 'leaf_size': (30, 50, 70, 100),
                 'p': (1, 2, 3, 5, 10, 15),
@@ -180,28 +180,28 @@ class GridSearchParametersPossibilities(Switch):
     @staticmethod
     def GaussianNB() -> dict:
         return {'var_smoothing': [0.000000001, 0.00000001, 0.0000001, 0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] +
-                list(np.arange(1, 100, 1))}
+                list(np.arange(1, 101, 1))}
 
     @staticmethod
     def LinearSVR() -> dict:
-        return {'epsilon': np.arange(0, 21, 3),
-                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
-                'C': np.arange(1, 31, 5),
+        return {'epsilon': np.arange(0, 22, 3),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5.5, 0.5)),
+                'C': np.arange(1, 32, 5),
                 'loss': ('epsilon_insensitive', 'squared_epsilon_insensitive'),
                 'dual': (False,)}
 
     @staticmethod
     def SVR() -> dict:
         return {'gamma': ('scale', 'auto'),
-                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
-                'C': np.arange(1, 31, 5),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5.5, 0.5)),
+                'C': np.arange(1, 32, 5),
                 'epsilon': (0.1, 1, 2, 3, 4, 5),
                 'kernel': ('rbf', 'sigmoid')}
 
     @staticmethod
     def Lasso() -> dict:
-        return {'alpha': np.arange(1, 31, 5),
-                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
+        return {'alpha': np.arange(1, 32, 5),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5.5, 0.5)),
                 'selection': ('cyclic', 'random'),
                 'positive': (True, False)}
 
@@ -209,36 +209,36 @@ class GridSearchParametersPossibilities(Switch):
     def SGDClassifier() -> dict:
         return {'penalty': ('l2', 'l1', 'elasticnet'),
                 'alpha': (0.0001, 0.01, 1, 2, 3, 4, 5),
-                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
-                'random_state': np.arange(0, 2000, 500)}
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5.5, 0.5)),
+                'random_state': np.arange(0, 2500, 500)}
 
     @staticmethod
     def AffinityPropagation() -> dict:
-        return {'damping': np.arange(0.5, 1, 0.1),
+        return {'damping': np.arange(0.5, 1.1, 0.1),
                 'convergence_iter': (15, 30, 40, 50),
                 'affinity': ('euclidean', 'precomputed'),
-                'random_state': np.arange(0, 2000, 500)}
+                'random_state': np.arange(0, 2500, 500)}
 
     @staticmethod
     def KMeans() -> dict:
-        return {'n_clusters': np.arange(1, 31, 5),
-                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5, 0.5)),
-                'random_state': np.arange(0, 2000, 500),
+        return {'n_clusters': np.arange(1, 32, 5),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0] + list(np.arange(1, 5.5, 0.5)),
+                'random_state': np.arange(0, 2500, 500),
                 'algorithm': ('auto', 'full', 'elkan')}
 
     @staticmethod
     def MiniBatchKMeans() -> dict:
-        return {'n_clusters': np.arange(1, 31, 5),
-                'tol': np.arange(0, 1, 0.001),
-                'batch_size': np.arange(100, 500, 100),
+        return {'n_clusters': np.arange(1, 32, 5),
+                'tol': [0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+                'batch_size': np.arange(100, 600, 100),
                 'reassignment_ratio': (0.01, 0.1, 1, 3, 5),
-                'random_state': np.arange(0, 2000, 500)}
+                'random_state': np.arange(0, 2500, 500)}
 
     @staticmethod
     def MeanShift() -> dict:
         return {'bin_seeding': (True, False),
                 'cluster_all': (True, False),
-                'min_bin_freq': np.arange(1, 30, 1)}
+                'min_bin_freq': np.arange(1, 32, 1)}
 
 
 class ParameterSearchCreator:

@@ -439,7 +439,7 @@ class StepByStepLoad(Window):
                       "clustering": "mutual_info_score"}
         print("Training ...")
         score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
-        score_text = f"Rendimiento {score_type[global_var.prediction_type]}: {score}"
+        score_text = f"Rendimiento promedio \"{score_type[global_var.prediction_type]}\": {score}"
         print("Score result -> ", score_text)
 
         f_creator = FCreator(".\\")
@@ -454,8 +454,10 @@ class StepByStepLoad(Window):
         info = ["Opción", "Selección",
                 "Tipo de predicción", prediction_type_text,
                 "Estimador", model.estimator.__class__.__name__,
-                "Selección de características", str(global_var.uses_feature_selection),
-                "Selección de hiperparámetros", str(global_var.uses_parameter_search),
+                "Selección de características", "No" if model.feature_selector is None
+                else model.feature_selector.__class__.__name__,
+                "Selección de hiperparámetros", "No" if model.parameter_selector is None
+                else model.parameter_selector.__class__.__name__
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
         print("Saving results document")
