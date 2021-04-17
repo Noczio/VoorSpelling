@@ -6,7 +6,7 @@ from mdutils.mdutils import MdUtils
 class FCreator:
     _folder_path: str
 
-    def __init__(self, location: str, obj: str = "SBS_ML") -> None:
+    def __init__(self, location: str = ".\\", obj: str = "SBS_ML") -> None:
         self._object = obj
         self._location = location
         self.create_folder()
