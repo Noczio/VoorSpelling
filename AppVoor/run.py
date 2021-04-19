@@ -2,6 +2,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+from typing import Any
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QRect, QThreadPool, QThread, QSize
 from PyQt5.QtGui import QFont, QTextCursor, QIcon
@@ -13,9 +14,8 @@ from backend_scripts.feature_selection import FeatureSelectorCreator, FeatureSel
 from backend_scripts.global_vars import GlobalVariables
 from backend_scripts.load_data import LoaderCreator
 from backend_scripts.model_creation import SBSModelCreator
-from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities, \
-    ParameterSearch
-from backend_scripts.parameter_search import ParameterSearchCreator
+from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
+from backend_scripts.parameter_search import ParameterSearchCreator, ParameterSearch
 from backend_scripts.result_creation import FCreator, SBSResult
 from backend_scripts.switcher import Switch
 from forms import resources
@@ -101,7 +101,7 @@ class HomeWindow(Window):
         super().__init__(window)
         self.btn_next.clicked.connect(self.next)
 
-    def on_load(self):
+    def on_load(self) -> None:
         super(HomeWindow, self).on_load()
         messenger = WelcomeMessenger(file_path="./jsonInfo/welcomeMessage.json")
         text = str(messenger)
@@ -144,7 +144,7 @@ class DataSetWindow(Window):
         self.btn_drag_file.loaded.connect(lambda: self.set_last_emitted("drag_file"))
         self.btn_next.clicked.connect(self.handle_file)
 
-    def set_load_and_drag_buttons(self):
+    def set_load_and_drag_buttons(self) -> None:
         # by default is CSV, so tsv button should not be visible
         self.btn_tsv.hide()
         # file buttons set geometry and style
@@ -175,10 +175,10 @@ class DataSetWindow(Window):
         self.btn_load_file.setText("Buscar archivo")
         self.btn_load_file.raise_()
 
-    def select_file_type(self, event):
+    def select_file_type(self, event) -> None:
         self.file_type = event
 
-    def set_last_emitted(self, event):
+    def set_last_emitted(self, event) -> None:
         if event == "load_file" and self.btn_load_file.file_path is not "":
             self.last = "load_file"
             self.btn_load_file.setStyleSheet(u"QPushButton{\n"
@@ -217,7 +217,7 @@ class DataSetWindow(Window):
                                              "border-right-color: rgb(215, 200, 239);\n"
                                              "}")
 
-    def next(self):
+    def next(self) -> None:
         next_form = MLTypeWindow(ui_window["model"])
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
@@ -363,7 +363,6 @@ class AutoLoad(Window):
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
-
         def write_error():
             for i in info:
                 self.add_info(i)
@@ -382,7 +381,7 @@ class AutoLoad(Window):
         temp_worker.signals.program_finished.connect(self.close_window)
         self.thread_pool.start(temp_worker, priority=2)
 
-    def add_info(self, info: any) -> None:
+    def add_info(self, info: Any) -> None:
         """Append text to the QTextEdit."""
         message: str = ""
         try:
@@ -446,7 +445,7 @@ class StepByStepLoad(Window):
                 model.feature_selector, model.parameter_selector)
         return data
 
-    def save_results(self, score_text: str, estimator: any, initial_parameters: dict, best_features: list,
+    def save_results(self, score_text: str, estimator: Any, initial_parameters: dict, best_features: list,
                      best_parameters: dict, feature_selector: FeatureSelection, parameter_selector: ParameterSearch,
                      folder_path: str) -> None:
         # App is set up to be used by spanish speakers, so prediction type must be translated for further use
@@ -501,7 +500,6 @@ class StepByStepLoad(Window):
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
-
         def write_error():
             for i in info:
                 self.add_info(i)
@@ -520,7 +518,7 @@ class StepByStepLoad(Window):
         temp_worker.signals.program_finished.connect(self.close_window)
         self.thread_pool.start(temp_worker, priority=2)
 
-    def add_info(self, info: any) -> None:
+    def add_info(self, info: Any) -> None:
         """Append text to the QTextEdit."""
         message: str = ""
         try:
@@ -580,7 +578,7 @@ class ClassificationSelection(Window):
         self.btn_KNN.clicked.connect(lambda: self.next("KNeighborsClassifier"))
         self.btn_Gaussian_Naive_Bayes.clicked.connect(lambda: self.next("GaussianNB"))
 
-    def next(self, event):
+    def next(self, event) -> None:
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -612,7 +610,7 @@ class RegressionSelection(Window):
         self.btn_SVR_rbf.clicked.connect(lambda: self.next("SVR"))
         self.btn_SGD.clicked.connect(lambda: self.next("SGDClassifier"))
 
-    def next(self, event):
+    def next(self, event) -> None:
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -644,7 +642,7 @@ class ClusteringSelection(Window):
         self.btn_Meanshift.clicked.connect(lambda: self.next("MeanShift"))
         self.btn_KMeans.clicked.connect(lambda: self.next("KMeans"))
 
-    def next(self, event):
+    def next(self, event) -> None:
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -706,7 +704,7 @@ class FeatureSelectionMethod(Window):
         self.btn_FS.clicked.connect(lambda: self.next("FFS"))
         self.btn_BFS.clicked.connect(lambda: self.next("BFS"))
 
-    def next(self, event):
+    def next(self, event) -> None:
         feature_selection_method = feature_selection_creator.create_feature_selector(event)
         global_var.feature_selection_method = feature_selection_method
         next_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
@@ -714,7 +712,7 @@ class FeatureSelectionMethod(Window):
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
-    def back(self):
+    def back(self) -> None:
         global_var.reset("uses_feature_selection", "feature_selection_method")
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
@@ -734,7 +732,7 @@ class WantHyperparameterSearch(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         if self.rbtn_Search_Hiperparameters.isChecked():
             global_var.uses_parameter_search = True
             next_form = HyperparameterMethod(ui_window["hyperparameter_search_method"])
@@ -749,7 +747,7 @@ class WantHyperparameterSearch(Window):
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
-    def back(self):
+    def back(self) -> None:
         global_var.reset("uses_feature_selection", "uses_parameter_search")
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
@@ -769,13 +767,13 @@ class HyperparameterMethod(Window):
         self.btn_info_Bayesian_Search.clicked.connect(lambda: self.useful_info_pop_up("bayesian_search"))
         self.btn_info_Grid_Search.clicked.connect(lambda: self.useful_info_pop_up("grid_search"))
 
-    def next(self):
+    def next(self) -> None:
         next_form = StepByStepLoad(ui_window["result_screen"])
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
-    def handle_input(self, event):
+    def handle_input(self, event) -> None:
         result = self.last_warning_pop_up()
         if result:
             user_selection = global_var.estimator.__class__.__name__
@@ -791,7 +789,7 @@ class HyperparameterMethod(Window):
                 global_var.parameter_search_method = parameter_search_method
             self.next()
 
-    def back(self):
+    def back(self) -> None:
         global_var.reset("uses_parameter_search", "parameter_search_method")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
@@ -805,7 +803,7 @@ class FinalResult(Window):
         super().__init__(window)
         self.lbl_end.mouseReleaseEvent = self.next
 
-    def close_window(self):
+    def close_window(self) -> None:
         super(FinalResult, self).close_window()
         widget.close()
 
@@ -828,7 +826,7 @@ class AffinityPropagationParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"convergence": int(self.sb_convergencia.value()),
@@ -859,7 +857,7 @@ class GaussianNBParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"var_smoothing": float(self.sb_variable_refinamiento.value())}
@@ -890,7 +888,7 @@ class KMeansParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"n_clusters": int(self.sb_clusters.value()),
@@ -925,7 +923,7 @@ class KNeighborsClassifierParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"n_neighbors": int(self.sb_numero_vecinos.value()),
@@ -960,7 +958,7 @@ class LassoParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"alpha": float(self.sb_alfa.value()),
@@ -995,7 +993,7 @@ class LinearSVCParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
@@ -1030,7 +1028,7 @@ class LinearSVRParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
@@ -1067,7 +1065,7 @@ class MeanShiftParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"bin_seeding": bool(self.cb_contenedor_semillas.currentText()),
@@ -1102,7 +1100,7 @@ class MiniBatchKMeansParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"n_clusters": int(self.sb_clusters.value()),
@@ -1137,7 +1135,7 @@ class SGDClassifierParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"alpha": float(self.sb_alfa.value()),
@@ -1172,7 +1170,7 @@ class SVCParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
@@ -1207,7 +1205,7 @@ class SVRParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
