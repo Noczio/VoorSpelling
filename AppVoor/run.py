@@ -9,11 +9,12 @@ from PyQt5.QtWidgets import QApplication
 
 from backend_scripts.auto_ml import JarAutoML, AutoExecutioner
 from backend_scripts.estimator_creation import EstimatorCreator
-from backend_scripts.feature_selection import FeatureSelectorCreator
+from backend_scripts.feature_selection import FeatureSelectorCreator, FeatureSelection
 from backend_scripts.global_vars import GlobalVariables
 from backend_scripts.load_data import LoaderCreator
 from backend_scripts.model_creation import SBSModelCreator
-from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
+from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities, \
+    ParameterSearch
 from backend_scripts.parameter_search import ParameterSearchCreator
 from backend_scripts.result_creation import FCreator, SBSResult
 from backend_scripts.switcher import Switch
@@ -325,7 +326,7 @@ class AutoLoad(Window):
         self.ml_worker.setAutoDelete(True)
         self.thread_pool.start(self.ml_worker, priority=1)
 
-    def close_window(self):
+    def close_window(self) -> None:
         super(AutoLoad, self).close_window()
         widget.close()
 
@@ -414,7 +415,7 @@ class StepByStepLoad(Window):
         self.ml_worker.setAutoDelete(True)
         self.thread_pool.start(self.ml_worker, priority=1)
 
-    def close_window(self):
+    def close_window(self) -> None:
         super(StepByStepLoad, self).close_window()
         widget.close()
 
@@ -425,26 +426,29 @@ class StepByStepLoad(Window):
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
-    def train_model(self) -> None:
-        """Train, create and get outputs"""
-        print("Starting process")
+    def get_model_data(self) -> tuple:
+        # gets important info and the scores model
         model = model_creator.create_model(global_var.uses_feature_selection, global_var.uses_parameter_search)
         model.estimator = global_var.estimator
         model.initial_parameters = global_var.parameters
         model.feature_selector = global_var.feature_selection_method
         model.parameter_selector = global_var.parameter_search_method
-
+        # scoring metric by default for each type of prediction
         score_type = {"classification": "accuracy",
                       "regression": "r2",
                       "clustering": "mutual_info_score"}
         print("Training ...")
+        # score model, then get a user friendly message for that score and finally return data
         score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
         score_text = f"Rendimiento promedio \"{score_type[global_var.prediction_type]}\": {score}"
         print("Score result -> ", score_text)
+        data = (score_text, model.estimator, model.initial_parameters, model.best_features, model.best_parameters,
+                model.feature_selector, model.parameter_selector)
+        return data
 
-        f_creator = FCreator(".\\")
-        folder_path = f_creator.folder_path
-        print("Path to results: ", folder_path)
+    def save_results(self, score_text: str, estimator: any, initial_parameters: dict, best_features: list,
+                     best_parameters: dict, feature_selector: FeatureSelection, parameter_selector: ParameterSearch,
+                     folder_path: str) -> None:
         # App is set up to be used by spanish speakers, so prediction type must be translated for further use
         translation = {"classification": "clasificación",
                        "regression": "regresión",
@@ -453,25 +457,31 @@ class StepByStepLoad(Window):
         # All important info is storage in a variable to be displayed in a markdown file as a 2x5 table
         info = ["Opción", "Selección",
                 "Tipo de predicción", prediction_type_text,
-                "Estimador", model.estimator.__class__.__name__,
-                "Selección de características", "No" if model.feature_selector is None
-                else model.feature_selector.__class__.__name__,
-                "Selección de hiperparámetros", "No" if model.parameter_selector is None
-                else model.parameter_selector.__class__.__name__
+                "Estimador", estimator.__class__.__name__,
+                "Selección de características", "No" if feature_selector is None
+                else feature_selector.__class__.__name__,
+                "Selección de hiperparámetros", "No" if parameter_selector is None
+                else parameter_selector.__class__.__name__
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
         print("Saving results document")
-        SBSResult.estimator_info(table,
-                                 list(model.best_features),
-                                 model.initial_parameters,
-                                 model.best_parameters,
-                                 score_text,
-                                 folder_path)
+        # save estimator info results into markdown file
+        SBSResult.estimator_info(table, best_features, initial_parameters, best_parameters, score_text, folder_path)
         print("Saving console logs")
-        # Finally, after all is finished write info to their markdown files
+        # Finally, after all is finished write ted info to its markdown file
         ted_text = self.ted_info.toPlainText()
         fixed_ted_text = ted_text.split("\n")
         SBSResult.console_info(fixed_ted_text, folder_path)
+
+    def train_model(self) -> None:
+        score_text, estimator, initial_parameters, best_features, best_parameters, feature_selector,\
+        parameter_selector = self.get_model_data()
+        f_creator = FCreator()
+        folder_path = f_creator.folder_path
+        print("Path to results: ", folder_path)
+        self.save_results(score_text, estimator, initial_parameters, list(best_features), best_parameters,
+                          feature_selector, parameter_selector, folder_path)
+        print("Process finished successfully")
 
     def last_warning_pop_up(self) -> bool:
         pop_up: PopUp = WarningPopUp()
