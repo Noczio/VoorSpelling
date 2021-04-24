@@ -467,7 +467,7 @@ class StepByStepLoad(Window):
         # save estimator info results into markdown file
         SBSResult.estimator_info(table, best_features, initial_parameters, best_parameters, score_text, folder_path)
 
-    def save_logs(self, folder_path: str):
+    def save_logs(self, folder_path: str) -> None:
         print("Saving console logs ...")
         # Finally, after all is finished write ted info to its markdown file
         ted_text = self.ted_info.toPlainText()
