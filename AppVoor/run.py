@@ -435,7 +435,7 @@ class StepByStepLoad(Window):
         model.parameter_selector = global_var.parameter_search_method
         # scoring metric by default for each type of prediction
         score_type = {"classification": "accuracy",
-                      "regression": "r2",
+                      "regression": "neg_mean_squared_error",
                       "clustering": "mutual_info_score"}
         print("Training ...")
         # score model, then get a user friendly message for that score and finally return data

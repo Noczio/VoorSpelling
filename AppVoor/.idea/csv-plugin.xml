@@ -87,6 +87,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\tests\feature_selection_test.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\tests\help_test.py">
           <value>
             <Attribute>
