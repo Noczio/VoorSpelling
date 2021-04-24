@@ -1,4 +1,5 @@
 import sys
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -9,12 +10,12 @@ from PyQt5.QtWidgets import QApplication
 
 from backend_scripts.auto_ml import JarAutoML, AutoExecutioner
 from backend_scripts.estimator_creation import EstimatorCreator
-from backend_scripts.feature_selection import FeatureSelectorCreator
+from backend_scripts.feature_selection import FeatureSelectorCreator, FeatureSelection
 from backend_scripts.global_vars import GlobalVariables
 from backend_scripts.load_data import LoaderCreator
 from backend_scripts.model_creation import SBSModelCreator
 from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
-from backend_scripts.parameter_search import ParameterSearchCreator
+from backend_scripts.parameter_search import ParameterSearchCreator, ParameterSearch
 from backend_scripts.result_creation import FCreator, SBSResult
 from backend_scripts.switcher import Switch
 from forms import resources
@@ -100,7 +101,7 @@ class HomeWindow(Window):
         super().__init__(window)
         self.btn_next.clicked.connect(self.next)
 
-    def on_load(self):
+    def on_load(self) -> None:
         super(HomeWindow, self).on_load()
         messenger = WelcomeMessenger(file_path="./jsonInfo/welcomeMessage.json")
         text = str(messenger)
@@ -143,7 +144,7 @@ class DataSetWindow(Window):
         self.btn_drag_file.loaded.connect(lambda: self.set_last_emitted("drag_file"))
         self.btn_next.clicked.connect(self.handle_file)
 
-    def set_load_and_drag_buttons(self):
+    def set_load_and_drag_buttons(self) -> None:
         # by default is CSV, so tsv button should not be visible
         self.btn_tsv.hide()
         # file buttons set geometry and style
@@ -174,10 +175,10 @@ class DataSetWindow(Window):
         self.btn_load_file.setText("Buscar archivo")
         self.btn_load_file.raise_()
 
-    def select_file_type(self, event):
+    def select_file_type(self, event) -> None:
         self.file_type = event
 
-    def set_last_emitted(self, event):
+    def set_last_emitted(self, event) -> None:
         if event == "load_file" and self.btn_load_file.file_path is not "":
             self.last = "load_file"
             self.btn_load_file.setStyleSheet(u"QPushButton{\n"
@@ -216,7 +217,7 @@ class DataSetWindow(Window):
                                              "border-right-color: rgb(215, 200, 239);\n"
                                              "}")
 
-    def next(self):
+    def next(self) -> None:
         next_form = MLTypeWindow(ui_window["model"])
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
@@ -325,7 +326,7 @@ class AutoLoad(Window):
         self.ml_worker.setAutoDelete(True)
         self.thread_pool.start(self.ml_worker, priority=1)
 
-    def close_window(self):
+    def close_window(self) -> None:
         super(AutoLoad, self).close_window()
         widget.close()
 
@@ -381,7 +382,7 @@ class AutoLoad(Window):
         temp_worker.signals.program_finished.connect(self.close_window)
         self.thread_pool.start(temp_worker, priority=2)
 
-    def add_info(self, info: any) -> None:
+    def add_info(self, info: Any) -> None:
         """Append text to the QTextEdit."""
         message: str = ""
         try:
@@ -414,7 +415,7 @@ class StepByStepLoad(Window):
         self.ml_worker.setAutoDelete(True)
         self.thread_pool.start(self.ml_worker, priority=1)
 
-    def close_window(self):
+    def close_window(self) -> None:
         super(StepByStepLoad, self).close_window()
         widget.close()
 
@@ -425,26 +426,9 @@ class StepByStepLoad(Window):
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
-    def train_model(self) -> None:
-        """Train, create and get outputs"""
-        print("Starting process")
-        model = model_creator.create_model(global_var.uses_feature_selection, global_var.uses_parameter_search)
-        model.estimator = global_var.estimator
-        model.initial_parameters = global_var.parameters
-        model.feature_selector = global_var.feature_selection_method
-        model.parameter_selector = global_var.parameter_search_method
-
-        score_type = {"classification": "accuracy",
-                      "regression": "r2",
-                      "clustering": "mutual_info_score"}
-        print("Training ...")
-        score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
-        score_text = f"Rendimiento promedio \"{score_type[global_var.prediction_type]}\": {score}"
-        print("Score result -> ", score_text)
-
-        f_creator = FCreator(".\\")
-        folder_path = f_creator.folder_path
-        print("Path to results: ", folder_path)
+    def save_results(self, score_text: str, estimator: Any, initial_parameters: dict, best_features: list,
+                     best_parameters: dict, feature_selector: FeatureSelection, parameter_selector: ParameterSearch,
+                     folder_path: str) -> None:
         # App is set up to be used by spanish speakers, so prediction type must be translated for further use
         translation = {"classification": "clasificación",
                        "regression": "regresión",
@@ -453,25 +437,45 @@ class StepByStepLoad(Window):
         # All important info is storage in a variable to be displayed in a markdown file as a 2x5 table
         info = ["Opción", "Selección",
                 "Tipo de predicción", prediction_type_text,
-                "Estimador", model.estimator.__class__.__name__,
-                "Selección de características", "No" if model.feature_selector is None
-                else model.feature_selector.__class__.__name__,
-                "Selección de hiperparámetros", "No" if model.parameter_selector is None
-                else model.parameter_selector.__class__.__name__
+                "Estimador", estimator.__class__.__name__,
+                "Selección de características", "No" if feature_selector is None
+                else feature_selector.__class__.__name__,
+                "Selección de hiperparámetros", "No" if parameter_selector is None
+                else parameter_selector.__class__.__name__
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
-        print("Saving results document")
-        SBSResult.estimator_info(table,
-                                 list(model.best_features),
-                                 model.initial_parameters,
-                                 model.best_parameters,
-                                 score_text,
-                                 folder_path)
-        print("Saving console logs")
-        # Finally, after all is finished write info to their markdown files
+        print("Saving results document ...")
+        # save estimator info results into markdown file
+        SBSResult.estimator_info(table, best_features, initial_parameters, best_parameters, score_text, folder_path)
+
+    def save_logs(self, folder_path: str) -> None:
+        print("Saving console logs ...")
+        # Finally, after all is finished write ted info to its markdown file
         ted_text = self.ted_info.toPlainText()
         fixed_ted_text = ted_text.split("\n")
         SBSResult.console_info(fixed_ted_text, folder_path)
+
+    def train_model(self) -> None:
+        # gets important info and the scores model
+        model = model_creator.create_model(global_var.uses_feature_selection, global_var.uses_parameter_search)
+        model.estimator = global_var.estimator
+        model.initial_parameters = global_var.parameters
+        model.feature_selector = global_var.feature_selection_method
+        model.parameter_selector = global_var.parameter_search_method
+        # scoring metric by default for each type of prediction
+        score_type = {"classification": "accuracy",
+                      "regression": "neg_mean_squared_error",
+                      "clustering": "mutual_info_score"}
+        print("Training ...")
+        # score model, then get a user friendly message for that score and finally return data
+        score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
+        score_text = f"Rendimiento promedio \"{score_type[global_var.prediction_type]}\": {score}"
+        f_creator = FCreator()
+        folder_path = f_creator.folder_path
+        self.save_results(score_text, model.estimator, model.initial_parameters, list(model.best_features),
+                          model.best_parameters, model.feature_selector, model.parameter_selector, folder_path)
+        self.save_logs(folder_path)
+        print("Process finished successfully")
 
     def last_warning_pop_up(self) -> bool:
         pop_up: PopUp = WarningPopUp()
@@ -510,7 +514,7 @@ class StepByStepLoad(Window):
         temp_worker.signals.program_finished.connect(self.close_window)
         self.thread_pool.start(temp_worker, priority=2)
 
-    def add_info(self, info: any) -> None:
+    def add_info(self, info: Any) -> None:
         """Append text to the QTextEdit."""
         message: str = ""
         try:
@@ -570,7 +574,7 @@ class ClassificationSelection(Window):
         self.btn_KNN.clicked.connect(lambda: self.next("KNeighborsClassifier"))
         self.btn_Gaussian_Naive_Bayes.clicked.connect(lambda: self.next("GaussianNB"))
 
-    def next(self, event):
+    def next(self, event) -> None:
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -602,7 +606,7 @@ class RegressionSelection(Window):
         self.btn_SVR_rbf.clicked.connect(lambda: self.next("SVR"))
         self.btn_SGD.clicked.connect(lambda: self.next("SGDClassifier"))
 
-    def next(self, event):
+    def next(self, event) -> None:
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -634,7 +638,7 @@ class ClusteringSelection(Window):
         self.btn_Meanshift.clicked.connect(lambda: self.next("MeanShift"))
         self.btn_KMeans.clicked.connect(lambda: self.next("KMeans"))
 
-    def next(self, event):
+    def next(self, event) -> None:
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -696,7 +700,7 @@ class FeatureSelectionMethod(Window):
         self.btn_FS.clicked.connect(lambda: self.next("FFS"))
         self.btn_BFS.clicked.connect(lambda: self.next("BFS"))
 
-    def next(self, event):
+    def next(self, event) -> None:
         feature_selection_method = feature_selection_creator.create_feature_selector(event)
         global_var.feature_selection_method = feature_selection_method
         next_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
@@ -704,7 +708,7 @@ class FeatureSelectionMethod(Window):
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
-    def back(self):
+    def back(self) -> None:
         global_var.reset("uses_feature_selection", "feature_selection_method")
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
@@ -724,7 +728,7 @@ class WantHyperparameterSearch(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         if self.rbtn_Search_Hiperparameters.isChecked():
             global_var.uses_parameter_search = True
             next_form = HyperparameterMethod(ui_window["hyperparameter_search_method"])
@@ -739,7 +743,7 @@ class WantHyperparameterSearch(Window):
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
-    def back(self):
+    def back(self) -> None:
         global_var.reset("uses_feature_selection", "uses_parameter_search")
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
@@ -759,13 +763,13 @@ class HyperparameterMethod(Window):
         self.btn_info_Bayesian_Search.clicked.connect(lambda: self.useful_info_pop_up("bayesian_search"))
         self.btn_info_Grid_Search.clicked.connect(lambda: self.useful_info_pop_up("grid_search"))
 
-    def next(self):
+    def next(self) -> None:
         next_form = StepByStepLoad(ui_window["result_screen"])
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
-    def handle_input(self, event):
+    def handle_input(self, event) -> None:
         result = self.last_warning_pop_up()
         if result:
             user_selection = global_var.estimator.__class__.__name__
@@ -781,7 +785,7 @@ class HyperparameterMethod(Window):
                 global_var.parameter_search_method = parameter_search_method
             self.next()
 
-    def back(self):
+    def back(self) -> None:
         global_var.reset("uses_parameter_search", "parameter_search_method")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
@@ -795,7 +799,7 @@ class FinalResult(Window):
         super().__init__(window)
         self.lbl_end.mouseReleaseEvent = self.next
 
-    def close_window(self):
+    def close_window(self) -> None:
         super(FinalResult, self).close_window()
         widget.close()
 
@@ -818,13 +822,13 @@ class AffinityPropagationParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"convergence": int(self.sb_convergencia.value()),
                           "damping": float(self.sb_amortiguacion.value()),
                           "random_state": int(self.sb_semilla_random.value()),
-                          "affinity": str(self.cb_penalidad.currentText())}
+                          "affinity": str(self.cb_afinidad.currentText())}
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
@@ -849,7 +853,7 @@ class GaussianNBParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"var_smoothing": float(self.sb_variable_refinamiento.value())}
@@ -880,7 +884,7 @@ class KMeansParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"n_clusters": int(self.sb_clusters.value()),
@@ -915,7 +919,7 @@ class KNeighborsClassifierParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"n_neighbors": int(self.sb_numero_vecinos.value()),
@@ -950,7 +954,7 @@ class LassoParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"alpha": float(self.sb_alfa.value()),
@@ -985,7 +989,7 @@ class LinearSVCParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
@@ -1020,7 +1024,7 @@ class LinearSVRParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
@@ -1057,7 +1061,7 @@ class MeanShiftParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"bin_seeding": bool(self.cb_contenedor_semillas.currentText()),
@@ -1092,7 +1096,7 @@ class MiniBatchKMeansParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"n_clusters": int(self.sb_clusters.value()),
@@ -1127,7 +1131,7 @@ class SGDClassifierParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"alpha": float(self.sb_alfa.value()),
@@ -1162,7 +1166,7 @@ class SVCParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),
@@ -1197,7 +1201,7 @@ class SVRParameters(Window):
 
         self.btn_next.clicked.connect(self.next)
 
-    def next(self):
+    def next(self) -> None:
         result = self.last_warning_pop_up()
         if result:
             parameters = {"C": float(self.sb_parametro_regularizacion.value()),

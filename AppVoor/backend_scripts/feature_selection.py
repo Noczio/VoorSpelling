@@ -38,17 +38,17 @@ class BackwardsFeatureSelection(FeatureSelection):
             for i in range(new_x_length):
                 # drop feature by index and store the results in a temp variable
                 temp_col_name = x.columns[i]
-                print("Temp column name to drop: ", temp_col_name)
+                print("Temp column name to drop:", temp_col_name)
                 temp_x = x.drop([temp_col_name], axis=1)
                 # get its score in a cv and append that value to the score_lst
                 score = self._cv_score.get_score(temp_x, y, model, score_type, n_folds_validation)
-                print("Score with last temp column dropped: ", score)
+                print("Score with last temp column dropped:", score)
                 score_lst.append(score)
             # get the max score from the score_lst
             max_score = max(score_lst)
-            print("Max score from this iteration: ", max_score)
+            print("Max score from this iteration:", max_score)
             # check if this iteration was worth it. If not then break the recursive method
-            if actual_score > max_score:
+            if is_greater_than(actual_score, max_score, score_type):
                 print("There was not an improvement in this iteration")
                 return x, actual_score
             # get the index of all score with max score
@@ -153,7 +153,7 @@ class ForwardFeatureSelection(FeatureSelection):
             max_score = max(score_lst)  # best score
             print("Max score from this iteration: ", max_score)
             # check if this iteration was worth it. If not then break the recursive method
-            if max_score < actual_score:
+            if is_fewer_than(max_score, actual_score, score_type):
                 print("There was not an improvement in this iteration")
                 return best_x, actual_score
 
@@ -255,3 +255,16 @@ class FeatureSelectorCreator:
                            if callable(getattr(FeatureSelectionPossibilities, func)) and not
                            (func.startswith("__") or func is "case")]
         return tuple(available_types)
+
+
+def is_fewer_than(first: float, second: float, score_type: str):
+    if score_type is "roc_auc" or "accuracy" or "mutual_info_score" or "completeness_score":
+        return first < second
+    return second < first
+
+
+def is_greater_than(first: float, second: float, score_type: str):
+    if score_type is "roc_auc" or "accuracy" or "mutual_info_score" or "completeness_score":
+        return first > second
+    return second > first
+

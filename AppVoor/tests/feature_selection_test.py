@@ -3,6 +3,7 @@ import unittest
 from backend_scripts.estimator_creation import EstimatorCreator
 from backend_scripts.feature_selection import FeatureSelectorCreator
 from backend_scripts.load_data import LoaderCreator
+from backend_scripts.score import CVScore
 from backend_scripts.split_data import SplitterReturner
 
 
@@ -205,12 +206,19 @@ class MyTestCase(unittest.TestCase):
         prm = {'alpha': 1.0, 'random_state': 8, 'selection': 'cyclic', 'tol': 0.0001}
         clf.set_params(**prm)
         # get new_x with new features
-        new_x = fs.select_features(x, y, clf, "explained_variance", 10)
-        print(new_x)
+        new_x, score = fs.select_features(x, y, clf, "explained_variance", 10)
+        print(new_x.columns.values, f"\n{score}")
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
         print("lasso", is_fewer_than_original)
+        """
+        ['total sulfur dioxide' 'fixed acidity' 'volatile acidity' 'citric acid'
+         'residual sugar' 'chlorides' 'free sulfur dioxide' 'density' 'pH'
+         'sulphates' 'alcohol'] 
+        0.020356773894023884
+        lasso False
+        """
 
     def test_iris_has_fewer_features_with_KMEANS_FFS_mutual_info_score_5(self):
         # load molecules.csv from disk
@@ -252,13 +260,82 @@ class MyTestCase(unittest.TestCase):
         # create a simple MeanShift estimator
         clf = self._estimator_creator.create_estimator("MeanShift")
         # get new_x with new features
-        new_x = fs.select_features(x, y, clf, "mutual_info_score", 10)
-        print(new_x)
+        new_x, score = fs.select_features(x, y, clf, "mutual_info_score", 10)
+        print(new_x.columns.values, f"\n{score}")
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
         # for this dataset and estimator with bfs all of the features are necessary
         print(is_fewer_than_original)
+
+    def test_wine_quality_with_LSVR_FFS_neg_mean_squared_error_10(self):
+        # load molecules.csv from disk
+        folder_name = "datasets"
+        file_name = "winequality-red.csv"
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        # get dataframe using LoaderCreator
+        scsv_type = self._loader_creator.create_loader(test_full_path, "scsv")
+        df = scsv_type.get_file_transformed()
+        # get x and y from SplitterReturner
+        x, y = SplitterReturner.split_x_y_from_df(df)
+        # create a feature selector
+        fs = self._feature_selector_creator.create_feature_selector("FFS")
+        # create a simple LSVR estimator
+        clf = self._estimator_creator.create_estimator("LinearSVR")
+        clf.set_params(max_iter=20000, dual=False, loss="squared_epsilon_insensitive")
+        # get new_x with new features
+        new_x, score = fs.select_features(x, y, clf, "neg_mean_squared_error", 10)
+        print(new_x.columns.values, f"\n{score}")
+        """
+        ['alcohol' 'volatile acidity' 'sulphates' 'chlorides'] 
+        -0.4389980629892999
+        """
+
+    def test_wine_quality_with_LSVR_BFS_neg_mean_squared_error_10(self):
+        # load molecules.csv from disk
+        folder_name = "datasets"
+        file_name = "winequality-red.csv"
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        # get dataframe using LoaderCreator
+        scsv_type = self._loader_creator.create_loader(test_full_path, "scsv")
+        df = scsv_type.get_file_transformed()
+        # get x and y from SplitterReturner
+        x, y = SplitterReturner.split_x_y_from_df(df)
+        # create a feature selector
+        fs = self._feature_selector_creator.create_feature_selector("BFS")
+        # create a simple LSVR estimator
+        clf = self._estimator_creator.create_estimator("LinearSVR")
+        clf.set_params(max_iter=20000, dual=False, loss="squared_epsilon_insensitive")
+        # get new_x with new features
+        new_x, score = fs.select_features(x, y, clf, "neg_mean_squared_error", 10)
+        print(new_x.columns.values, f"\n{score}")
+        """
+        ['fixed acidity' 'volatile acidity' 'citric acid' 'residual sugar'
+         'chlorides' 'free sulfur dioxide' 'total sulfur dioxide' 'density' 'pH'
+         'sulphates' 'alcohol'] 
+        -0.44334763280535405
+        """
+
+    def test_wine_quality_with_LSVR_original_score_10(self):
+        # load molecules.csv from disk
+        folder_name = "datasets"
+        file_name = "winequality-red.csv"
+        test_full_path = ".\\..\\" + folder_name + "\\" + file_name
+        # get dataframe using LoaderCreator
+        scsv_type = self._loader_creator.create_loader(test_full_path, "scsv")
+        df = scsv_type.get_file_transformed()
+        # get x and y from SplitterReturner
+        x, y = SplitterReturner.split_x_y_from_df(df)
+        # create a simple LSVR estimator
+        clf = self._estimator_creator.create_estimator("LinearSVR")
+        clf.set_params(max_iter=20000, dual=False, loss="squared_epsilon_insensitive")
+        # get new_x with new features
+        scorer = CVScore()
+        score = scorer.get_score(x, y, clf, "neg_mean_squared_error", 10)
+        print(score)
+        """
+        -0.44334763280535405
+        """
 
 
 if __name__ == '__main__':

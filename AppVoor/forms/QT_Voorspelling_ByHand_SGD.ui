@@ -574,7 +574,7 @@ background-color: rgb(160, 150, 240);
       <number>0</number>
      </property>
     </widget>
-    <widget class="QComboBox" name="cb_seleccion">
+    <widget class="QComboBox" name="cb_penalidad">
      <property name="geometry">
       <rect>
        <x>670</x>

@@ -23,7 +23,9 @@ class CVModelScore(ABC):
 
 
 class CVScore(CVModelScore):
-    _types = ("roc_auc", "accuracy", "r2", "explained_variance", "mutual_info_score")
+    _types = ("roc_auc", "accuracy",
+              "r2", "neg_mean_squared_error", "explained_variance",
+              "mutual_info_score", "completeness_score")
 
     def get_score(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
                   n_folds_validation: int) -> float:
