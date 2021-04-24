@@ -426,25 +426,6 @@ class StepByStepLoad(Window):
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
-    def get_model_data(self) -> tuple:
-        # gets important info and the scores model
-        model = model_creator.create_model(global_var.uses_feature_selection, global_var.uses_parameter_search)
-        model.estimator = global_var.estimator
-        model.initial_parameters = global_var.parameters
-        model.feature_selector = global_var.feature_selection_method
-        model.parameter_selector = global_var.parameter_search_method
-        # scoring metric by default for each type of prediction
-        score_type = {"classification": "accuracy",
-                      "regression": "neg_mean_squared_error",
-                      "clustering": "mutual_info_score"}
-        print("Training ...")
-        # score model, then get a user friendly message for that score and finally return data
-        score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
-        score_text = f"Rendimiento promedio \"{score_type[global_var.prediction_type]}\": {score}"
-        data = (score_text, model.estimator, model.initial_parameters, model.best_features, model.best_parameters,
-                model.feature_selector, model.parameter_selector)
-        return data
-
     def save_results(self, score_text: str, estimator: Any, initial_parameters: dict, best_features: list,
                      best_parameters: dict, feature_selector: FeatureSelection, parameter_selector: ParameterSearch,
                      folder_path: str) -> None:
@@ -475,13 +456,24 @@ class StepByStepLoad(Window):
         SBSResult.console_info(fixed_ted_text, folder_path)
 
     def train_model(self) -> None:
-        score_text, estimator, initial_parameters, best_features, best_parameters, feature_selector, \
-        parameter_selector = self.get_model_data()
+        # gets important info and the scores model
+        model = model_creator.create_model(global_var.uses_feature_selection, global_var.uses_parameter_search)
+        model.estimator = global_var.estimator
+        model.initial_parameters = global_var.parameters
+        model.feature_selector = global_var.feature_selection_method
+        model.parameter_selector = global_var.parameter_search_method
+        # scoring metric by default for each type of prediction
+        score_type = {"classification": "accuracy",
+                      "regression": "neg_mean_squared_error",
+                      "clustering": "mutual_info_score"}
+        print("Training ...")
+        # score model, then get a user friendly message for that score and finally return data
+        score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
+        score_text = f"Rendimiento promedio \"{score_type[global_var.prediction_type]}\": {score}"
         f_creator = FCreator()
         folder_path = f_creator.folder_path
-        print("Path to results:", folder_path)
-        self.save_results(score_text, estimator, initial_parameters, list(best_features), best_parameters,
-                          feature_selector, parameter_selector, folder_path)
+        self.save_results(score_text, model.estimator, model.initial_parameters, list(model.best_features),
+                          model.best_parameters, model.feature_selector, model.parameter_selector, folder_path)
         self.save_logs(folder_path)
         print("Process finished successfully")
 

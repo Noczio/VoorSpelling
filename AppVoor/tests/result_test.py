@@ -58,7 +58,7 @@ class MyTestCase(unittest.TestCase):
         info = ["Opción", "Selección",
                 "Tipo de predicción", "Classification",
                 "Estimador", model_instance.estimator.__class__.__name__,
-                "Selección de características",  "No" if model_instance.feature_selector is None
+                "Selección de características", "No" if model_instance.feature_selector is None
                 else model_instance.feature_selector.__class__.__name__,
                 "Selección de hiperparámetros", "No" if model_instance.parameter_selector is None
                 else model_instance.parameter_selector.__class__.__name__
@@ -104,7 +104,52 @@ class MyTestCase(unittest.TestCase):
         info = ["Opción", "Selección",
                 "Tipo de predicción", "Clasificación",
                 "Estimador", model_instance.estimator.__class__.__name__,
-                "Selección de características",  "No" if model_instance.feature_selector is None
+                "Selección de características", "No" if model_instance.feature_selector is None
+                else model_instance.feature_selector.__class__.__name__,
+                "Selección de hiperparámetros", "No" if model_instance.parameter_selector is None
+                else model_instance.parameter_selector.__class__.__name__
+                ]
+        table = {"columns": 2, "rows": 5, "info": info}
+        folder_path = file_creator_obj.folder_path
+        SBSResult.estimator_info(table,
+                                 list(model_instance.best_features),
+                                 model_instance.initial_parameters,
+                                 model_instance.best_parameters,
+                                 score_text,
+                                 folder_path)
+
+        sys.stdout = sys.__stdout__
+        console_output = captured_output.getvalue()  # Now works as before.
+        SBSResult.console_info(console_output.split("\n"), folder_path)
+
+    def test_markdown_file_creates_estimator_and_console_info_with_wine_quality_red_sgd_bfs(self):
+        file_creator_obj = FCreator()
+        captured_output = StringIO()  # Create StringIO object
+        sys.stdout = captured_output  # and redirect stdout.
+
+        uses_parameter_search, uses_feature_selection = False, True
+        model_instance = self._model_creator.create_model(uses_feature_selection, uses_parameter_search)
+        # path to diabetes.csv file in project
+        path = ".\\..\\datasets\\winequality-red-coma.csv"
+        # get df with loader creator
+        csv_type = self._loader_creator.create_loader(path, "CSV")
+        df = csv_type.get_file_transformed()
+        # create an estimator using EstimatorCreator
+        estimator = self._estimator_creator.create_estimator("SGDClassifier")
+        # set model instance attributes
+        model_instance.initial_parameters = {'penalty': 'elasticnet',
+                                             'alpha': 0.01,
+                                             'tol': 0.0001,
+                                             'random_state': 512}
+        model_instance.estimator = estimator
+        model_instance.feature_selector = self._feature_selection_creator.create_feature_selector("BFS")
+        score = model_instance.score_model(df, "neg_mean_squared_error", 10)
+        score_text = "rendimiento promedio \"neg_mean_squared_error\":" + " " + str(score)
+
+        info = ["Opción", "Selección",
+                "Tipo de predicción", "Clasificación",
+                "Estimador", model_instance.estimator.__class__.__name__,
+                "Selección de características", "No" if model_instance.feature_selector is None
                 else model_instance.feature_selector.__class__.__name__,
                 "Selección de hiperparámetros", "No" if model_instance.parameter_selector is None
                 else model_instance.parameter_selector.__class__.__name__
