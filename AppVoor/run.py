@@ -836,7 +836,7 @@ class AffinityPropagationParameters(Window):
             parameters = {"convergence": int(self.sb_convergencia.value()),
                           "damping": float(self.sb_amortiguacion.value()),
                           "random_state": int(self.sb_semilla_random.value()),
-                          "affinity": str(self.cb_penalidad.currentText())}
+                          "affinity": str(self.cb_afinidad.currentText())}
             global_var.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
