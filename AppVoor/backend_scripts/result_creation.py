@@ -1,4 +1,5 @@
 import os
+from time import sleep
 
 from mdutils.mdutils import MdUtils
 
@@ -82,6 +83,7 @@ class SBSResult:
             max_num_lines = len(info)
             print(f"Total lines to copy {max_num_lines}")
             for counter, line in enumerate(info, start=1):
+                sleep(0.025)
                 md_file.new_line(line)
                 print(f"{counter} out of {max_num_lines} lines")
             md_file.create_md_file()
