@@ -1,8 +1,8 @@
 import sys
+from typing import Any
 
 import numpy as np
 import pandas as pd
-from typing import Any
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QRect, QThreadPool, QThread, QSize
 from PyQt5.QtGui import QFont, QTextCursor, QIcon
@@ -363,6 +363,7 @@ class AutoLoad(Window):
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
+
         def write_error():
             for i in info:
                 self.add_info(i)
@@ -440,7 +441,6 @@ class StepByStepLoad(Window):
         # score model, then get a user friendly message for that score and finally return data
         score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
         score_text = f"Rendimiento promedio \"{score_type[global_var.prediction_type]}\": {score}"
-        print("Score result -> ", score_text)
         data = (score_text, model.estimator, model.initial_parameters, model.best_features, model.best_parameters,
                 model.feature_selector, model.parameter_selector)
         return data
@@ -463,23 +463,26 @@ class StepByStepLoad(Window):
                 else parameter_selector.__class__.__name__
                 ]
         table = {"columns": 2, "rows": 5, "info": info}
-        print("Saving results document")
+        print("Saving results document ...")
         # save estimator info results into markdown file
         SBSResult.estimator_info(table, best_features, initial_parameters, best_parameters, score_text, folder_path)
-        print("Saving console logs")
+
+    def save_logs(self, folder_path: str):
+        print("Saving console logs ...")
         # Finally, after all is finished write ted info to its markdown file
         ted_text = self.ted_info.toPlainText()
         fixed_ted_text = ted_text.split("\n")
         SBSResult.console_info(fixed_ted_text, folder_path)
 
     def train_model(self) -> None:
-        score_text, estimator, initial_parameters, best_features, best_parameters, feature_selector,\
+        score_text, estimator, initial_parameters, best_features, best_parameters, feature_selector, \
         parameter_selector = self.get_model_data()
         f_creator = FCreator()
         folder_path = f_creator.folder_path
-        print("Path to results: ", folder_path)
+        print("Path to results:", folder_path)
         self.save_results(score_text, estimator, initial_parameters, list(best_features), best_parameters,
                           feature_selector, parameter_selector, folder_path)
+        self.save_logs(folder_path)
         print("Process finished successfully")
 
     def last_warning_pop_up(self) -> bool:
@@ -500,6 +503,7 @@ class StepByStepLoad(Window):
 
     def handle_error(self, error) -> None:
         """Print error message to the QTextEdit"""
+
         def write_error():
             for i in info:
                 self.add_info(i)

@@ -10,10 +10,13 @@
 6. Open cmd in the root directory and install all requirements listed in the requirements file (pip install -r requirements.txt)
 7. Finally, run the script run.py in your console (if a venv was created it must be activated beforehand and then write in the console: python run.py)
 
-Something went wrong? follow our video installation guide: https://youtu.be/GgfnH1oH9_g
-Turn on subtitles for non Spanish speakers
-
 ## Notes
+
+Something went wrong? follow our video installation guide: https://youtu.be/GgfnH1oH9_g
+
+New to Voorspelling? watch our tutorial guide: https://youtu.be/zGv-sBpXklY
+
+Turn on subtitles for non Spanish speakers
 
 - Voorspelling (VS) in made in Spanish and for Windows x64 (English version coming up in late 2021).
 - Remember to give credits to us if you happen to modify or distribute our program in any way.
@@ -23,5 +26,5 @@ Turn on subtitles for non Spanish speakers
 
 1. User interface remake. sub 1080p resolutions and improvements
 2. English interface version
-3. Executable version
+3. Executable version (exe) for Windows
 4. Support for Mac and Linux
