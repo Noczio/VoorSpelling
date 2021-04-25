@@ -1,6 +1,8 @@
 import os
 from time import sleep
+from typing import Any
 
+from joblib import dump
 from mdutils.mdutils import MdUtils
 
 
@@ -74,7 +76,7 @@ class SBSResult:
             raise Exception
 
     @staticmethod
-    def console_info(info: list, path: str) -> None:
+    def console_info(info: list, path: str, sleep_time: float = 0.025) -> None:
         f_title = "Logs_del_estimador_paso_a_paso"
         f_name = path + "\\" + f_title + ".md"
         try:
@@ -83,9 +85,19 @@ class SBSResult:
             max_num_lines = len(info)
             print(f"Total lines to copy {max_num_lines}")
             for counter, line in enumerate(info, start=1):
-                sleep(0.025)
+                if sleep_time > 0:
+                    sleep(sleep_time)
                 md_file.new_line(line)
                 print(f"{counter} out of {max_num_lines} lines")
             md_file.create_md_file()
+        except Exception():
+            raise Exception
+
+    @staticmethod
+    def dump_estimator(estimator: Any, path: str) -> None:
+        try:
+            f_title = "Estimador_SBS"
+            f_name = path + "\\" + f_title + ".joblib"
+            dump(estimator, f_name)
         except Exception():
             raise Exception

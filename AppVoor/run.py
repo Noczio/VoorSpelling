@@ -447,6 +447,8 @@ class StepByStepLoad(Window):
         print("Saving results document ...")
         # save estimator info results into markdown file
         SBSResult.estimator_info(table, best_features, initial_parameters, best_parameters, score_text, folder_path)
+        print("Saving estimator ...")
+        SBSResult.dump_estimator(estimator, folder_path)
 
     def save_logs(self, folder_path: str) -> None:
         print("Saving console logs ...")

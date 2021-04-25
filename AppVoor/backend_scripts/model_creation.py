@@ -88,7 +88,8 @@ class SimpleSBS(SBSMachineLearning):
         self.estimator.set_params(**self.best_parameters)
         self.best_features = x.columns.values  # get features as numpy data
         # return the cv score
-        score = self._cv_score.get_score(x, y, self.estimator, score_type, n_folds_validation)
+        score = self._cv_score.get_score(x, y, clone(self.estimator), score_type, n_folds_validation)
+        self.estimator.fit(x, y)
         return score
 
 
@@ -104,6 +105,7 @@ class OnlyFeatureSelectionSBS(SBSMachineLearning):
         best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
                                                                                score_type, n_folds_validation)
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
+        self.estimator.fit(best_features_dataframe, y)
         return score
 
 
@@ -120,6 +122,7 @@ class OnlyParameterSearchSBS(SBSMachineLearning):
         self.best_features = x.columns.values  # get features as numpy data
         # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
+        self.estimator.fit(x, y)
         return score
 
 
@@ -139,6 +142,7 @@ class FeatureAndParameterSearchSBS(SBSMachineLearning):
         best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
                                                                                score_type, n_folds_validation)
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
+        self.estimator.fit(best_features_dataframe, y)
         return score
 
 
