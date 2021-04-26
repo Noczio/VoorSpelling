@@ -1,9 +1,10 @@
-from PyQt5 import uic
-from PyQt5.QtWidgets import QMainWindow
 import sys
 
-from resources.json_info.help import HelpMessage
+from PyQt5 import uic
+from PyQt5.QtWidgets import QMainWindow
+
 from resources.frontend_scripts.pop_up import PopUp, InfoPopUp, WarningPopUp
+from resources.json_info.help import HelpMessage
 from version import __version__ as version
 
 
@@ -55,6 +56,7 @@ class Window(QMainWindow):
 
     def on_load(self) -> None:
         """Additional behaviour on load"""
+        # this if is a patch. Changes app version text.
         if hasattr(self, "lbl_left_4"):
             info = f"Version {version}\nLicencia BSD 3"
             self.lbl_left_4.setText(info)
