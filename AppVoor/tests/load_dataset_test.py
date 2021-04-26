@@ -1,6 +1,6 @@
 import unittest
 
-from backend_scripts.load_data import LoaderCreator
+from resources.backend_scripts.load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):
@@ -152,8 +152,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_file_is_not_a_dataset_it_is_a_json(self):
         # load mol.csv from disk. This file does not exist
-        folder_name = "jsonInfo"
-        file_name = "helpMessage.json"
+        folder_name = "json_info"
+        file_name = "help_message.json"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         with self.assertRaises(Exception):
             # get dataframe using LoaderCreator

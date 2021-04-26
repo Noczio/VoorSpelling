@@ -1,12 +1,12 @@
 from typing import Any
 
-from backend_scripts.is_data import DataEnsurer
-from jsonInfo.json_to_data import JSONMessage
+from resources.backend_scripts.is_data import DataEnsurer
+from resources.json_info.json_to_data import JSONMessage
 
 
 class HelpMessage(JSONMessage):
 
-    def __init__(self, file_path: str, data_type: Any = dict):
+    def __init__(self, file_path: str, data_type: Any = dict) -> None:
         super().__init__(file_path, data_type)
 
     # abstract class method implementation

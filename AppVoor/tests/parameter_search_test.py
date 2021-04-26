@@ -1,11 +1,11 @@
 import unittest
 
-from backend_scripts.estimator_creation import EstimatorCreator
-from backend_scripts.load_data import LoaderCreator
-from backend_scripts.parameter_search import BayesianSearchParametersPossibilities
-from backend_scripts.parameter_search import GridSearchParametersPossibilities
-from backend_scripts.parameter_search import ParameterSearchCreator
-from backend_scripts.split_data import SplitterReturner
+from resources.backend_scripts.estimator_creation import EstimatorCreator
+from resources.backend_scripts.load_data import LoaderCreator
+from resources.backend_scripts.parameter_search import BayesianSearchParametersPossibilities
+from resources.backend_scripts.parameter_search import GridSearchParametersPossibilities
+from resources.backend_scripts.parameter_search import ParameterSearchCreator
+from resources.backend_scripts.split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):
@@ -32,10 +32,6 @@ class MyTestCase(unittest.TestCase):
         best_prm, score = ps.search_parameters(x, y, prm, 10, model, "accuracy")
         print(best_prm)
         print(score)
-        """
-        OrderedDict([('C', 16.22196240010574), ('gamma', 'auto'), ('kernel', 'rbf'), ('tol', 1.0)])
-        0.7553191489361702
-        """
 
     def test_wine_quality_LASSO_BS(self):
         # path to diabetes.csv file in project
@@ -56,10 +52,6 @@ class MyTestCase(unittest.TestCase):
         best_prm, score = ps.search_parameters(x, y, initial_prm, 10, estimator, "r2")
         print(best_prm)
         print(score)
-        """
-        OrderedDict([('alpha', 1.0), ('positive', False), ('selection', 'random'), ('tol', 0.0001)])
-        -0.09088822235447445
-        """
 
     def test_diabetes_lsvc_search_bs(self):
         # path to diabetes.csv file in project
@@ -78,10 +70,6 @@ class MyTestCase(unittest.TestCase):
         # get best params from ps.search_parameters
         best_prm, _ = ps.search_parameters(x, y, prm, 10, model, "accuracy")
         print(best_prm)
-        """
-        OrderedDict([('C', 1.0), ('dual', False), ('intercept_scaling', 20.01104404531666), ('penalty', 'l2'),
-         ('tol', 0.001958131110500166)])
-        """
 
     def test_wine_quality_LASSO_GS(self):
         # path to diabetes.csv file in project
@@ -101,9 +89,6 @@ class MyTestCase(unittest.TestCase):
         # get best params from ps.search_parameters
         best_prm, _ = ps.search_parameters(x, y, initial_prm, 10, estimator, "r2")
         print(best_prm)
-        """
-        {'alpha': 1, 'positive': False, 'selection': 'cyclic', 'tol': 0}
-        """
 
     def test_molecules_SVC_grid_search(self):
         # path to molecules.csv file in project
@@ -124,10 +109,6 @@ class MyTestCase(unittest.TestCase):
         # get best params from ps.search_parameters
         best_prm, score = ps.search_parameters(x, y, prm, 10, model, "accuracy")
         print(best_prm, score)
-        """
-        {'C': 9, 'gamma': 'auto', 'kernel': 'rbf', 'tol': 1.0} 
-        0.7553191489361702
-        """
 
     def test_diabetes_LSVC_grid_search(self):
         # path to diabetes.csv file in project
@@ -148,10 +129,6 @@ class MyTestCase(unittest.TestCase):
         best_prm, score = ps.search_parameters(x, y, prm, 10, model, "accuracy")
         print(best_prm)
         print(score)
-        """
-        {'C': 1, 'dual': False, 'intercept_scaling': 1, 'penalty': 'l1', 'tol': 0.01}
-        0.7747778537252221
-        """
 
 
 if __name__ == '__main__':

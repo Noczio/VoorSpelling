@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from backend_scripts.is_data import DataEnsurer
+from resources.backend_scripts.is_data import DataEnsurer
 
 NpArray = np.ndarray
 DataFrame = pd.DataFrame

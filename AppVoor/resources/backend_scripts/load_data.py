@@ -4,8 +4,8 @@ from typing import Union, TypeVar, Generic
 
 import pandas as pd
 
-from backend_scripts.is_data import DataEnsurer
-from backend_scripts.switcher import Switch
+from resources.backend_scripts.is_data import DataEnsurer
+from resources.backend_scripts.switcher import Switch
 
 T = TypeVar('T')
 DataFrame = pd.DataFrame

@@ -1,12 +1,12 @@
 import unittest
 
-from backend_scripts.estimator_creation import EstimatorCreator
-from backend_scripts.feature_selection import FeatureSelectorCreator
-from backend_scripts.is_data import DataEnsurer
-from backend_scripts.load_data import LoaderCreator
-from backend_scripts.model_creation import SBSModelCreator
-from backend_scripts.parameter_search import ParameterSearchCreator
-from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
+from resources.backend_scripts.estimator_creation import EstimatorCreator
+from resources.backend_scripts.feature_selection import FeatureSelectorCreator
+from resources.backend_scripts.is_data import DataEnsurer
+from resources.backend_scripts.load_data import LoaderCreator
+from resources.backend_scripts.model_creation import SBSModelCreator
+from resources.backend_scripts.parameter_search import ParameterSearchCreator
+from resources.backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
 
 
 class MyTestCase(unittest.TestCase):
@@ -42,12 +42,7 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if isinstance(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-        """
-        score: 0.8301623931623933
-        best params {'C': 2, 'tol': 0.01, 'dual': False, 'penalty': 'l1', 'intercept_scaling': 3.45}
-        best features ['Pregnancies' 'Glucose' 'BloodPressure' 'SkinThickness' 'Insulin' 'BMI'
-         'DiabetesPedigreeFunction' 'Age']
-        """
+
 
     def test_simple_model_SVC_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -70,12 +65,7 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-        """
-        score: 0.5
-        best params {'C': 2, 'gamma': 'auto', 'tol': 0.01, 'kernel': 'sigmoid'}
-        best features ['Pregnancies' 'Glucose' 'BloodPressure' 'SkinThickness' 'Insulin' 'BMI'
-         'DiabetesPedigreeFunction' 'Age']
-        """
+
 
     def test_only_feature_selection_model_SVC_FFS_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -101,11 +91,7 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-        """
-        best params {'C': 5, 'gamma': 'scale', 'tol': 0.01, 'kernel': 'poly'}
-        best features ['Glucose' 'BMI' 'Age' 'DiabetesPedigreeFunction' 'BloodPressure'
-         'Pregnancies']
-        """
+
 
     def test_only_feature_selection_model_SVC_BFS__roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -131,11 +117,7 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-        """
-        score: 0.5102361984626136
-        best params {'C': 5, 'gamma': 'auto', 'tol': 1, 'kernel': 'sigmoid'}
-        best features ['Pregnancies' 'Glucose' 'BloodPressure']
-        """
+
 
     def test_only_parameter_search_model_SVC_GS_roc_auc_5_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -162,19 +144,7 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-        """
-        best params {'C': 2, 'gamma': 'auto', 'kernel': 'rbf', 'tol': 1.5}
-        best features ['n_atoms_without_Hydrogen' 'n_atoms_with_Hydrogen' 'm_weight'
-         'm_avg_weigth' 'm_weigth_without_Hydrogen' 'n_valence_electrons'
-         'n_aliphatic_carbocycles' 'n_aliphatic_heterocycles' 'n_aliphatic_rings'
-         'n_amide_bonds' 'n_aromatic_carbocycles' 'n_aromatic_heterocycles'
-         'n_aromatic_rings' 'n_saturated_carbocycles' 'n_saturated_heterocycles'
-         'n_saturated_rings' 'n_HBA' 'n_HBD' 'n_hetero_atoms' 'n_hetero_cycles'
-         'n_rings' 'n_strict_rotable_bonds' 'n_non_strict_rotable_bonds'
-         'n_primary_carbon_atoms' 'n_HOH' 'n_O' 'n_briged_head_atoms'
-         'n_atoms_stereo_centers' 'n_atoms_unspecified_stereo_centers' 'm_logp'
-         'm_mr' 'fraction_CSP3']
-        """
+
 
     def test_all_model_SVC_BS_FFS_roc_auc_5_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -203,11 +173,7 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-        """
-        score: 0.8299343116701609
-        best params OrderedDict([('C', 7.1096025677305486), ('gamma', 'scale'), ('kernel', 'rbf'), ('tol', 1.0)])
-        best features ['Glucose' 'Age' 'BMI' 'DiabetesPedigreeFunction']
-        """
+
 
     def test_all_model_LASSO_BS_BFS_r2_5_score_is_float(self):
         # create a simple model using SBSModelCreator
@@ -236,13 +202,7 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) else False
         self.assertTrue(is_valid)
-        """
-        score: -0.0419944898180886
-        best params OrderedDict([('alpha', 1.0), ('positive', False), ('selection', 'cyclic'), ('tol', 0.0001)])
-        best features ['fixed acidity' 'volatile acidity' 'citric acid' 'residual sugar'
-         'chlorides' 'free sulfur dioxide' 'total sulfur dioxide' 'density' 'pH'
-         'sulphates' 'alcohol']
-        """
+
 
     def test_all_model_GNB_BS_FFS_roc_auc_5_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -271,11 +231,7 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-        """
-        score: 0.8318259958071279
-        best params OrderedDict([('var_smoothing', 7.677692005912027e-05)])
-        best features ['Glucose' 'BMI' 'Age' 'DiabetesPedigreeFunction']
-        """
+
 
     def test_PS_model_GNB_GS_roc_auc_5_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -301,12 +257,6 @@ class MyTestCase(unittest.TestCase):
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-        """
-        score: 0.8144919636617749
-        best params {'var_smoothing': 0.001}
-        best features ['Pregnancies' 'Glucose' 'BloodPressure' 'SkinThickness' 'Insulin' 'BMI'
-         'DiabetesPedigreeFunction' 'Age']
-        """
 
 
 if __name__ == '__main__':

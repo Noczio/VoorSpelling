@@ -1,8 +1,8 @@
 from typing import Any
 
-from backend_scripts.is_data import DataEnsurer
-from jsonInfo.json_to_data import JSONMessage
-from jsonInfo.random_generator import Randomizer
+from resources.backend_scripts.is_data import DataEnsurer
+from resources.json_info.json_to_data import JSONMessage
+from resources.backend_scripts.random_generator import Randomizer
 
 
 class WelcomeMessage(JSONMessage):
@@ -27,7 +27,7 @@ class WelcomeMessage(JSONMessage):
 
 class WelcomeMessenger:
 
-    def __init__(self, file_path: str = ".\\welcomeMessage.json") -> None:
+    def __init__(self, file_path: str) -> None:
         # initialize a WelcomeMessage
         self._json_message: JSONMessage = WelcomeMessage(file_path)
         # start, end and step for random choice
