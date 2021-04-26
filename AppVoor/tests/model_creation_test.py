@@ -302,8 +302,8 @@ class MyTestCase(unittest.TestCase):
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
         """
-        score: 0.8144919636617749
-        best params {'var_smoothing': 0.001}
+        score: 0.8187037037037037
+        best params {'var_smoothing': 1e-05}
         best features ['Pregnancies' 'Glucose' 'BloodPressure' 'SkinThickness' 'Insulin' 'BMI'
          'DiabetesPedigreeFunction' 'Age']
         """

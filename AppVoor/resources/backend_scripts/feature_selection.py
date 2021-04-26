@@ -17,7 +17,7 @@ class FeatureSelection(ABC):
 
     @abstractmethod
     def select_features(self, x: DataFrame, y: NpArray, model: Any, score_type: str,
-                        n_folds_validation: int) -> DataFrame:
+                        n_folds_validation: int) -> tuple:
         pass
 
 
