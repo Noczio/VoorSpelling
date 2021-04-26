@@ -1,11 +1,11 @@
 import unittest
 
-from backend_scripts.estimator_creation import EstimatorCreator
-from backend_scripts.load_data import LoaderCreator
-from backend_scripts.parameter_search import BayesianSearchParametersPossibilities
-from backend_scripts.parameter_search import GridSearchParametersPossibilities
-from backend_scripts.parameter_search import ParameterSearchCreator
-from backend_scripts.split_data import SplitterReturner
+from resources.backend_scripts.estimator_creation import EstimatorCreator
+from resources.backend_scripts.load_data import LoaderCreator
+from resources.backend_scripts.parameter_search import BayesianSearchParametersPossibilities
+from resources.backend_scripts.parameter_search import GridSearchParametersPossibilities
+from resources.backend_scripts.parameter_search import ParameterSearchCreator
+from resources.backend_scripts.split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):

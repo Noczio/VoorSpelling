@@ -8,22 +8,23 @@ from PyQt5.QtCore import QRect, QThreadPool, QThread, QSize
 from PyQt5.QtGui import QFont, QTextCursor, QIcon
 from PyQt5.QtWidgets import QApplication
 
-from backend_scripts.auto_ml import JarAutoML, AutoExecutioner
-from backend_scripts.estimator_creation import EstimatorCreator
-from backend_scripts.feature_selection import FeatureSelectorCreator, FeatureSelection
-from backend_scripts.global_vars import GlobalVariables
-from backend_scripts.load_data import LoaderCreator
-from backend_scripts.model_creation import SBSModelCreator
-from backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
-from backend_scripts.parameter_search import ParameterSearchCreator, ParameterSearch
-from backend_scripts.result_creation import FCreator, SBSResult
-from backend_scripts.switcher import Switch
-from forms import resources
-from frontend_scripts.modified_widgets import QDragAndDropButton, QLoadButton
-from frontend_scripts.parallel import LongWorker, EmittingStream
-from frontend_scripts.pop_up import PopUp, WarningPopUp, CriticalPopUp
-from frontend_scripts.view import Window
-from jsonInfo.welcome import WelcomeMessenger
+from resources.backend_scripts.auto_ml import JarAutoML, AutoExecutioner
+from resources.backend_scripts.estimator_creation import EstimatorCreator
+from resources.backend_scripts.feature_selection import FeatureSelectorCreator, FeatureSelection
+from resources.backend_scripts.global_vars import GlobalVariables
+from resources.backend_scripts.load_data import LoaderCreator
+from resources.backend_scripts.model_creation import SBSModelCreator
+from resources.backend_scripts.parameter_search import BayesianSearchParametersPossibilities
+from resources.backend_scripts.parameter_search import GridSearchParametersPossibilities
+from resources.backend_scripts.parameter_search import ParameterSearchCreator, ParameterSearch
+from resources.backend_scripts.result_creation import FCreator, SBSResult
+from resources.backend_scripts.switcher import Switch
+from resources.forms import QT_resources
+from resources.frontend_scripts.modified_widgets import QDragAndDropButton, QLoadButton
+from resources.frontend_scripts.parallel import LongWorker, EmittingStream
+from resources.frontend_scripts.pop_up import PopUp, WarningPopUp, CriticalPopUp
+from resources.frontend_scripts.view import Window
+from resources.json_info.welcome import WelcomeMessenger
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray
@@ -103,7 +104,7 @@ class HomeWindow(Window):
 
     def on_load(self) -> None:
         super(HomeWindow, self).on_load()
-        messenger = WelcomeMessenger(file_path="./jsonInfo/welcomeMessage.json")
+        messenger = WelcomeMessenger(".\\resources\\json_info\\welcome_message.json")
         text = str(messenger)
         self.lbl_description.setText(text)
 
@@ -1235,45 +1236,45 @@ if __name__ == "__main__":
     feature_selection_creator = FeatureSelectorCreator.get_instance()
     parameter_selection_creator = ParameterSearchCreator.get_instance()
     # dict with path to every view
-    ui_window = {"home": ".\\forms\\QT_Voorspelling_Home.ui",
-                 "dataset": ".\\forms\\QT_Voorspelling_DataSet.ui",
-                 "model": ".\\forms\\QT_Voorspelling_Modelo.ui",
-                 "prediction_type": ".\\forms\\QT_Voorspelling_TipoPrediccion.ui",
-                 "classification": ".\\forms\\QT_Voorspelling_TipoP_Clasificacion.ui",
-                 "regression": ".\\forms\\QT_Voorspelling_TipoP_Regresion.ui",
-                 "clustering": ".\\forms\\QT_Voorspelling_TipoP_Agrupamiento.ui",
-                 "feature_selection": ".\\forms\\QT_Voorspelling_Caracteristicas.ui",
-                 "feature_selection_method": ".\\forms\\QT_Voorspelling_CaracteristicasMetodo.ui",
-                 "hyperparameter_search": ".\\forms\\QT_Voorspelling_Hiperparametros.ui",
-                 "hyperparameter_search_method": ".\\forms\\QT_Voorspelling_HiperparametrosMetodo.ui",
-                 "result_screen": ".\\forms\\QT_Voorspelling_Resultado.ui",
-                 "result_final": ".\\forms\\QT_Voorspelling_ResultadoFinal.ui",
-                 "LinearSVC": ".\\forms\\QT_Voorspelling_ByHand_LinearSVC.ui",
-                 "SVC": ".\\forms\\QT_Voorspelling_ByHand_SVC_rbf.ui",
-                 "KNeighborsClassifier": ".\\forms\\QT_Voorspelling_ByHand_KNN.ui",
-                 "GaussianNB": ".\\forms\\QT_Voorspelling_ByHand_GaussianNaiveBayes.ui",
-                 "LinearSVR": ".\\forms\\QT_Voorspelling_ByHand_LinearSVR.ui",
-                 "SVR": ".\\forms\\QT_Voorspelling_ByHand_SVR_rbf.ui",
-                 "Lasso": ".\\forms\\QT_Voorspelling_ByHand_Lasso.ui",
-                 "SGDClassifier": ".\\forms\\QT_Voorspelling_ByHand_SGD.ui",
-                 "AffinityPropagation": ".\\forms\\QT_Voorspelling_ByHand_AffinityPropagation.ui",
-                 "KMeans": ".\\forms\\QT_Voorspelling_ByHand_KMeans.ui",
-                 "MiniBatchKMeans": ".\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
-                 "MeanShift": ".\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
+    ui_window = {"home": ".\\resources\\forms\\QT_Voorspelling_Home.ui",
+                 "dataset": ".\\resources\\forms\\QT_Voorspelling_DataSet.ui",
+                 "model": ".\\resources\\forms\\QT_Voorspelling_Modelo.ui",
+                 "prediction_type": ".\\resources\\forms\\QT_Voorspelling_TipoPrediccion.ui",
+                 "classification": ".\\resources\\forms\\QT_Voorspelling_TipoP_Clasificacion.ui",
+                 "regression": ".\\resources\\forms\\QT_Voorspelling_TipoP_Regresion.ui",
+                 "clustering": ".\\resources\\forms\\QT_Voorspelling_TipoP_Agrupamiento.ui",
+                 "feature_selection": ".\\resources\\forms\\QT_Voorspelling_Caracteristicas.ui",
+                 "feature_selection_method": ".\\resources\\forms\\QT_Voorspelling_CaracteristicasMetodo.ui",
+                 "hyperparameter_search": ".\\resources\\forms\\QT_Voorspelling_Hiperparametros.ui",
+                 "hyperparameter_search_method": ".\\resources\\forms\\QT_Voorspelling_HiperparametrosMetodo.ui",
+                 "result_screen": ".\\resources\\forms\\QT_Voorspelling_Resultado.ui",
+                 "result_final": ".\\resources\\forms\\QT_Voorspelling_ResultadoFinal.ui",
+                 "LinearSVC": ".\\resources\\forms\\QT_Voorspelling_ByHand_LinearSVC.ui",
+                 "SVC": ".\\resources\\forms\\QT_Voorspelling_ByHand_SVC_rbf.ui",
+                 "KNeighborsClassifier": ".\\resources\\forms\\QT_Voorspelling_ByHand_KNN.ui",
+                 "GaussianNB": ".\\resources\\forms\\QT_Voorspelling_ByHand_GaussianNaiveBayes.ui",
+                 "LinearSVR": ".\\resources\\forms\\QT_Voorspelling_ByHand_LinearSVR.ui",
+                 "SVR": ".\\resources\\forms\\QT_Voorspelling_ByHand_SVR_rbf.ui",
+                 "Lasso": ".\\resources\\forms\\QT_Voorspelling_ByHand_Lasso.ui",
+                 "SGDClassifier": ".\\resources\\forms\\QT_Voorspelling_ByHand_SGD.ui",
+                 "AffinityPropagation": ".\\resources\\forms\\QT_Voorspelling_ByHand_AffinityPropagation.ui",
+                 "KMeans": ".\\resources\\forms\\QT_Voorspelling_ByHand_KMeans.ui",
+                 "MiniBatchKMeans": ".\\resources\\forms\\QT_Voorspelling_ByHand_MiniBatchKMeans.ui",
+                 "MeanShift": ".\\resources\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
                  }
     # initialize qt resources
-    resources.qInitResources()
+    QT_resources.qInitResources()
     # create an app and widget variable to control app logic
     app = QApplication(sys.argv)
     # set app name for all views
     app.setApplicationName("Voorspelling")
     # then change app's icon. There's different sizes if needed
     app_icon = QIcon()
-    app_icon.addFile('.\\icos\\voorspelling_logo_ico_16px.ico', QSize(16, 16))
-    app_icon.addFile('.\\icos\\voorspelling_logo_ico_32x.ico', QSize(32, 32))
-    app_icon.addFile('.\\icos\\voorspelling_logo_ico_48px.ico', QSize(48, 48))
-    app_icon.addFile('.\\icos\\voorspelling_logo_ico_54px.ico', QSize(64, 64))
-    app_icon.addFile('.\\icos\\voorspelling_logo_ico_256px.ico', QSize(256, 256))
+    app_icon.addFile('.\\resources\\icos\\voorspelling_logo_ico_16px.ico', QSize(16, 16))
+    app_icon.addFile('.\\resources\\icos\\voorspelling_logo_ico_32x.ico', QSize(32, 32))
+    app_icon.addFile('.\\resources\\icos\\voorspelling_logo_ico_48px.ico', QSize(48, 48))
+    app_icon.addFile('.\\resources\\icos\\voorspelling_logo_ico_54px.ico', QSize(64, 64))
+    app_icon.addFile('.\\resources\\icos\\voorspelling_logo_ico_256px.ico', QSize(256, 256))
     app.setWindowIcon(app_icon)
     # QStackedWidget object to control app's views
     widget = QtWidgets.QStackedWidget()

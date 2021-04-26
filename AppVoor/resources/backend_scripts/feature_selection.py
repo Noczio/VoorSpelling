@@ -4,9 +4,9 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from backend_scripts.is_data import DataEnsurer
-from backend_scripts.score import CVScore, CVModelScore
-from backend_scripts.switcher import Switch
+from resources.backend_scripts.is_data import DataEnsurer
+from resources.backend_scripts.score import CVScore, CVModelScore
+from resources.backend_scripts.switcher import Switch
 
 NpArray = np.ndarray
 DataFrame = pd.DataFrame
@@ -257,14 +257,15 @@ class FeatureSelectorCreator:
         return tuple(available_types)
 
 
+# Patch when a score is not the bigger the better. The first is fewer than the second
 def is_fewer_than(first: float, second: float, score_type: str):
     if score_type is "roc_auc" or "accuracy" or "mutual_info_score" or "completeness_score":
         return first < second
     return second < first
 
 
+# Patch when a score is not the bigger the better. The first is greater than the second
 def is_greater_than(first: float, second: float, score_type: str):
     if score_type is "roc_auc" or "accuracy" or "mutual_info_score" or "completeness_score":
         return first > second
     return second > first
-

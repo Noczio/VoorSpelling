@@ -2,9 +2,9 @@ import unittest
 
 import pandas as pd
 
-from backend_scripts.is_data import DataEnsurer
-from jsonInfo.welcome import WelcomeMessage
-from backend_scripts.load_data import LoaderCreator
+from resources.backend_scripts.is_data import DataEnsurer
+from resources.json_info.welcome import WelcomeMessage
+from resources.backend_scripts.load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):
@@ -38,11 +38,11 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(ensurer_bol)
 
     def test_json_is_list(self):
-        json_type = self._loader_creator.create_loader(".\\..\\jsonInfo\\welcomeMessage.json", "json")
+        json_type = self._loader_creator.create_loader(".\\..\\resources\\json_info\\welcome_message.json", "json")
         file = json_type.get_file_transformed()
         # is the file a deserialized json list?
         ensurer_bol = DataEnsurer.validate_py_data(file, list)
-        # this should be true, since welcomeMessage.json has list format
+        # this should be true, since welcome_message.json has list format
         self.assertTrue(ensurer_bol)
 
     def test_loader_path_is_str(self):
@@ -57,7 +57,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_data_type_is_list(self):
         # initialization of welcome_message with its path
-        welcome_message = WelcomeMessage(file_path=".\\..\\jsonInfo\\welcomeMessage.json", data_type=list)
+        welcome_message = WelcomeMessage(file_path="..\\resources\\json_info\\welcome_message.json", data_type=list)
         data = welcome_message.data  # get data value using its property
         bol_answer = DataEnsurer.validate_py_data(data, list)
         # is data a list?

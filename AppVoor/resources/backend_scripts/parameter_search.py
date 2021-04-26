@@ -7,7 +7,7 @@ from sklearn.model_selection import GridSearchCV
 from skopt import BayesSearchCV
 from skopt.space import Real, Integer, Categorical
 
-from backend_scripts.switcher import Switch
+from resources.backend_scripts.switcher import Switch
 
 NpArray = np.ndarray
 DataFrame = pd.DataFrame

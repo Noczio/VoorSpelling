@@ -1,10 +1,10 @@
 import unittest
 
-from backend_scripts.estimator_creation import EstimatorCreator
-from backend_scripts.feature_selection import FeatureSelectorCreator
-from backend_scripts.load_data import LoaderCreator
-from backend_scripts.model_creation import SBSModelCreator
-from backend_scripts.parameter_search import ParameterSearchCreator
+from resources.backend_scripts.estimator_creation import EstimatorCreator
+from resources.backend_scripts.feature_selection import FeatureSelectorCreator
+from resources.backend_scripts.load_data import LoaderCreator
+from resources.backend_scripts.model_creation import SBSModelCreator
+from resources.backend_scripts.parameter_search import ParameterSearchCreator
 
 
 class MyTestCase(unittest.TestCase):
