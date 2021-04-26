@@ -54,7 +54,6 @@ class MyTestCase(unittest.TestCase):
         clf.set_params(dual=False, random_state=0)
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "roc_auc", 10)
-        print(new_x)
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
@@ -79,7 +78,6 @@ class MyTestCase(unittest.TestCase):
         clf.set_params(random_state=0)
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "accuracy", 10)
-        print(new_x)
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
@@ -105,7 +103,6 @@ class MyTestCase(unittest.TestCase):
         clf.set_params(random_state=0)
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "accuracy", 5)
-        print(new_x)
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
@@ -130,7 +127,6 @@ class MyTestCase(unittest.TestCase):
         clf.set_params(max_iter=20000, dual=False, loss="squared_epsilon_insensitive")
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "r2", 10)
-        print(new_x)
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
@@ -155,7 +151,6 @@ class MyTestCase(unittest.TestCase):
         clf.set_params(gamma="auto")
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "explained_variance", 5)
-        print(new_x)
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
@@ -181,7 +176,6 @@ class MyTestCase(unittest.TestCase):
         clf.set_params(**prm)
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "r2", 10)
-        print(new_x)
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
@@ -211,13 +205,7 @@ class MyTestCase(unittest.TestCase):
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
         print("lasso", is_fewer_than_original)
-        """
-        ['total sulfur dioxide' 'fixed acidity' 'volatile acidity' 'citric acid'
-         'residual sugar' 'chlorides' 'free sulfur dioxide' 'density' 'pH'
-         'sulphates' 'alcohol'] 
-        0.020356773894023884
-        lasso False
-        """
+
 
     def test_iris_has_fewer_features_with_KMEANS_FFS_mutual_info_score_5(self):
         # load molecules.csv from disk
@@ -236,7 +224,6 @@ class MyTestCase(unittest.TestCase):
         clf = self._estimator_creator.create_estimator("KMeans")
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "mutual_info_score", 5)
-        print(new_x)
         _, len_new_y = new_x.shape
         # does it have fewer features?
         is_fewer_than_original: bool = True if len_new_y < len_original_y else False
@@ -285,10 +272,7 @@ class MyTestCase(unittest.TestCase):
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "neg_mean_squared_error", 10)
         print(new_x.columns.values, f"\n{score}")
-        """
-        ['alcohol' 'volatile acidity' 'sulphates' 'chlorides'] 
-        -0.4389980629892999
-        """
+
 
     def test_wine_quality_with_LSVR_BFS_neg_mean_squared_error_10(self):
         # load molecules.csv from disk
@@ -308,12 +292,6 @@ class MyTestCase(unittest.TestCase):
         # get new_x with new features
         new_x, score = fs.select_features(x, y, clf, "neg_mean_squared_error", 10)
         print(new_x.columns.values, f"\n{score}")
-        """
-        ['fixed acidity' 'volatile acidity' 'citric acid' 'residual sugar'
-         'chlorides' 'free sulfur dioxide' 'total sulfur dioxide' 'density' 'pH'
-         'sulphates' 'alcohol'] 
-        -0.44334763280535405
-        """
 
 
 if __name__ == '__main__':
