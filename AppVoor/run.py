@@ -18,8 +18,8 @@ from resources.backend_scripts.parameter_search import BayesianSearchParametersP
 from resources.backend_scripts.parameter_search import GridSearchParametersPossibilities
 from resources.backend_scripts.parameter_search import ParameterSearchCreator, ParameterSearch
 from resources.backend_scripts.result_creation import FCreator, SBSResult
+from resources.backend_scripts.switcher import Switch
 from resources.forms import QT_resources
-from resources.frontend_scripts.alternative_route import PredictionTypePossibilities, EstimatorParametersPossibilities
 from resources.frontend_scripts.modified_widgets import QDragAndDropButton, QLoadButton
 from resources.frontend_scripts.parallel import LongWorker, EmittingStream
 from resources.frontend_scripts.pop_up import PopUp, WarningPopUp, CriticalPopUp
@@ -29,6 +29,72 @@ from resources.ui_path import ui_window, ui_icons
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray
+
+
+class PredictionTypePossibilities(Switch):
+
+    @staticmethod
+    def classification() -> Window:
+        return ClassificationSelection(ui_window["classification"])
+
+    @staticmethod
+    def regression() -> Window:
+        return RegressionSelection(ui_window["regression"])
+
+    @staticmethod
+    def clustering() -> Window:
+        return ClusteringSelection(ui_window["clustering"])
+
+
+class EstimatorParametersPossibilities(Switch):
+
+    @staticmethod
+    def LinearSVC() -> Window:
+        return LinearSVCParameters(ui_window["LinearSVC"])
+
+    @staticmethod
+    def SVC() -> Window:
+        return SVCParameters(ui_window["SVC"])
+
+    @staticmethod
+    def KNeighborsClassifier() -> Window:
+        return KNeighborsClassifierParameters(ui_window["KNeighborsClassifier"])
+
+    @staticmethod
+    def GaussianNB() -> Window:
+        return GaussianNBParameters(ui_window["GaussianNB"])
+
+    @staticmethod
+    def LinearSVR() -> Window:
+        return LinearSVRParameters(ui_window["LinearSVR"])
+
+    @staticmethod
+    def SVR() -> Window:
+        return SVRParameters(ui_window["SVR"])
+
+    @staticmethod
+    def Lasso() -> Window:
+        return LassoParameters(ui_window["Lasso"])
+
+    @staticmethod
+    def SGDClassifier() -> Window:
+        return SGDClassifierParameters(ui_window["SGDClassifier"])
+
+    @staticmethod
+    def AffinityPropagation() -> Window:
+        return AffinityPropagationParameters(ui_window["AffinityPropagation"])
+
+    @staticmethod
+    def KMeans() -> Window:
+        return KMeansParameters(ui_window["KMeans"])
+
+    @staticmethod
+    def MiniBatchKMeans() -> Window:
+        return MiniBatchKMeansParameters(ui_window["MiniBatchKMeans"])
+
+    @staticmethod
+    def MeanShift() -> Window:
+        return MeanShiftParameters(ui_window["MeanShift"])
 
 
 class HomeWindow(Window):

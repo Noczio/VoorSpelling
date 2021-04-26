@@ -28,6 +28,6 @@ ui_window = {"home": ".\\resources\\forms\\QT_Voorspelling_Home.ui",
 ui_icons = {"16px": ('.\\resources\\icos\\voorspelling_logo_ico_16px.ico', 16),
             "32px": ('.\\resources\\icos\\voorspelling_logo_ico_32x.ico', 32),
             "48px": ('.\\resources\\icos\\voorspelling_logo_ico_48px.ico', 48),
-            "54px": ('.\\resources\\icos\\voorspelling_logo_ico_54px.ico', 54),
+            "54px": ('.\\resources\\icos\\voorspelling_logo_ico_64px.ico', 64),
             "256px": ('.\\resources\\icos\\voorspelling_logo_ico_256px.ico', 256),
             }
