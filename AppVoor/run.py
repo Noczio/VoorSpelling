@@ -255,6 +255,7 @@ class DataSetWindow(Window):
                        "y seleccionar la separación del mismo, ya sea TSV o CSV "
                 self.critical_pop_up.open_pop_up("Error", body, "")
             else:
+                loader_creator = LoaderCreator.get_instance()
                 if self.last == "load_file":
                     loader = loader_creator.create_loader(self.btn_load_file.file_path, self.file_type)
                 else:
@@ -461,6 +462,7 @@ class StepByStepLoad(Window):
 
     def train_model(self) -> None:
         # gets important info and the scores model
+        model_creator = SBSModelCreator.get_instance()
         model = model_creator.create_model(global_var.uses_feature_selection, global_var.uses_parameter_search)
         model.estimator = global_var.estimator
         model.initial_parameters = global_var.parameters
@@ -579,6 +581,7 @@ class ClassificationSelection(Window):
         self.btn_Gaussian_Naive_Bayes.clicked.connect(lambda: self.next("GaussianNB"))
 
     def next(self, event) -> None:
+        estimator_creator = EstimatorCreator.get_instance()
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -611,6 +614,7 @@ class RegressionSelection(Window):
         self.btn_SGD.clicked.connect(lambda: self.next("SGDClassifier"))
 
     def next(self, event) -> None:
+        estimator_creator = EstimatorCreator.get_instance()
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -643,6 +647,7 @@ class ClusteringSelection(Window):
         self.btn_KMeans.clicked.connect(lambda: self.next("KMeans"))
 
     def next(self, event) -> None:
+        estimator_creator = EstimatorCreator.get_instance()
         clf = estimator_creator.create_estimator(event)
         global_var.estimator = clf
         next_form = WantFeatureSelection(ui_window["feature_selection"])
@@ -705,6 +710,7 @@ class FeatureSelectionMethod(Window):
         self.btn_BFS.clicked.connect(lambda: self.next("BFS"))
 
     def next(self, event) -> None:
+        feature_selection_creator = FeatureSelectorCreator.get_instance()
         feature_selection_method = feature_selection_creator.create_feature_selector(event)
         global_var.feature_selection_method = feature_selection_method
         next_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
@@ -776,6 +782,7 @@ class HyperparameterMethod(Window):
     def handle_input(self, event) -> None:
         result = self.last_warning_pop_up()
         if result:
+            parameter_selection_creator = ParameterSearchCreator.get_instance()
             user_selection = global_var.estimator.__class__.__name__
             if event is "Bayesian":
                 parameters = BayesianSearchParametersPossibilities.case(user_selection)
@@ -1230,12 +1237,6 @@ class SVRParameters(Window):
 if __name__ == "__main__":
     # global_var instance to store program important variables across all forms
     global_var = GlobalVariables.get_instance()
-    # create a var for each singleton creator
-    loader_creator = LoaderCreator.get_instance()
-    model_creator = SBSModelCreator.get_instance()
-    estimator_creator = EstimatorCreator.get_instance()
-    feature_selection_creator = FeatureSelectorCreator.get_instance()
-    parameter_selection_creator = ParameterSearchCreator.get_instance()
     # initialize qt resources
     QT_resources.qInitResources()
     # create an app and widget variable to control app logic
