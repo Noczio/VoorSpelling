@@ -49,7 +49,8 @@ class MyTestCase(unittest.TestCase):
         model_instance.initial_parameters = BayesianSearchParametersPossibilities.case("KNeighborsClassifier")
         model_instance.estimator = estimator
         model_instance.parameter_selector = self._parameter_selection_creator.create_parameter_selector("BS")
-        score = model_instance.score_model(df, "accuracy", 10)
+        model_instance.data_frame = df
+        score = model_instance.score_model("accuracy", 10)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
@@ -97,7 +98,8 @@ class MyTestCase(unittest.TestCase):
         model_instance.estimator = estimator
         model_instance.parameter_selector = self._parameter_selection_creator.create_parameter_selector("BS")
         model_instance.feature_selector = self._feature_selection_creator.create_feature_selector("BFS")
-        score = model_instance.score_model(df, "accuracy", 10)
+        model_instance.data_frame = df
+        score = model_instance.score_model("accuracy", 10)
         score_text = "rendimiento promedio \"accuracy\":" + " " + str(score)
 
         info = ["Opción", "Selección",
@@ -141,7 +143,8 @@ class MyTestCase(unittest.TestCase):
                                              'random_state': 512}
         model_instance.estimator = estimator
         model_instance.feature_selector = self._feature_selection_creator.create_feature_selector("BFS")
-        score = model_instance.score_model(df, "neg_mean_squared_error", 10)
+        model_instance.data_frame = df
+        score = model_instance.score_model("neg_mean_squared_error", 10)
         score_text = "rendimiento promedio \"neg_mean_squared_error\":" + " " + str(score)
 
         info = ["Opción", "Selección",
@@ -185,7 +188,8 @@ class MyTestCase(unittest.TestCase):
                                              'random_state': 512}
         model_instance.estimator = estimator
         model_instance.feature_selector = self._feature_selection_creator.create_feature_selector("FFS")
-        score = model_instance.score_model(df, "neg_mean_squared_error", 10)
+        model_instance.data_frame = df
+        score = model_instance.score_model("neg_mean_squared_error", 10)
         score_text = "rendimiento promedio \"neg_mean_squared_error\":" + " " + str(score)
 
         info = ["Opción", "Selección",
@@ -204,7 +208,7 @@ class MyTestCase(unittest.TestCase):
                                  model_instance.best_parameters,
                                  score_text,
                                  folder_path)
-        SBSResult.dump_estimator(estimator, folder_path)
+        SBSResult.dump_estimator(model_instance.estimator, folder_path)
         sys.stdout = old_stdout
         console_output = my_stdout.getvalue()
         SBSResult.console_info(console_output.split("\n"), folder_path, 0)

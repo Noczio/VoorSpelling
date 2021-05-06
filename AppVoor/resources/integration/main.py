@@ -9,7 +9,7 @@ from resources.forms.form_resources import qInitResources
 from resources.integration.other.ui_path import ui_icons
 
 
-class AppMain:
+class MainInitializer:
     app: QApplication
     widget: QStackedWidget
     variables: GlobalVariables

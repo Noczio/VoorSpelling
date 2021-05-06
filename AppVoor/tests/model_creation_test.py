@@ -37,13 +37,13 @@ class MyTestCase(unittest.TestCase):
         # set object best params and base estimator
         model_instance.initial_parameters = initial_prm
         model_instance.estimator = estimator
-        score = model_instance.score_model(df, "roc_auc", 10)
+        model_instance.data_frame = df
+        score = model_instance.score_model("roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
         is_valid = True if isinstance(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-
 
     def test_simple_model_SVC_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -60,13 +60,13 @@ class MyTestCase(unittest.TestCase):
         # set object best params and base estimator
         model_instance.initial_parameters = initial_prm
         model_instance.estimator = estimator
-        score = model_instance.score_model(df, "roc_auc", 10)
+        model_instance.data_frame = df
+        score = model_instance.score_model("roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-
 
     def test_only_feature_selection_model_SVC_FFS_roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -86,13 +86,13 @@ class MyTestCase(unittest.TestCase):
         model_instance.initial_parameters = initial_prm
         model_instance.estimator = estimator
         model_instance.feature_selector = feature_selector
-        score = model_instance.score_model(df, "roc_auc", 10)
+        model_instance.data_frame = df
+        score = model_instance.score_model("roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-
 
     def test_only_feature_selection_model_SVC_BFS__roc_auc_10_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -112,13 +112,13 @@ class MyTestCase(unittest.TestCase):
         model_instance.initial_parameters = initial_prm
         model_instance.estimator = estimator
         model_instance.feature_selector = feature_selector
-        score = model_instance.score_model(df, "roc_auc", 10)
+        model_instance.data_frame = df
+        score = model_instance.score_model("roc_auc", 10)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-
 
     def test_only_parameter_search_model_SVC_GS_roc_auc_5_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -139,13 +139,13 @@ class MyTestCase(unittest.TestCase):
         model_instance.initial_parameters = initial_prm
         model_instance.estimator = estimator
         model_instance.parameter_selector = parameter_selector
-        score = model_instance.score_model(df, "roc_auc", 5)
+        model_instance.data_frame = df
+        score = model_instance.score_model("roc_auc", 5)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-
 
     def test_all_model_SVC_BS_FFS_roc_auc_5_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -168,13 +168,13 @@ class MyTestCase(unittest.TestCase):
         model_instance.estimator = estimator
         model_instance.feature_selector = feature_selector
         model_instance.parameter_selector = parameter_selector
-        score = model_instance.score_model(df, "roc_auc", 5)
+        model_instance.data_frame = df
+        score = model_instance.score_model("roc_auc", 5)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-
 
     def test_all_model_LASSO_BS_BFS_r2_5_score_is_float(self):
         # create a simple model using SBSModelCreator
@@ -197,13 +197,13 @@ class MyTestCase(unittest.TestCase):
         model_instance.estimator = estimator
         model_instance.feature_selector = feature_selector
         model_instance.parameter_selector = parameter_selector
-        score = model_instance.score_model(df, "r2", 5)
+        model_instance.data_frame = df
+        score = model_instance.score_model("r2", 5)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) else False
         self.assertTrue(is_valid)
-
 
     def test_all_model_GNB_BS_FFS_roc_auc_5_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -226,13 +226,13 @@ class MyTestCase(unittest.TestCase):
         model_instance.estimator = estimator
         model_instance.feature_selector = feature_selector
         model_instance.parameter_selector = parameter_selector
-        score = model_instance.score_model(df, "roc_auc", 5)
+        model_instance.data_frame = df
+        score = model_instance.score_model("roc_auc", 5)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)
         is_valid = True if DataEnsurer.validate_py_data(score, float) and score > 0.0 else False
         self.assertTrue(is_valid)
-
 
     def test_PS_model_GNB_GS_roc_auc_5_score_is_float_and_greater_than_zero(self):
         # create a simple model using SBSModelCreator
@@ -252,7 +252,8 @@ class MyTestCase(unittest.TestCase):
         model_instance.initial_parameters = initial_prm
         model_instance.estimator = estimator
         model_instance.parameter_selector = parameter_selector
-        score = model_instance.score_model(df, "roc_auc", 5)
+        model_instance.data_frame = df
+        score = model_instance.score_model("roc_auc", 5)
         print("score:", score)
         print("best params", model_instance.best_parameters)
         print("best features", model_instance.best_features)

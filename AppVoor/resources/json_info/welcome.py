@@ -27,7 +27,7 @@ class WelcomeMessage(JSONMessage):
 
 class WelcomeMessenger:
 
-    def __init__(self, file_path: str) -> None:
+    def __init__(self, file_path: str = ".\\resources\\json_info\\welcome_message.json") -> None:
         # initialize a WelcomeMessage
         self._json_message: JSONMessage = WelcomeMessage(file_path)
         # start, end and step for random choice

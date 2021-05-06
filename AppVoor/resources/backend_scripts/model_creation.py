@@ -17,6 +17,7 @@ NpArray = np.ndarray
 
 
 class SBSMachineLearning(ABC):
+    _data_frame = pd.DataFrame()
     _feature_selector: FeatureSelection = None
     _parameter_selector: ParameterSearch = None
     _best_features: NpArray = None
@@ -24,6 +25,14 @@ class SBSMachineLearning(ABC):
     _initial_params: dict = None
     _clf: Any = None
     _cv_score: CVModelScore = CVScore()
+
+    @property
+    def data_frame(self) -> DataFrame:
+        return self._data_frame
+
+    @data_frame.setter
+    def data_frame(self, value: DataFrame) -> None:
+        self._data_frame = value
 
     @property
     def feature_selector(self) -> FeatureSelection:
@@ -74,15 +83,15 @@ class SBSMachineLearning(ABC):
         self._clf = value
 
     @abstractmethod
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
+    def score_model(self, score_type: str, n_folds_validation: int) -> float:
         pass
 
 
 class SimpleSBS(SBSMachineLearning):
 
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
+    def score_model(self, score_type: str, n_folds_validation: int) -> float:
         # get x and y from df
-        x, y = SplitterReturner.split_x_y_from_df(df)
+        x, y = SplitterReturner.split_x_y_from_df(self.data_frame)
         self.best_parameters = self.initial_parameters  # they are the same in a simple model
         # set clf params. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
@@ -95,9 +104,9 @@ class SimpleSBS(SBSMachineLearning):
 
 class OnlyFeatureSelectionSBS(SBSMachineLearning):
 
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
+    def score_model(self, score_type: str, n_folds_validation: int) -> float:
         # get x and y from df
-        x, y = SplitterReturner.split_x_y_from_df(df)
+        x, y = SplitterReturner.split_x_y_from_df(self.data_frame, ravel_data=False)
         self.best_parameters = self.initial_parameters  # they are the same in a only feature selection model
         # set clf params. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
@@ -105,15 +114,16 @@ class OnlyFeatureSelectionSBS(SBSMachineLearning):
         best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
                                                                                score_type, n_folds_validation)
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
+        self.data_frame = pd.concat([best_features_dataframe, y], axis=1)
         self.estimator.fit(best_features_dataframe, y)
         return score
 
 
 class OnlyParameterSearchSBS(SBSMachineLearning):
 
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
+    def score_model(self, score_type: str, n_folds_validation: int) -> float:
         # get x and y from df
-        x, y = SplitterReturner.split_x_y_from_df(df)
+        x, y = SplitterReturner.split_x_y_from_df(self.data_frame)
         # transform initial params grid into a simple dict which is best_params
         self.best_parameters, score = self.parameter_selector.search_parameters(x, y, self.initial_parameters,
                                                                                 n_folds_validation,
@@ -128,9 +138,9 @@ class OnlyParameterSearchSBS(SBSMachineLearning):
 
 class FeatureAndParameterSearchSBS(SBSMachineLearning):
 
-    def score_model(self, df: DataFrame, score_type: str, n_folds_validation: int) -> float:
+    def score_model(self, score_type: str, n_folds_validation: int) -> float:
         # get x and y from df
-        x, y = SplitterReturner.split_x_y_from_df(df)
+        x, y = SplitterReturner.split_x_y_from_df(self.data_frame, ravel_data=False)
         # transform best params grid into a simple dict
         self.best_parameters, _ = self.parameter_selector.search_parameters(x, y, self.initial_parameters,
                                                                             n_folds_validation,
@@ -142,6 +152,7 @@ class FeatureAndParameterSearchSBS(SBSMachineLearning):
         best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
                                                                                score_type, n_folds_validation)
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
+        self.data_frame = pd.concat([best_features_dataframe, y], axis=1)
         self.estimator.fit(best_features_dataframe, y)
         return score
 

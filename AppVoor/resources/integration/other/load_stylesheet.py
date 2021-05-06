@@ -35,6 +35,6 @@ file_not_dragged_style = u"image: url(:/file/bx-file 1.svg);\n" \
                          "border-color: rgb(220, 220, 220);\n" \
                          ""
 
-load_buttons_style = {"load": (file_loaded_style, file_not_dragged_style),
-                      "drag": (file_not_loaded_style, file_dragged_style),
-                      "any": (file_not_loaded_style, file_not_dragged_style)}
+load_buttons_style = {"Load": (file_loaded_style, file_not_dragged_style),
+                      "Drag": (file_not_loaded_style, file_dragged_style),
+                      "Any": (file_not_loaded_style, file_not_dragged_style)}
