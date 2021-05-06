@@ -29,7 +29,7 @@ class Window(QMainWindow):
         pop_up: PopUp = InfoPopUp()
         pop_up.open_pop_up(title, body, url)
 
-    def last_warning_pop_up(self) -> bool:
+    def last_warning_pop_up(self, *args, **kwargs) -> bool:
         """Show warning info in a pop. A form may use this method, overwrite it or not use it at all"""
         pop_up: PopUp = WarningPopUp()
         title = "Listo para entrenar"
