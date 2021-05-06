@@ -21,11 +21,11 @@ from resources.frontend_scripts.modified_widgets import QDragAndDropButton, QLoa
 from resources.frontend_scripts.parallel import LongWorker, EmittingStream
 from resources.frontend_scripts.pop_up import PopUp, WarningPopUp, CriticalPopUp
 from resources.frontend_scripts.view import Window
-from resources.integration.other.load_errors import load_dataset_errors
 from resources.integration.main import AppMain
-from resources.integration.other.ui_path import ui_window
-from resources.integration.other.load_stylesheet import load_buttons_style
 from resources.integration.other.cancel_stylesheet import cancel_buttons_style
+from resources.integration.other.load_errors import load_dataset_errors
+from resources.integration.other.load_stylesheet import load_buttons_style
+from resources.integration.other.ui_path import ui_window
 from resources.json_info.welcome import WelcomeMessenger
 
 DataFrame = pd.DataFrame
@@ -136,7 +136,7 @@ class DataSetWindow(Window):
         # initialize btn_drag_file and btn_load_file variables and then set their styles
         self.btn_drag_file = QDragAndDropButton(self.main_area)
         self.btn_load_file = QLoadButton(self.main_area)
-        self.set_load_and_drag_buttons()
+        self._set_load_and_drag_buttons()
         # change _df_file_type to the other when clicked
         self.btn_csv.clicked.connect(lambda: self._set_df_file_type("TSV"))
         self.btn_tsv.clicked.connect(lambda: self._set_df_file_type("CSV"))
@@ -148,8 +148,9 @@ class DataSetWindow(Window):
         self.btn_info_data_type.clicked.connect(lambda: self.useful_info_pop_up("file_separation"))
         self.btn_back.clicked.connect(self.back)
 
-    def set_load_and_drag_buttons(self) -> None:
-        font = QFont(pointSize=14)
+    def _set_load_and_drag_buttons(self) -> None:
+        font = QFont()
+        font.setPointSize(14)
         btn_load_style = load_buttons_style[self._last_btn_used][0]
         btn_drag_style = load_buttons_style[self._last_btn_used][-1]
         # set btn_drag_style for btn_drag_file
@@ -191,8 +192,8 @@ class DataSetWindow(Window):
         return True
 
     def handle_error(self, error) -> None:
-        body, additional = load_dataset_errors[error]
-        self.last_warning_pop_up(body, additional)
+        error_data = load_dataset_errors[type(error)]
+        self.last_warning_pop_up(error_data["body"], error_data["additional"])
 
     def _handle_file(self) -> None:
         try:

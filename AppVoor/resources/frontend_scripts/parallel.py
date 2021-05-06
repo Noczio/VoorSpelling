@@ -49,8 +49,8 @@ class LongWorker(QRunnable):
             else:
                 output = self.func()
             self.signals.program_finished.emit()
-        except Exception as e:
-            self.signals.program_error.emit(e)
+        except Exception as error:
+            self.signals.program_error.emit(error)
         else:
             self.signals.result.emit(output)
 
