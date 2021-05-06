@@ -15,5 +15,5 @@ not_available_cancel_style = u"QLabel\n" \
                              "	color: rgb(105, 105, 105);\n" \
                              "}"
 
-cancel_buttons_style = {"available": available_cancel_style,
-                        "not_available": not_available_cancel_style}
+cancel_buttons_style = {"Available": available_cancel_style,
+                        "Not_available": not_available_cancel_style}

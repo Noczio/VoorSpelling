@@ -193,7 +193,7 @@ class DataSetWindow(Window):
         critical_pop_up.open_pop_up("Error", body, additional)
         return True
 
-    def handle_error(self, error) -> None:
+    def handle_error(self, error: Exception) -> None:
         error_data = load_dataset_errors[type(error)]
         self.last_warning_pop_up(error_data["Body"], error_data["Additional"])
 
@@ -240,9 +240,9 @@ class MLTypeWindow(Window):
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
         else:
-            result = self.last_warning_pop_up()
-            if result:
-                next_form = AutoLoadWindow()
+            want_to_start_training = self.last_warning_pop_up()
+            if want_to_start_training:
+                next_form = AutoTrainingWindow()
                 widget.addWidget(next_form)
                 widget.removeWidget(widget.currentWidget())
                 widget.setCurrentIndex(widget.currentIndex())
@@ -256,10 +256,11 @@ class MLTypeWindow(Window):
 
 
 class TrainingWindow(Window):
+    """Abstraction  for training view based on Window class"""
 
     def __init__(self, window: str) -> None:
         super().__init__(window)
-        sys.stdout = EmittingStream(textWritten=self._add_info)
+        sys.stdout = EmittingStream(textWritten=self._add_info)  # this works fine. That parameter works this way
 
         self.lbl_cancel.mouseReleaseEvent = self._cancel_training
 
@@ -298,8 +299,8 @@ class TrainingWindow(Window):
     def _cancel_training(self, event) -> None:
         """Show a Warning pop up and then if user wants to finished the app, close it"""
         event.accept()
-        result = self.last_warning_pop_up()
-        if result:
+        want_to_stop_training = self.last_warning_pop_up()
+        if want_to_stop_training:
             self._thread_pool.cancel(self._ml_worker)
             self.close_window()
 
@@ -312,7 +313,7 @@ class TrainingWindow(Window):
                 QThread.sleep(1)
 
         # deactivate lbl press behaviour due to an error
-        lbl_cancel_style = cancel_buttons_style["not_available"]
+        lbl_cancel_style = cancel_buttons_style["Not_available"]
         self.lbl_cancel.mouseReleaseEvent = None
         self.lbl_cancel.setStyleSheet(lbl_cancel_style)
         info = ("Error\n", str(error), "\nCerrando aplicación para evitar conflictos de memoria" + " ", ".", ".", ".")
@@ -330,7 +331,7 @@ class TrainingWindow(Window):
         self.ted_info.ensureCursorVisible()
 
 
-class AutoLoadWindow(TrainingWindow):
+class AutoTrainingWindow(TrainingWindow):
 
     def __init__(self) -> None:
         super().__init__(ui_window["Result_screen"])
@@ -343,7 +344,7 @@ class AutoLoadWindow(TrainingWindow):
         model.train_model(data_frame)
 
 
-class StepByStepLoadWindow(TrainingWindow):
+class StepByStepTrainingWindow(TrainingWindow):
 
     def __init__(self) -> None:
         super().__init__(ui_window["Result_screen"])
@@ -426,11 +427,33 @@ class PredictionTypeWindow(Window):
         widget.setCurrentIndex(widget.currentIndex())
 
 
-class ClassificationSelectionWindow(Window):
+class EstimatorSelectionWindow(Window):
+    """Abstraction for estimator's view based on Window class"""
+
+    def __init__(self, window: str) -> None:
+        super().__init__(window)
+        self.btn_back.clicked.connect(self.back)
+
+    def next(self, event: str) -> None:
+        estimator = EstimatorCreator.create_estimator(event)
+        variables.estimator = estimator
+        next_form = WantFeatureSelectionWindow()
+        widget.addWidget(next_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
+    def back(self) -> None:
+        variables.reset("prediction_type", estimator=None)
+        last_form = PredictionTypeWindow()
+        widget.addWidget(last_form)
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex())
+
+
+class ClassificationSelectionWindow(EstimatorSelectionWindow):
 
     def __init__(self) -> None:
         super().__init__(ui_window["Classification"])
-        self.btn_back.clicked.connect(self.back)
 
         self.btn_info_KNN.clicked.connect(lambda: self.useful_info_pop_up("KNeighborsClassifier"))
         self.btn_info_LinearSVC.clicked.connect(lambda: self.useful_info_pop_up("LinearSVC"))
@@ -442,27 +465,11 @@ class ClassificationSelectionWindow(Window):
         self.btn_SVC_rbf.clicked.connect(lambda: self.next("SVC"))
         self.btn_Gaussian_Naive_Bayes.clicked.connect(lambda: self.next("GaussianNB"))
 
-    def next(self, event: str) -> None:
-        estimator = EstimatorCreator.create_estimator(event)
-        variables.estimator = estimator
-        next_form = WantFeatureSelectionWindow()
-        widget.addWidget(next_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
 
-    def back(self) -> None:
-        variables.reset("prediction_type", estimator=None)
-        last_form = PredictionTypeWindow()
-        widget.addWidget(last_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
-
-
-class RegressionSelectionWindow(Window):
+class RegressionSelectionWindow(EstimatorSelectionWindow):
 
     def __init__(self) -> None:
         super().__init__(ui_window["Regression"])
-        self.btn_back.clicked.connect(self.back)
 
         self.btn_info_Lasso.clicked.connect(lambda: self.useful_info_pop_up("Lasso"))
         self.btn_info_SVR_Linear.clicked.connect(lambda: self.useful_info_pop_up("LinearSVR"))
@@ -474,27 +481,11 @@ class RegressionSelectionWindow(Window):
         self.btn_SVR_rbf.clicked.connect(lambda: self.next("SVR"))
         self.btn_SGD.clicked.connect(lambda: self.next("SGDClassifier"))
 
-    def next(self, event: str) -> None:
-        estimator = EstimatorCreator.create_estimator(event)
-        variables.estimator = estimator
-        next_form = WantFeatureSelectionWindow()
-        widget.addWidget(next_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
 
-    def back(self) -> None:
-        variables.reset("prediction_type", estimator=None)
-        last_form = PredictionTypeWindow()
-        widget.addWidget(last_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
-
-
-class ClusteringSelectionWindow(Window):
+class ClusteringSelectionWindow(EstimatorSelectionWindow):
 
     def __init__(self) -> None:
         super().__init__(ui_window["Clustering"])
-        self.btn_back.clicked.connect(self.back)
 
         self.btn_info_Affinity_Propagation.clicked.connect(lambda: self.useful_info_pop_up("AffinityPropagation"))
         self.btn_info_Minibatch_Kmeans.clicked.connect(lambda: self.useful_info_pop_up("MiniBatchKMeans"))
@@ -505,21 +496,6 @@ class ClusteringSelectionWindow(Window):
         self.btn_Minibatch_KMeans.clicked.connect(lambda: self.next("MiniBatchKMeans"))
         self.btn_Meanshift.clicked.connect(lambda: self.next("MeanShift"))
         self.btn_KMeans.clicked.connect(lambda: self.next("KMeans"))
-
-    def next(self, event: str) -> None:
-        estimator = EstimatorCreator.create_estimator(event)
-        variables.estimator = estimator
-        next_form = WantFeatureSelectionWindow()
-        widget.addWidget(next_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
-
-    def back(self) -> None:
-        variables.reset("prediction_type", estimator=None)
-        last_form = PredictionTypeWindow()
-        widget.addWidget(last_form)
-        widget.removeWidget(widget.currentWidget())
-        widget.setCurrentIndex(widget.currentIndex())
 
 
 class WantFeatureSelectionWindow(Window):
@@ -632,7 +608,7 @@ class HyperparameterMethodWindow(Window):
         self.btn_info_Grid_Search.clicked.connect(lambda: self.useful_info_pop_up("Grid_search"))
 
     def next(self) -> None:
-        next_form = StepByStepLoadWindow()
+        next_form = StepByStepTrainingWindow()
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
@@ -680,9 +656,10 @@ class ByHandParametersWindow(Window):
         self.btn_back.clicked.connect(self.back)
 
     def next(self, parameters: dict) -> None:
-        if self.last_warning_pop_up():
+        want_to_start_training = self.last_warning_pop_up()
+        if want_to_start_training:
             variables.parameters = parameters
-            next_form = StepByStepLoadWindow()
+            next_form = StepByStepTrainingWindow()
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())

@@ -105,13 +105,14 @@ class SimpleSBS(SBSMachineLearning):
 class OnlyFeatureSelectionSBS(SBSMachineLearning):
 
     def score_model(self, score_type: str, n_folds_validation: int) -> float:
-        # get x and y from df
+        # get x and y from df. Ravel is set to False so we can save the original y with its column
         x, y = SplitterReturner.split_x_y_from_df(self.data_frame, ravel_data=False)
         self.best_parameters = self.initial_parameters  # they are the same in a only feature selection model
         # set clf params. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
         # get best features
-        best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
+        best_features_dataframe, score = self.feature_selector.select_features(x, y.values.ravel(),
+                                                                               clone(self.estimator),
                                                                                score_type, n_folds_validation)
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
         self.data_frame = pd.concat([best_features_dataframe, y], axis=1)
@@ -139,17 +140,19 @@ class OnlyParameterSearchSBS(SBSMachineLearning):
 class FeatureAndParameterSearchSBS(SBSMachineLearning):
 
     def score_model(self, score_type: str, n_folds_validation: int) -> float:
-        # get x and y from df
+        # get x and y from df. Ravel is set to False so we can save the original y with its column
         x, y = SplitterReturner.split_x_y_from_df(self.data_frame, ravel_data=False)
         # transform best params grid into a simple dict
-        self.best_parameters, _ = self.parameter_selector.search_parameters(x, y, self.initial_parameters,
+        self.best_parameters, _ = self.parameter_selector.search_parameters(x, y.values.ravel(),
+                                                                            self.initial_parameters,
                                                                             n_folds_validation,
                                                                             clone(self.estimator),
                                                                             score_type)
         # set clf params from the previous search. ** because it accepts key-value one by one, not a big dictionary
         self.estimator.set_params(**self.best_parameters)
         # get best features
-        best_features_dataframe, score = self.feature_selector.select_features(x, y, clone(self.estimator),
+        best_features_dataframe, score = self.feature_selector.select_features(x, y.values.ravel(),
+                                                                               clone(self.estimator),
                                                                                score_type, n_folds_validation)
         self.best_features = best_features_dataframe.columns.values  # get features as numpy data
         self.data_frame = pd.concat([best_features_dataframe, y], axis=1)
