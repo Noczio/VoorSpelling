@@ -281,7 +281,7 @@ border-radius: 10px;</string>
 border: none;</string>
      </property>
      <property name="text">
-      <string>Seleccione el formato de conjunto de datos</string>
+      <string>Seleccione el formato del conjunto de datos y carga el archivo</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
