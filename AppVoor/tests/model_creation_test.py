@@ -6,15 +6,16 @@ from resources.backend_scripts.is_data import DataEnsurer
 from resources.backend_scripts.load_data import LoaderCreator
 from resources.backend_scripts.model_creation import SBSModelCreator
 from resources.backend_scripts.parameter_search import ParameterSearchCreator
-from resources.backend_scripts.parameter_search import BayesianSearchParametersPossibilities, GridSearchParametersPossibilities
+from resources.backend_scripts.parameter_search import BayesianSearchParametersPossibilities
+from resources.backend_scripts.parameter_search import GridSearchParametersPossibilities
 
 
 class MyTestCase(unittest.TestCase):
-    _loader_creator = LoaderCreator.get_instance()
-    _model_creator = SBSModelCreator.get_instance()
-    _estimator_creator = EstimatorCreator.get_instance()
-    _feature_selection_creator = FeatureSelectorCreator.get_instance()
-    _parameter_selection_creator = ParameterSearchCreator.get_instance()
+    _loader_creator = LoaderCreator()
+    _model_creator = SBSModelCreator()
+    _estimator_creator = EstimatorCreator()
+    _feature_selection_creator = FeatureSelectorCreator()
+    _parameter_selection_creator = ParameterSearchCreator()
 
     def test_parameters_are_wrong_raises_type_error(self):
         with self.assertRaises(TypeError):

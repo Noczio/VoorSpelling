@@ -8,11 +8,11 @@ from resources.backend_scripts.parameter_search import ParameterSearchCreator
 
 
 class MyTestCase(unittest.TestCase):
-    _estimator_creator = EstimatorCreator.get_instance()
-    _parameter_search_creator = ParameterSearchCreator.get_instance()
-    _model_creator = SBSModelCreator.get_instance()
-    _feature_selection_creator = FeatureSelectorCreator.get_instance()
-    _loader_creator = LoaderCreator.get_instance()
+    _estimator_creator = EstimatorCreator()
+    _parameter_search_creator = ParameterSearchCreator()
+    _model_creator = SBSModelCreator()
+    _feature_selection_creator = FeatureSelectorCreator()
+    _loader_creator = LoaderCreator()
 
     def test_available_types_in_EstimatorCreator(self):
         types = self._estimator_creator.get_available_types()

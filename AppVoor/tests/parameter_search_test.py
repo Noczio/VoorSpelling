@@ -9,9 +9,9 @@ from resources.backend_scripts.split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):
-    _loader_creator = LoaderCreator.get_instance()
-    _param_search_creator = ParameterSearchCreator.get_instance()
-    _estimator_creator = EstimatorCreator.get_instance()
+    _loader_creator = LoaderCreator()
+    _param_search_creator = ParameterSearchCreator()
+    _estimator_creator = EstimatorCreator()
 
     def test_molecules_SVC_bayesian_search(self):
         # path to molecules.csv file in project

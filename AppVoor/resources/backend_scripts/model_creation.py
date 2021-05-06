@@ -182,23 +182,9 @@ class ModelPossibilities(Switch):
 
 
 class SBSModelCreator:
-    __instance = None
 
     @staticmethod
-    def get_instance() -> "SBSModelCreator":
-        """Static access method."""
-        if SBSModelCreator.__instance is None:
-            SBSModelCreator()
-        return SBSModelCreator.__instance
-
-    def __init__(self) -> None:
-        """Virtually private constructor."""
-        if SBSModelCreator.__instance is not None:
-            raise Exception("This class is a singleton!")
-        else:
-            SBSModelCreator.__instance = self
-
-    def create_model(self, feature_selection: bool, parameter_search: bool) -> SBSMachineLearning:
+    def create_model(feature_selection: bool, parameter_search: bool) -> SBSMachineLearning:
         if DataEnsurer.validate_py_data(feature_selection, bool) and DataEnsurer.validate_py_data(parameter_search,
                                                                                                   bool):
             if not feature_selection and not parameter_search:
@@ -215,7 +201,8 @@ class SBSModelCreator:
                 return all_model
         raise TypeError("Both parameters should be Boolean type")
 
-    def get_available_types(self) -> tuple:
+    @staticmethod
+    def get_available_types() -> tuple:
         available_types = [func for func in dir(ModelPossibilities)
                            if callable(getattr(ModelPossibilities, func)) and not
                            (func.startswith("__") or func is "case")]

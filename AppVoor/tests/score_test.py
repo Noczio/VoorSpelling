@@ -7,8 +7,8 @@ from resources.backend_scripts.split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):
-    _loader_creator = LoaderCreator.get_instance()
-    _estimator_creator = EstimatorCreator.get_instance()
+    _loader_creator = LoaderCreator()
+    _estimator_creator = EstimatorCreator()
 
     def test_score_type_raises_ValueError(self):
         # path to diabetes.csv file in project

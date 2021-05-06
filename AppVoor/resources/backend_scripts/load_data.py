@@ -157,23 +157,9 @@ class LoaderPossibilities(Switch):
 
 
 class LoaderCreator:
-    __instance = None
 
     @staticmethod
-    def get_instance() -> "LoaderCreator":
-        """Static access method."""
-        if LoaderCreator.__instance is None:
-            LoaderCreator()
-        return LoaderCreator.__instance
-
-    def __init__(self) -> None:
-        """Virtually private constructor."""
-        if LoaderCreator.__instance is not None:
-            raise Exception("This class is a singleton!")
-        else:
-            LoaderCreator.__instance = self
-
-    def create_loader(self, file_path: str, loader_type: str) -> DataLoader:
+    def create_loader(file_path: str, loader_type: str) -> DataLoader:
         # transform param to capital letters and then replace white spaces
         try:
             loader_name = loader_type.upper().replace(" ", "")
@@ -181,12 +167,13 @@ class LoaderCreator:
             loader.file_path = file_path
             return loader
         except():
-            available_types = self.get_available_types()
+            available_types = LoaderCreator.get_available_types()
             types_as_string = ", ".join(available_types)
             raise AttributeError(f"Parameter loader type value is wrong. "
                                  f"It should be any of the following: {types_as_string}")
 
-    def get_available_types(self) -> tuple:
+    @staticmethod
+    def get_available_types() -> tuple:
         available_types = [func for func in dir(LoaderPossibilities)
                            if callable(getattr(LoaderPossibilities, func)) and not
                            (func.startswith("__") or func is "case")]

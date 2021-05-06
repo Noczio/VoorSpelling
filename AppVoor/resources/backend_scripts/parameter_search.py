@@ -242,34 +242,21 @@ class GridSearchParametersPossibilities(Switch):
 
 
 class ParameterSearchCreator:
-    __instance = None
 
     @staticmethod
-    def get_instance() -> "ParameterSearchCreator":
-        """Static access method."""
-        if ParameterSearchCreator.__instance is None:
-            ParameterSearchCreator()
-        return ParameterSearchCreator.__instance
-
-    def __init__(self) -> None:
-        """Virtually private constructor."""
-        if ParameterSearchCreator.__instance is not None:
-            raise Exception("This class is a singleton!")
-        else:
-            ParameterSearchCreator.__instance = self
-
-    def create_parameter_selector(self, selection_type: str) -> ParameterSearch:
+    def create_parameter_selector(selection_type: str) -> ParameterSearch:
         try:
             parameter_search_name = selection_type.replace(" ", "")
             parameter_search_method = ParameterSearchPossibilities.case(parameter_search_name)
             return parameter_search_method
         except():
-            available_types = self.get_available_types()
+            available_types = ParameterSearchCreator.get_available_types()
             types_as_string = ", ".join(available_types)
             raise AttributeError(f"Parameter value is wrong. "
                                  f"It should be any of the following: {types_as_string}")
 
-    def get_available_types(self) -> tuple:
+    @staticmethod
+    def get_available_types() -> tuple:
         available_types = [func for func in dir(ParameterSearchPossibilities)
                            if callable(getattr(ParameterSearchPossibilities, func)) and not
                            (func.startswith("__") or func is "case")]

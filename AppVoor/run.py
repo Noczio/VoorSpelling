@@ -3,15 +3,13 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QRect, QThreadPool, QThread, QSize
-from PyQt5.QtGui import QFont, QTextCursor, QIcon
+from PyQt5.QtCore import QRect, QThreadPool, QThread
+from PyQt5.QtGui import QFont, QTextCursor
 from PyQt5.QtWidgets import QApplication
 
 from resources.backend_scripts.auto_ml import JarAutoML, AutoExecutioner
 from resources.backend_scripts.estimator_creation import EstimatorCreator
 from resources.backend_scripts.feature_selection import FeatureSelectorCreator, FeatureSelection
-from resources.backend_scripts.global_vars import GlobalVariables
 from resources.backend_scripts.load_data import LoaderCreator
 from resources.backend_scripts.model_creation import SBSModelCreator
 from resources.backend_scripts.parameter_search import BayesianSearchParametersPossibilities
@@ -19,13 +17,13 @@ from resources.backend_scripts.parameter_search import GridSearchParametersPossi
 from resources.backend_scripts.parameter_search import ParameterSearchCreator, ParameterSearch
 from resources.backend_scripts.result_creation import FCreator, SBSResult
 from resources.backend_scripts.switcher import Switch
-from resources.forms import QT_resources
 from resources.frontend_scripts.modified_widgets import QDragAndDropButton, QLoadButton
 from resources.frontend_scripts.parallel import LongWorker, EmittingStream
 from resources.frontend_scripts.pop_up import PopUp, WarningPopUp, CriticalPopUp
 from resources.frontend_scripts.view import Window
+from resources.integration.main import AppMain
+from resources.integration.ui_path import ui_window
 from resources.json_info.welcome import WelcomeMessenger
-from resources.ui_path import ui_window, ui_icons
 
 DataFrame = pd.DataFrame
 NpArray = np.ndarray
@@ -105,11 +103,12 @@ class HomeWindow(Window):
 
     def on_load(self) -> None:
         super(HomeWindow, self).on_load()
+        self._center_window()
         messenger = WelcomeMessenger(".\\resources\\json_info\\welcome_message.json")
         text = str(messenger)
         self.lbl_description.setText(text)
 
-    def center_window(self) -> None:
+    def _center_window(self) -> None:
         frame_gm = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
         center_point = QApplication.desktop().screenGeometry(screen).center()
@@ -255,13 +254,12 @@ class DataSetWindow(Window):
                        "y seleccionar la separación del mismo, ya sea TSV o CSV "
                 self.critical_pop_up.open_pop_up("Error", body, "")
             else:
-                loader_creator = LoaderCreator.get_instance()
                 if self.last == "load_file":
-                    loader = loader_creator.create_loader(self.btn_load_file.file_path, self.file_type)
+                    loader = LoaderCreator.create_loader(self.btn_load_file.file_path, self.file_type)
                 else:
-                    loader = loader_creator.create_loader(self.btn_drag_file.file_path, self.file_type)
+                    loader = LoaderCreator.create_loader(self.btn_drag_file.file_path, self.file_type)
                 file = loader.get_file_transformed()
-                global_var.data_frame = file
+                variables.data_frame = file
                 all_ok = True
         except Exception as e:
             self.handle_error(e)
@@ -271,7 +269,7 @@ class DataSetWindow(Window):
                 self.next()
 
     def back(self) -> None:
-        global_var.reset("data_set")
+        variables.reset("data_set")
         last_form = HomeWindow(ui_window["home"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -304,7 +302,7 @@ class MLTypeWindow(Window):
                 widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("data_set")
+        variables.reset("data_set")
         last_form = DataSetWindow(ui_window["dataset"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -344,7 +342,7 @@ class AutoLoad(Window):
         automl_ml = JarAutoML(10, False, 5000)
         model = AutoExecutioner(automl_ml)
         print(str(model) + "\n\n")
-        data_frame = global_var.data_frame
+        data_frame = variables.data_frame
         model.train_model(data_frame)
         print("Process finished successfully")
 
@@ -436,7 +434,7 @@ class StepByStepLoad(Window):
         translation = {"classification": "clasificación",
                        "regression": "regresión",
                        "clustering": "agrupamiento"}
-        prediction_type_text = f"{translation[global_var.prediction_type]} ({global_var.prediction_type}) paso a paso"
+        prediction_type_text = f"{translation[variables.prediction_type]} ({variables.prediction_type}) paso a paso"
         # All important info is storage in a variable to be displayed in a markdown file as a 2x5 table
         info = ["Opción", "Selección",
                 "Tipo de predicción", prediction_type_text,
@@ -462,20 +460,19 @@ class StepByStepLoad(Window):
 
     def train_model(self) -> None:
         # gets important info and the scores model
-        model_creator = SBSModelCreator.get_instance()
-        model = model_creator.create_model(global_var.uses_feature_selection, global_var.uses_parameter_search)
-        model.estimator = global_var.estimator
-        model.initial_parameters = global_var.parameters
-        model.feature_selector = global_var.feature_selection_method
-        model.parameter_selector = global_var.parameter_search_method
+        model = SBSModelCreator.create_model(variables.uses_feature_selection, variables.uses_parameter_search)
+        model.estimator = variables.estimator
+        model.initial_parameters = variables.parameters
+        model.feature_selector = variables.feature_selection_method
+        model.parameter_selector = variables.parameter_search_method
         # scoring metric by default for each type of prediction
         score_type = {"classification": "accuracy",
                       "regression": "neg_mean_squared_error",
                       "clustering": "mutual_info_score"}
         print("Training ...")
         # score model, then get a user friendly message for that score and finally return data
-        score = model.score_model(global_var.data_frame, score_type[global_var.prediction_type], 10)
-        score_text = f"Rendimiento promedio \"{score_type[global_var.prediction_type]}\": {score}"
+        score = model.score_model(variables.data_frame, score_type[variables.prediction_type], 10)
+        score_text = f"Rendimiento promedio \"{score_type[variables.prediction_type]}\": {score}"
         f_creator = FCreator()
         folder_path = f_creator.folder_path
         self.save_results(score_text, model.estimator, model.initial_parameters, list(model.best_features),
@@ -550,14 +547,14 @@ class PredictionType(Window):
         self.btn_Clustering.clicked.connect(lambda: self.next("clustering"))
 
     def next(self, event) -> None:
-        global_var.prediction_type = event
+        variables.prediction_type = event
         next_form = PredictionTypePossibilities.case(event)
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("data_set", "prediction_type")
+        variables.reset("data_set", "prediction_type")
         last_form = MLTypeWindow(ui_window["model"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -581,16 +578,15 @@ class ClassificationSelection(Window):
         self.btn_Gaussian_Naive_Bayes.clicked.connect(lambda: self.next("GaussianNB"))
 
     def next(self, event) -> None:
-        estimator_creator = EstimatorCreator.get_instance()
-        clf = estimator_creator.create_estimator(event)
-        global_var.estimator = clf
+        estimator = EstimatorCreator.create_estimator(event)
+        variables.estimator = estimator
         next_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("prediction_type", estimator=None)
+        variables.reset("prediction_type", estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -614,16 +610,15 @@ class RegressionSelection(Window):
         self.btn_SGD.clicked.connect(lambda: self.next("SGDClassifier"))
 
     def next(self, event) -> None:
-        estimator_creator = EstimatorCreator.get_instance()
-        clf = estimator_creator.create_estimator(event)
-        global_var.estimator = clf
+        estimator = EstimatorCreator.create_estimator(event)
+        variables.estimator = estimator
         next_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("prediction_type", estimator=None)
+        variables.reset("prediction_type", estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -647,16 +642,15 @@ class ClusteringSelection(Window):
         self.btn_KMeans.clicked.connect(lambda: self.next("KMeans"))
 
     def next(self, event) -> None:
-        estimator_creator = EstimatorCreator.get_instance()
-        clf = estimator_creator.create_estimator(event)
-        global_var.estimator = clf
+        estimator = EstimatorCreator.create_estimator(event)
+        variables.estimator = estimator
         next_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("prediction_type", estimator=None)
+        variables.reset("prediction_type", estimator=None)
         last_form = PredictionType(ui_window["prediction_type"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -676,21 +670,21 @@ class WantFeatureSelection(Window):
 
     def next(self) -> None:
         if self.rbtn_FSM.isChecked():
-            global_var.uses_feature_selection = True
+            variables.uses_feature_selection = True
             next_form = FeatureSelectionMethod(ui_window["feature_selection_method"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
         else:
-            global_var.uses_feature_selection = False
+            variables.uses_feature_selection = False
             next_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("uses_feature_selection", "estimator")
-        prediction_type = global_var.prediction_type
+        variables.reset("uses_feature_selection", "estimator")
+        prediction_type = variables.prediction_type
         last_form = PredictionTypePossibilities.case(prediction_type)
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -710,16 +704,15 @@ class FeatureSelectionMethod(Window):
         self.btn_BFS.clicked.connect(lambda: self.next("BFS"))
 
     def next(self, event) -> None:
-        feature_selection_creator = FeatureSelectorCreator.get_instance()
-        feature_selection_method = feature_selection_creator.create_feature_selector(event)
-        global_var.feature_selection_method = feature_selection_method
+        feature_selection_method = FeatureSelectorCreator.create_feature_selector(event)
+        variables.feature_selection_method = feature_selection_method
         next_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(next_form)
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("uses_feature_selection", "feature_selection_method")
+        variables.reset("uses_feature_selection", "feature_selection_method")
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -740,21 +733,21 @@ class WantHyperparameterSearch(Window):
 
     def next(self) -> None:
         if self.rbtn_Search_Hiperparameters.isChecked():
-            global_var.uses_parameter_search = True
+            variables.uses_parameter_search = True
             next_form = HyperparameterMethod(ui_window["hyperparameter_search_method"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
         else:
-            global_var.uses_parameter_search = False
-            user_selection = global_var.estimator.__class__.__name__
+            variables.uses_parameter_search = False
+            user_selection = variables.estimator.__class__.__name__
             next_form = EstimatorParametersPossibilities.case(user_selection)
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("uses_feature_selection", "uses_parameter_search")
+        variables.reset("uses_feature_selection", "uses_parameter_search")
         last_form = WantFeatureSelection(ui_window["feature_selection"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -782,22 +775,21 @@ class HyperparameterMethod(Window):
     def handle_input(self, event) -> None:
         result = self.last_warning_pop_up()
         if result:
-            parameter_selection_creator = ParameterSearchCreator.get_instance()
-            user_selection = global_var.estimator.__class__.__name__
+            user_selection = variables.estimator.__class__.__name__
             if event is "Bayesian":
                 parameters = BayesianSearchParametersPossibilities.case(user_selection)
-                global_var.parameters = parameters
-                parameter_search_method = parameter_selection_creator.create_parameter_selector("BS")
-                global_var.parameter_search_method = parameter_search_method
+                variables.parameters = parameters
+                parameter_search_method = ParameterSearchCreator.create_parameter_selector("BS")
+                variables.parameter_search_method = parameter_search_method
             else:
                 parameters = GridSearchParametersPossibilities.case(user_selection)
-                global_var.parameters = parameters
-                parameter_search_method = parameter_selection_creator.create_parameter_selector("GS")
-                global_var.parameter_search_method = parameter_search_method
+                variables.parameters = parameters
+                parameter_search_method = ParameterSearchCreator.create_parameter_selector("GS")
+                variables.parameter_search_method = parameter_search_method
             self.next()
 
     def back(self) -> None:
-        global_var.reset("uses_parameter_search", "parameter_search_method")
+        variables.reset("uses_parameter_search", "parameter_search_method")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -816,7 +808,7 @@ class FinalResult(Window):
 
     def next(self, event) -> None:
         event.accept()
-        global_var.reset()
+        variables.reset()
         self.close_window()
 
 
@@ -840,14 +832,14 @@ class AffinityPropagationParameters(Window):
                           "damping": float(self.sb_amortiguacion.value()),
                           "random_state": int(self.sb_semilla_random.value()),
                           "affinity": str(self.cb_afinidad.currentText())}
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -868,14 +860,14 @@ class GaussianNBParameters(Window):
         result = self.last_warning_pop_up()
         if result:
             parameters = {"var_smoothing": float(self.sb_variable_refinamiento.value())}
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -903,14 +895,14 @@ class KMeansParameters(Window):
                           "tol": float(self.sb_tolerancia.value()),
                           "algorithm": str(self.cb_algoritmo.currentText())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -938,14 +930,14 @@ class KNeighborsClassifierParameters(Window):
                           "leaf_size": int(self.sb_tamano_hoja.value()),
                           "weights": str(self.cb_pesos.currentText())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -973,14 +965,14 @@ class LassoParameters(Window):
                           "random_state": int(self.sb_semilla_random.value()),
                           "selection": str(self.cb_seleccion.currentText())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -1008,14 +1000,14 @@ class LinearSVCParameters(Window):
                           "intercept_scaling": float(self.sb_intercepto.value()),
                           "penalty": str(self.cb_penalidad.currentText())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -1043,14 +1035,14 @@ class LinearSVRParameters(Window):
                           "loss": str(self.cb_perdida.currentText()),
                           "epsilon": float(self.sb_epsilon.value())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -1080,14 +1072,14 @@ class MeanShiftParameters(Window):
                           "bandwidth": float(self.sb_ancho_banda.value()),
                           "min_bin_freq": int(self.sb_frecuencia_contenedor.value())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -1115,14 +1107,14 @@ class MiniBatchKMeansParameters(Window):
                           "random_state": int(self.sb_semilla_random.value()),
                           "tol": float(self.sb_tolerancia.value())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -1150,14 +1142,14 @@ class SGDClassifierParameters(Window):
                           "random_state": int(self.sb_semilla_random.value()),
                           "penalty": str(self.cb_penalidad.currentText())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -1185,14 +1177,14 @@ class SVCParameters(Window):
                           "kernel": str(self.cb_kernel.currentText()),
                           "gamma": str(self.cb_gamma.currentText())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -1220,14 +1212,14 @@ class SVRParameters(Window):
                           "epsilon": float(self.sb_epsilon.value()),
                           "gamma": str(self.cb_gamma.currentText())
                           }
-            global_var.parameters = parameters
+            variables.parameters = parameters
             next_form = StepByStepLoad(ui_window["result_screen"])
             widget.addWidget(next_form)
             widget.removeWidget(widget.currentWidget())
             widget.setCurrentIndex(widget.currentIndex())
 
     def back(self) -> None:
-        global_var.reset("parameters", "uses_parameter_search")
+        variables.reset("parameters", "uses_parameter_search")
         last_form = WantHyperparameterSearch(ui_window["hyperparameter_search"])
         widget.addWidget(last_form)
         widget.removeWidget(widget.currentWidget())
@@ -1235,27 +1227,9 @@ class SVRParameters(Window):
 
 
 if __name__ == "__main__":
-    # global_var instance to store program important variables across all forms
-    global_var = GlobalVariables.get_instance()
-    # initialize qt resources
-    QT_resources.qInitResources()
-    # create an app and widget variable to control app logic
-    app = QApplication(sys.argv)
-    # set app name for all views
-    app.setApplicationName("Voorspelling")
-    # then change app's icon. There's different sizes if needed
-    app_icon = QIcon()
-    for key, _ in ui_icons.items():
-        app_icon.addFile(ui_icons[key][0], QSize(ui_icons[key][-1], ui_icons[key][-1]))
-    app.setWindowIcon(app_icon)
-    # QStackedWidget object to control app's views
-    widget = QtWidgets.QStackedWidget()
-    # by default first form is home
-    home_window = HomeWindow(ui_window["home"])
-    home_window.center_window()
-    # set first view in widgetStack, its min and max size. Finally, show it and start app logic
-    widget.addWidget(home_window)
-    widget.setMaximumSize(1440, 1024)
-    widget.setMinimumSize(1440, 1024)
+    main = AppMain()
+    app, widget, variables = main.program_resources()
+    first_window = HomeWindow(ui_window["home"])
+    widget.addWidget(first_window)
     widget.show()
     sys.exit(app.exec_())

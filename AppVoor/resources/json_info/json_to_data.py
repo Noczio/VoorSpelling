@@ -21,8 +21,7 @@ class JSONMessage(ABC):
 
     def _load_file(self) -> None:
         # data setter using JSONDataTypeLoader
-        loader = LoaderCreator.get_instance()
-        json_type = loader.create_loader(self.file_path, "JSON")
+        json_type = LoaderCreator.create_loader(self.file_path, "JSON")
         self.data = json_type.get_file_transformed()
 
     @abstractmethod

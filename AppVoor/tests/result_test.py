@@ -11,11 +11,11 @@ from resources.backend_scripts.result_creation import FCreator, SBSResult
 
 
 class MyTestCase(unittest.TestCase):
-    _estimator_creator = EstimatorCreator.get_instance()
-    _loader_creator = LoaderCreator.get_instance()
-    _model_creator = SBSModelCreator.get_instance()
-    _feature_selection_creator = FeatureSelectorCreator.get_instance()
-    _parameter_selection_creator = ParameterSearchCreator.get_instance()
+    _estimator_creator = EstimatorCreator()
+    _loader_creator = LoaderCreator()
+    _model_creator = SBSModelCreator()
+    _feature_selection_creator = FeatureSelectorCreator()
+    _parameter_selection_creator = ParameterSearchCreator()
 
     def test_finishes_creation(self):
         try:

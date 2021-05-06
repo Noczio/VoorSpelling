@@ -9,7 +9,7 @@ from resources.backend_scripts.split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):
-    _loader_creator = LoaderCreator.get_instance()
+    _loader_creator = LoaderCreator()
 
     def test_single_split_columns_match(self):
         # load diabetes.csv from disk

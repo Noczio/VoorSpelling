@@ -8,7 +8,7 @@ from resources.backend_scripts.load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):
-    _loader_creator = LoaderCreator.get_instance()
+    _loader_creator = LoaderCreator()
 
     def test_data_is_df(self):
         # load diabetes.csv from disk
