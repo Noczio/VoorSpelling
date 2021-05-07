@@ -25,11 +25,11 @@ ui_window = {"Home": ".\\resources\\forms\\QT_Voorspelling_Home.ui",
              "MeanShift": ".\\resources\\forms\\QT_Voorspelling_ByHand_MeanShift.ui"
              }
 
-ui_icons = {"16px": ('.\\resources\\integration\\icos\\voorspelling_logo_ico_16px.ico', 16),
-            "32px": ('.\\resources\\integration\\icos\\voorspelling_logo_ico_32x.ico', 32),
-            "48px": ('.\\resources\\integration\\icos\\voorspelling_logo_ico_48px.ico', 48),
-            "54px": ('.\\resources\\integration\\icos\\voorspelling_logo_ico_64px.ico', 64),
-            "256px": ('.\\resources\\integration\\icos\\voorspelling_logo_ico_256px.ico', 256),
+ui_icons = {"16px": {"Path": ".\\resources\\integration\\icos\\voorspelling_logo_ico_16px.ico", "Size": 16},
+            "32px": {"Path": ".\\resources\\integration\\icos\\voorspelling_logo_ico_32px.ico", "Size": 32},
+            "48px": {"Path": ".\\resources\\integration\\icos\\voorspelling_logo_ico_48px.ico", "Size": 48},
+            "54px": {"Path": ".\\resources\\integration\\icos\\voorspelling_logo_ico_54px.ico", "Size": 54},
+            "256px": {"Path": ".\\resources\\integration\\icos\\voorspelling_logo_ico_256px.ico", "Size": 256},
             }
 
 ui_welcome_message = {"Path": ".\\resources\\json_info\\welcome_message.json"}

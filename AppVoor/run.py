@@ -109,12 +109,11 @@ class HomeWindow(Window):
 
     def on_load(self) -> None:
         super(HomeWindow, self).on_load()
-        self._center_window()
         messenger = WelcomeMessenger(ui_welcome_message["Path"])
         text = str(messenger)
         self.lbl_description.setText(text)
 
-    def _center_window(self) -> None:
+    def centered(self) -> None:
         frame_gm = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
         center_point = QApplication.desktop().screenGeometry(screen).center()
@@ -177,9 +176,9 @@ class DataSetWindow(Window):
         self._last_btn_used = event
         btn_load_style = load_buttons_style[self._last_btn_used][0]
         btn_drag_style = load_buttons_style[self._last_btn_used][-1]
-        btn_load_file_file_path = self.btn_load_file.file_path
-        btn_drag_file_file_path = self.btn_drag_file.file_path
-        if btn_load_file_file_path is not "" or btn_drag_file_file_path is not "":
+        btn_load_file_path = self.btn_load_file.file_path
+        btn_drag_file_path = self.btn_drag_file.file_path
+        if btn_load_file_path is not "" or btn_drag_file_path is not "":
             self.btn_load_file.setStyleSheet(btn_load_style)
             self.btn_drag_file.setStyleSheet(btn_drag_style)
 
@@ -261,10 +260,9 @@ class TrainingWindow(Window):
 
     def __init__(self, window_path: str) -> None:
         super().__init__(window_path)
-        sys.stdout = EmittingStream(textWritten=self._add_info)  # this works fine. textWritten works this way
-
+        sys.stdout = EmittingStream(textWritten=self._add_info)  # textWritten works this way
         self.lbl_cancel.mouseReleaseEvent = self._cancel_training
-
+        # thread_pool and ml_worker setup. A training view needs 2 threads to work properly
         self._thread_pool = QThreadPool()
         self._thread_pool.setMaxThreadCount(2)
         self._ml_worker = LongWorker()
@@ -341,7 +339,6 @@ class AutoTrainingWindow(TrainingWindow):
     def _train_model(self) -> None:
         automl_ml = JarAutoML(10, False, 5000)
         model = AutoExecutioner(automl_ml)
-        print(str(model) + "\n\n")
         data_frame = variables.data_frame
         model.train_model(data_frame)
 
@@ -366,8 +363,8 @@ class StepByStepTrainingWindow(TrainingWindow):
                 "Selección de características", feature_selection_method_name,
                 "Selección de hiperparámetros", parameter_search_method_name
                 ]
-
         table = {"columns": 2, "rows": 5, "info": info}
+
         # save estimator info results into markdown file
         SBSResult.estimator_info(table, best_features, initial_parameters, best_parameters, score_text, folder_path)
         SBSResult.dump_estimator(estimator, folder_path)
@@ -377,23 +374,26 @@ class StepByStepTrainingWindow(TrainingWindow):
         SBSResult.console_info(fixed_ted_text, folder_path)
 
     def _train_model(self) -> None:
-        # gets important info and the scores model
         uses_feature_selection: bool = variables.uses_feature_selection
         uses_parameter_search: bool = variables.uses_parameter_search
+
+        # get important info and then score model
         model = SBSModelCreator.create_model(uses_feature_selection, uses_parameter_search)
         model.estimator = variables.estimator
         model.initial_parameters = variables.parameters
         model.feature_selector = variables.feature_selection_method
         model.parameter_selector = variables.parameter_search_method
         model.data_frame = variables.data_frame
-        prediction_type = variables.prediction_type
+
         # scoring metric by default for each type of prediction
         score_type = {"Classification": "accuracy",
                       "Regression": "neg_mean_squared_error",
                       "Clustering": "mutual_info_score"}
+        prediction_type = variables.prediction_type
         # score model, then get a user friendly message for that score and finally return data
         score = model.score_model(score_type[prediction_type], 10)
         score_text = f"{score_type[prediction_type]}: {score}"
+
         f_creator = FCreator()
         folder_path = f_creator.folder_path
         self._save_results(score_text, model.estimator, model.initial_parameters, list(model.best_features),
@@ -878,7 +878,10 @@ class SVRParametersWindow(ByHandParametersWindow):
 if __name__ == "__main__":
     main = MainInitializer()
     app, widget, variables = main.program_resources()
+    # first window/view is HomeWindow. Create an instance, then center it on user's screen
     first_window = HomeWindow()
+    first_window.centered()
+    # add first_window to the QStackedWidget, then show it and start app's loop
     widget.addWidget(first_window)
     widget.show()
     sys.exit(app.exec_())

@@ -1,0 +1,158 @@
+\documentclass[stu, 12pt, noextraspace, floatsintext]{apa7} 
+\usepackage[utf8]{inputenc}
+\usepackage[english,spanish]{babel}
+\usepackage[final]{microtype}
+\usepackage{mathptmx} % times new roman
+
+% figures path
+\graphicspath{{images/}}
+\usepackage{pdfpages}
+
+% figures doublespace
+\captionsetup{skip=0pt, font=doublespacing}
+\usepackage{etoolbox}
+% make toc with apa 7 line space. This uses etoolbox
+\addtocontents{toc}{\protect\renewcommand*\protect\addvspace[1]{}}
+
+% max layer into index
+% -1 part     1 section     3 subsubsection  5 subparagraph 
+% 0 chapter  2 subsection  4 paragraph
+\setcounter{tocdepth}{5} 
+
+% apa rule for spacing
+\usepackage{setspace}
+% apa rule for indent
+\setlength{\parindent}{1.27cm}
+
+% plain pagestyle for other pages
+\fancypagestyle{otherplain}{
+\fancyhf{}
+\fancyheadoffset{0cm}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[R]{\thepage}
+}
+
+% code package
+\usepackage{minted}
+\usepackage{listings}
+\usemintedstyle[Python]{colorful}
+\usemintedstyle[Console]{bw}
+\setminted{fontsize=\footnotesize,linenos, breaklines=true,numberblanklines=false}
+% minted code centered
+\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}
+
+% library package
+\usepackage[style=apa,sortcites=true,sorting=ynt,backend=biber]{biblatex}
+\addbibresource{references.bib}
+\usepackage[autostyle]{csquotes}
+
+% math package
+\usepackage{amsmath, amsthm, amssymb}
+
+% graphics and fig
+\usepackage{bigstrut}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{siunitx}
+
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{pdflscape}
+\usepackage{longtable}
+
+\usepackage{csvsimple}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+% english quotation
+\DeclareQuoteStyle{english}
+    {\textquotedblleft}
+    [\textquotedblleft]
+    {\textquotedblright}
+        [0.05em]
+    {\textquoteleft}
+    [\textquoteleft]
+    {\textquoteright}
+
+\setquotestyle{english}
+
+\hypersetup{hidelinks}
+
+\usepackage{adjustbox}
+% ---------------------------
+
+\begin{document}
+
+\input{titlepage} % cover page
+\setcounter{page}{3} % magic number to make cover page count as first page
+
+\renewcommand{\contentsname}{Índice general}
+\tableofcontents % general index
+
+\clearpage
+\let\oldnumberline\numberline % Copy \numberline into \oldnumberline
+\renewcommand{\numberline}[1]{\hspace*{-1.5em}} % Remove number argument 
+\listoffigures % fig index
+\let\numberline\oldnumberline % Restore \numberline (if needed)
+
+%\clearpage
+%\let\oldnumberline\numberline % Copy \numberline into \oldnumberline
+%\renewcommand{\numberline}[1]{\hspace*{-1.5em}} % Remove number argument 
+%\listoftables % fig index
+%\let\numberline\oldnumberline % Restore \numberline (if needed)
+
+\clearpage
+\section*{Abstract} % doc abstract
+\input{chapters/abstract}
+
+\clearpage
+\section*{Resumen} % doc abstract spanish
+\input{chapters/resumen}
+
+\clearpage
+\section{Introducción}
+\input{chapters/introducción}
+
+\clearpage
+\section{Planteamiento del problema}
+\input{chapters/problema}
+
+\clearpage
+\section{Justificación}
+\input{chapters/justificación}
+
+\clearpage
+\section{Objetivo}
+\input{chapters/objetivo}
+
+\clearpage
+\section{Marco teórico}
+\input{chapters/marco/marcoMain}
+
+\clearpage
+\section{Desarrollo metodológico}
+\input{chapters/metodología}
+
+\clearpage
+\section{Conclusiones}
+\input{chapters/resultados}
+
+\clearpage
+\printbibliography[{heading=bibintoc}]
+\thispagestyle{otherplain}
+
+\appendix
+
+\section{Vista de rutas alternativas}
+\input{appendix/apendix alternas}
+
+\section{Vista para ingreso de hiperparámetros}
+\input{appendix/apendix parametros a mano}
+
+\section{Documentación}
+\input{appendix/appendix req}
+
+\end{document}
