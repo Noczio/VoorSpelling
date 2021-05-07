@@ -7,6 +7,7 @@ from PyQt5.QtCore import QRect, QThreadPool, QThread
 from PyQt5.QtGui import QFont, QTextCursor
 from PyQt5.QtWidgets import QApplication
 
+from abc import abstractmethod
 from resources.backend_scripts.auto_ml import JarAutoML, AutoExecutioner
 from resources.backend_scripts.estimator_creation import EstimatorCreator
 from resources.backend_scripts.feature_selection import FeatureSelectorCreator, FeatureSelection
@@ -25,7 +26,7 @@ from resources.integration.main import MainInitializer
 from resources.integration.other.cancel_stylesheet import cancel_buttons_style
 from resources.integration.other.load_errors import load_dataset_errors
 from resources.integration.other.load_stylesheet import load_buttons_style
-from resources.integration.other.ui_path import ui_window
+from resources.integration.other.ui_path import ui_window, ui_welcome_message
 from resources.json_info.welcome import WelcomeMessenger
 
 DataFrame = pd.DataFrame
@@ -109,7 +110,7 @@ class HomeWindow(Window):
     def on_load(self) -> None:
         super(HomeWindow, self).on_load()
         self._center_window()
-        messenger = WelcomeMessenger()
+        messenger = WelcomeMessenger(ui_welcome_message["Path"])
         text = str(messenger)
         self.lbl_description.setText(text)
 
@@ -258,9 +259,9 @@ class MLTypeWindow(Window):
 class TrainingWindow(Window):
     """Abstraction  for training view based on Window class"""
 
-    def __init__(self, window: str) -> None:
-        super().__init__(window)
-        sys.stdout = EmittingStream(textWritten=self._add_info)  # this works fine. That parameter works this way
+    def __init__(self, window_path: str) -> None:
+        super().__init__(window_path)
+        sys.stdout = EmittingStream(textWritten=self._add_info)  # this works fine. textWritten works this way
 
         self.lbl_cancel.mouseReleaseEvent = self._cancel_training
 
@@ -285,6 +286,7 @@ class TrainingWindow(Window):
         widget.removeWidget(widget.currentWidget())
         widget.setCurrentIndex(widget.currentIndex())
 
+    @abstractmethod
     def _train_model(self) -> None:
         pass
 
@@ -430,8 +432,8 @@ class PredictionTypeWindow(Window):
 class EstimatorSelectionWindow(Window):
     """Abstraction for estimator's view based on Window class"""
 
-    def __init__(self, window: str) -> None:
-        super().__init__(window)
+    def __init__(self, window_path: str) -> None:
+        super().__init__(window_path)
         self.btn_back.clicked.connect(self.back)
 
     def next(self, event: str) -> None:
@@ -651,8 +653,8 @@ class FinalResultWindow(Window):
 
 class ByHandParametersWindow(Window):
 
-    def __init__(self, window: str) -> None:
-        super().__init__(window)
+    def __init__(self, window_path: str) -> None:
+        super().__init__(window_path)
         self.btn_back.clicked.connect(self.back)
 
     def next(self, parameters: dict) -> None:

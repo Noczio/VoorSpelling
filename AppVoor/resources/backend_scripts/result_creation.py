@@ -9,9 +9,9 @@ from mdutils.mdutils import MdUtils
 class FCreator:
     _folder_path: str
 
-    def __init__(self, location: str = ".\\", obj: str = "SBS_ML") -> None:
+    def __init__(self, path: str = ".\\", obj: str = "SBS_ML") -> None:
         self._object = obj
-        self._location = location
+        self._path = path
         self.create_folder()
 
     @property
@@ -27,12 +27,12 @@ class FCreator:
             sub_value = 1
             while True:
                 final_folder_name = self._object + "_" + str(sub_value)
-                path = os.path.join(self._location, final_folder_name)
-                if os.path.exists(path):
+                final_path = os.path.join(self._path, final_folder_name)
+                if os.path.exists(final_path):
                     sub_value += 1
                 else:
-                    os.mkdir(path)
-                    self.folder_path = path
+                    os.mkdir(final_path)
+                    self.folder_path = final_path
                     break
         except Exception():
             raise Exception

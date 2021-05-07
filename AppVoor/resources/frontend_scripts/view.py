@@ -5,16 +5,17 @@ from PyQt5.QtWidgets import QMainWindow
 
 from resources.frontend_scripts.pop_up import PopUp, InfoPopUp, WarningPopUp
 from resources.json_info.help import HelpMessage
+from resources.integration.other.ui_path import ui_help_message
 from resources.integration.version import __version__ as version
 
 
 class Window(QMainWindow):
     """Base Window class that inherits from QMainWindow"""
 
-    def __init__(self, window: str, help_message_path: str = ".\\resources\\json_info\\help_message.json") -> None:
+    def __init__(self, window_path: str) -> None:
         super().__init__()
-        uic.loadUi(window, self)
-        self._help_message = HelpMessage(file_path=help_message_path)
+        uic.loadUi(window_path, self)
+        self._help_message = HelpMessage(ui_help_message["Path"])
         self.on_load()
 
     def useful_info_pop_up(self, key: str) -> None:

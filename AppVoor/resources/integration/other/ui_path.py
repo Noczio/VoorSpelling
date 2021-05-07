@@ -31,3 +31,7 @@ ui_icons = {"16px": ('.\\resources\\integration\\icos\\voorspelling_logo_ico_16p
             "54px": ('.\\resources\\integration\\icos\\voorspelling_logo_ico_64px.ico', 64),
             "256px": ('.\\resources\\integration\\icos\\voorspelling_logo_ico_256px.ico', 256),
             }
+
+ui_welcome_message = {"Path": ".\\resources\\json_info\\welcome_message.json"}
+
+ui_help_message = {"Path": ".\\resources\\json_info\\help_message.json"}

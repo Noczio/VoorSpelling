@@ -245,14 +245,14 @@ class FeatureSelectorCreator:
 
 
 # Patch when a score is not the bigger the better. The first is fewer than the second
-def is_fewer_than(first: float, second: float, score_type: str):
+def is_fewer_than(first: float, second: float, score_type: str) -> float:
     if score_type is "roc_auc" or "accuracy" or "mutual_info_score" or "completeness_score":
         return first < second
     return second < first
 
 
 # Patch when a score is not the bigger the better. The first is greater than the second
-def is_greater_than(first: float, second: float, score_type: str):
+def is_greater_than(first: float, second: float, score_type: str) -> float:
     if score_type is "roc_auc" or "accuracy" or "mutual_info_score" or "completeness_score":
         return first > second
     return second > first
