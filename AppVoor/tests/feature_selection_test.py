@@ -8,9 +8,9 @@ from resources.backend_scripts.split_data import SplitterReturner
 
 
 class MyTestCase(unittest.TestCase):
-    _loader_creator = LoaderCreator.get_instance()
-    _feature_selector_creator = FeatureSelectorCreator.get_instance()
-    _estimator_creator = EstimatorCreator.get_instance()
+    _loader_creator = LoaderCreator()
+    _feature_selector_creator = FeatureSelectorCreator()
+    _estimator_creator = EstimatorCreator()
 
     def test_diabetes_has_fewer_features_with_LSVC_FFS_roc_auc_10(self):
         # load molecules.csv from disk

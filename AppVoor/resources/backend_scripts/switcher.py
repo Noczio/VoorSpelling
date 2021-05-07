@@ -7,6 +7,6 @@ class Switch(ABC):
     @classmethod
     def case(cls, attr: str) -> Any:
         if hasattr(cls, attr):
-            out_attr = getattr(cls, str(attr))
-            return out_attr()
+            method = getattr(cls, str(attr))
+            return method()
         raise AttributeError

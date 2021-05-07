@@ -223,34 +223,21 @@ class FeatureSelectionPossibilities(Switch):
 
 
 class FeatureSelectorCreator:
-    __instance = None
 
     @staticmethod
-    def get_instance() -> "FeatureSelectorCreator":
-        """Static access method."""
-        if FeatureSelectorCreator.__instance is None:
-            FeatureSelectorCreator()
-        return FeatureSelectorCreator.__instance
-
-    def __init__(self) -> None:
-        """Virtually private constructor."""
-        if FeatureSelectorCreator.__instance is not None:
-            raise Exception("This class is a singleton!")
-        else:
-            FeatureSelectorCreator.__instance = self
-
-    def create_feature_selector(self, selection_type: str) -> FeatureSelection:
+    def create_feature_selector(selection_type: str) -> FeatureSelection:
         try:
             feature_selection_name = selection_type.replace(" ", "")
             feature_selection_method = FeatureSelectionPossibilities.case(feature_selection_name)
             return feature_selection_method
         except():
-            available_types = self.get_available_types()
+            available_types = FeatureSelectorCreator.get_available_types()
             types_as_string = ", ".join(available_types)
             raise AttributeError(f"Parameter value is wrong. "
                                  f"It should be any of the following: {types_as_string}")
 
-    def get_available_types(self) -> tuple:
+    @staticmethod
+    def get_available_types() -> tuple:
         available_types = [func for func in dir(FeatureSelectionPossibilities)
                            if callable(getattr(FeatureSelectionPossibilities, func)) and not
                            (func.startswith("__") or func is "case")]
@@ -258,14 +245,14 @@ class FeatureSelectorCreator:
 
 
 # Patch when a score is not the bigger the better. The first is fewer than the second
-def is_fewer_than(first: float, second: float, score_type: str):
+def is_fewer_than(first: float, second: float, score_type: str) -> float:
     if score_type is "roc_auc" or "accuracy" or "mutual_info_score" or "completeness_score":
         return first < second
     return second < first
 
 
 # Patch when a score is not the bigger the better. The first is greater than the second
-def is_greater_than(first: float, second: float, score_type: str):
+def is_greater_than(first: float, second: float, score_type: str) -> float:
     if score_type is "roc_auc" or "accuracy" or "mutual_info_score" or "completeness_score":
         return first > second
     return second > first

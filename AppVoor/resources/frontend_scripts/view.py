@@ -5,16 +5,17 @@ from PyQt5.QtWidgets import QMainWindow
 
 from resources.frontend_scripts.pop_up import PopUp, InfoPopUp, WarningPopUp
 from resources.json_info.help import HelpMessage
-from version import __version__ as version
+from resources.integration.other.ui_path import ui_help_message
+from resources.integration.version import __version__ as version
 
 
 class Window(QMainWindow):
     """Base Window class that inherits from QMainWindow"""
 
-    def __init__(self, window: str, help_message_path: str = ".\\resources\\json_info\\help_message.json") -> None:
+    def __init__(self, window_path: str) -> None:
         super().__init__()
-        uic.loadUi(window, self)
-        self._help_message = HelpMessage(file_path=help_message_path)
+        uic.loadUi(window_path, self)
+        self._help_message = HelpMessage(ui_help_message["Path"])
         self.on_load()
 
     def useful_info_pop_up(self, key: str) -> None:
@@ -29,7 +30,7 @@ class Window(QMainWindow):
         pop_up: PopUp = InfoPopUp()
         pop_up.open_pop_up(title, body, url)
 
-    def last_warning_pop_up(self) -> bool:
+    def last_warning_pop_up(self, *args, **kwargs) -> bool:
         """Show warning info in a pop. A form may use this method, overwrite it or not use it at all"""
         pop_up: PopUp = WarningPopUp()
         title = "Listo para entrenar"
@@ -56,7 +57,4 @@ class Window(QMainWindow):
 
     def on_load(self) -> None:
         """Additional behaviour on load"""
-        # this if is a patch. Changes app version text.
-        if hasattr(self, "lbl_left_4"):
-            info = f"Version {version}\nLicencia BSD 3"
-            self.lbl_left_4.setText(info)
+        self.lbl_left_4.setText(f"Version {version}\nLicencia BSD 3")

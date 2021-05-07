@@ -216,14 +216,14 @@ Licencia BSD 3</string>
       <rect>
        <x>400</x>
        <y>40</y>
-       <width>700</width>
+       <width>941</width>
        <height>72</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>MS Shell Dlg 2</family>
-       <pointsize>34</pointsize>
+       <pointsize>32</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -234,7 +234,7 @@ Licencia BSD 3</string>
 color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>Voorspelling</string>
+      <string>PASO 1 - Inicio</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>

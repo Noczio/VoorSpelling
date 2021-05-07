@@ -61,23 +61,9 @@ class EstimatorPossibilities(Switch):
 
 
 class EstimatorCreator:
-    __instance = None
 
     @staticmethod
-    def get_instance() -> "EstimatorCreator":
-        """Static access method."""
-        if EstimatorCreator.__instance is None:
-            EstimatorCreator()
-        return EstimatorCreator.__instance
-
-    def __init__(self) -> None:
-        """Virtually private constructor."""
-        if EstimatorCreator.__instance is not None:
-            raise Exception("This class is a singleton!")
-        else:
-            EstimatorCreator.__instance = self
-
-    def create_estimator(self, estimator_type: str) -> Any:
+    def create_estimator(estimator_type: str) -> Any:
         try:
             # replace white spaces
             estimator_name = estimator_type.replace(" ", "")
@@ -85,12 +71,13 @@ class EstimatorCreator:
             estimator = EstimatorPossibilities.case(estimator_name)
             return estimator
         except():
-            available_types = self.get_available_types()
+            available_types = EstimatorCreator.get_available_types()
             types_as_string = ", ".join(available_types)
             raise AttributeError(f"Parameter value is wrong. "
                                  f"It should be any of the following: {types_as_string}")
 
-    def get_available_types(self) -> tuple:
+    @staticmethod
+    def get_available_types() -> tuple:
         available_types = [func for func in dir(EstimatorPossibilities)
                            if callable(getattr(EstimatorPossibilities, func)) and not
                            (func.startswith("__") or func is "case")]

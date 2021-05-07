@@ -7,13 +7,13 @@ class MyTestCase(unittest.TestCase):
 
     def test_kmeans_title_matches(self):
         help_message = HelpMessage("..\\resources\\json_info\\help_message.json")
-        title, *_ = help_message["kmeans"]
+        title, *_ = help_message["KMeans"]
         expected = "Estimador: Kmeans"
         self.assertEqual(title, expected)
 
     def test_no_feature_selection_url_matches(self):
         help_message = HelpMessage("..\\resources\\json_info\\help_message.json")
-        *_, url = help_message["no_feature_selection"]
+        *_, url = help_message["No_feature_selection"]
         expected = ""
         self.assertEqual(url, expected)
 

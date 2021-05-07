@@ -25,10 +25,10 @@ class NormalSplitter(DataSplitter):
 
     # interface method implementation
     def train_test_split_data(self, x: DataFrame, y: NpArray, size: float) -> tuple:
-        # return x_train, x_test, y_train, y_test using scikitlearn train_test_split
+        # return x_train, x_test, y_train, y_test using scikit-learn train_test_split
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=size)
-        temp_answer = x_train, x_test, y_train, y_test
-        return temp_answer
+        tuple_answer = x_train, x_test, y_train, y_test
+        return tuple_answer
 
     # interface method implementation
     def split_data_into_x_and_y(self, df: DataFrame, ravel: bool) -> tuple:
@@ -53,7 +53,7 @@ class SplitterReturner:
         raise ValueError("Size variable should be between 0.0 and 1.0 without them")
 
     @staticmethod
-    def split_x_y_from_df(df: DataFrame, ravel_data=True) -> tuple:
+    def split_x_y_from_df(df: DataFrame, ravel_data: bool = True) -> tuple:
         data_splitter: DataSplitter = NormalSplitter()
         if DataEnsurer.validate_pd_data(df):
             tuple_answer = data_splitter.split_data_into_x_and_y(df, ravel=ravel_data)

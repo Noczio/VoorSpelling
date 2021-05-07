@@ -4,7 +4,7 @@ from resources.backend_scripts.load_data import LoaderCreator
 
 
 class MyTestCase(unittest.TestCase):
-    _loader_creator = LoaderCreator.get_instance()
+    _loader_creator = LoaderCreator()
 
     def test_data_loaded_csv(self):
         # load diabetes.csv from disk
@@ -70,8 +70,7 @@ class MyTestCase(unittest.TestCase):
         file_name = "diabetes.csv"
         test_full_path = ".\\..\\" + folder_name + "\\" + file_name
         with self.assertRaises(TypeError):
-            loader_creator = LoaderCreator.get_instance()
-            csv_type = loader_creator.create_loader(test_full_path, "TSV")
+            csv_type = self._loader_creator.create_loader(test_full_path, "TSV")
             # this should raise an TypeError
             _ = csv_type.get_file_transformed()
 
